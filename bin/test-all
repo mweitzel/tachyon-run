@@ -1,4 +1,5 @@
 #!/bin/bash
 
 exec node --harmony tests/tap.js \
+  tests/precompile/*.js \
   tests/api/*.js
