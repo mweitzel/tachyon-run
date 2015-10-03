@@ -1,4 +1,6 @@
 var _ = require('koa-route')
+  , fs = require('fs')
+  , indexBody = fs.readFileSync('./public/build/index.html')
 
 module.exports = [
   _.get('/', root)
@@ -6,7 +8,8 @@ module.exports = [
 ]
 
 function *root(){
-  this.body = 'Hello World'
+  this.body = indexBody
+  this.type = 'html'
 }
 
 function *notFound() {
