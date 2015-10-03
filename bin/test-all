@@ -1,0 +1,4 @@
+#!/bin/bash
+
+exec node --harmony tests/tap.js \
+  tests/api/*.js
