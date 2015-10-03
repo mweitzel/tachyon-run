@@ -1,3 +1,4 @@
+var initTime = now()
 require('./import-jsx')
 var fs = require('fs')
   , path = require('path')
@@ -15,4 +16,11 @@ function precompile() {
   fs.writeFileSync(buildTarget, render(template))
 }
 
-if(!module.parent) { precompile() }
+function now() {
+  return new Date().getTime()
+}
+
+if(!module.parent) {
+  precompile()
+  console.log('precompiled in', now() - initTime, 'ms')
+}
