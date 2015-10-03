@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+rm -rf public/build
+mkdir public/build
+
+node --harmony precompile.js
