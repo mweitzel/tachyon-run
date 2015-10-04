@@ -1,2 +1,2 @@
 public/build/*
-dev-env-vars.sh
+local-env-vars.sh
