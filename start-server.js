@@ -1,7 +1,9 @@
 var initTime = new Date().getTime()
-var createServer = require('./server')
+  , createServer = require('./server')
+  , fetch = require('../fetch-env')
+  , PORT=fetch('PORT')
 
-createServer.listen(8000)
+createServer.listen(fetch('PORT'))
 
-console.log("Server running at http://127.0.0.1:8000/")
+console.log("Server running at http://"+fetch('HOST')+":"+fetch('PORT')+"/")
 console.log('started server in', new Date().getTime() - initTime, 'ms')

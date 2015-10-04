@@ -2,7 +2,6 @@
 
 set -e
 
-touch  dev-env-vars.sh
-source dev-env-vars.sh
+test -f dev-env-vars.sh && source dev-env-vars.sh
 
 exec ./bin/start-server

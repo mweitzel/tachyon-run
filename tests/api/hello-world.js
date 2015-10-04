@@ -1,9 +1,13 @@
 var app = require('../../server')
-  , server = app.listen(8000)
+  , fetch = require('../../fetch-env')
+  , server = app.listen(fetch('PORT'))
   , test = require('tape')
   , http = require('http')
   , concat = require('concat-stream')
   , request = require('../test-request-helper')
+
+// precompile
+require('../../precompile')()
 
 test('simple "/" request returns 200 OK', function (t) {
   t.plan(2)

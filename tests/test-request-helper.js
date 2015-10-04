@@ -1,7 +1,10 @@
 var http = require('http')
+  , fetch = require('../fetch-env')
+  , HOST=fetch('HOST')
+  , PORT=fetch('PORT')
 
 var request = module.exports = function(opts, cb) {
-      var options = merge({ host: '127.0.0.1' , port: 8000 }, opts)
+      var options = merge({ host: HOST , port: PORT }, opts)
       var newArgs = [options].concat(Array.prototype.slice.call(arguments, 1))
       return http.request.apply(http, newArgs).end()
     }
