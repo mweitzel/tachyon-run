@@ -1,6 +1,6 @@
 var initTime = new Date().getTime()
   , createServer = require('./server')
-  , fetch = require('../fetch-env')
+  , fetch = require('./fetch-env')
   , PORT=fetch('PORT')
 
 createServer.listen(fetch('PORT'))

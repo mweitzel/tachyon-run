@@ -7,7 +7,6 @@ module.exports = React.createClass({
 , componentDidMount: function() {
     console.log('fullsite component did mount')
     console.log(this)
-  //  this.props.functions.componentDidMount(this)
   }
 , getInitialState: function() {
     return {pathname: this.props.initialPathname}
@@ -16,7 +15,10 @@ module.exports = React.createClass({
     var what = this
     return (
       <html id='html'>
-        <head />
+        <head>
+          <script src='index.js'>
+          </script>
+        </head>
         <body>hello world
         </body>
       </html>
