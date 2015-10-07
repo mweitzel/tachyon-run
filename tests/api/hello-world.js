@@ -39,6 +39,20 @@ test('simple "/aljsnakjncoawejco" request returns 404 not found', function (t) {
   )
 })
 
+test('get "/index.js" returns js file', function (t) {
+  t.plan(3)
+
+  request(
+    {path:'/index.js'}
+  , function(response) {
+      response.pipe(concat({encoding: 'string'}, function(body){
+        t.equal(response.statusCode, 200)
+        t.equal(response.headers['content-type'], 'application/javascript; charset=utf-8')
+        t.ok(body.indexOf('function') > -1)
+      }))
+    }
+  )
+})
 
 test('close server', function(t) {
   t.plan(1)
