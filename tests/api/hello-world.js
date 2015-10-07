@@ -1,13 +1,15 @@
 var app = require('../../server')
   , fetch = require('../../fetch-env')
-  , server = app.listen(fetch('PORT'))
   , test = require('tape')
   , http = require('http')
   , concat = require('concat-stream')
   , request = require('../test-request-helper')
+  , server
 
-// precompile
-require('../../precompile')()
+test('start server', function(t) {
+  server = app.listen(fetch('PORT'))
+  t.end()
+})
 
 test('simple "/" request returns 200 OK', function (t) {
   t.plan(2)
@@ -16,7 +18,7 @@ test('simple "/" request returns 200 OK', function (t) {
     {path:'/'}
   , function(response) {
       response.pipe(concat({encoding: 'string'}, function(body){
-        t.equal(200, response.statusCode)
+        t.equal(response.statusCode, 200)
         t.ok(body.indexOf('hello world') > -1)
       }))
     }
@@ -30,7 +32,7 @@ test('simple "/aljsnakjncoawejco" request returns 404 not found', function (t) {
     {path:'/aljsnakjncoawejco'}
   , function(response) {
       response.pipe(concat({encoding: 'string'}, function(body){
-        t.equal(404, response.statusCode)
+        t.equal(response.statusCode, 404)
         t.ok(body.indexOf('not found') > -1)
       }))
     }

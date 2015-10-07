@@ -5,6 +5,5 @@ set -e
 test -f test-env-vars.sh && source test-env-vars.sh
 
 exec node --harmony tests/tap.js \
-  tests/precompile/*.js \
   tests/unit/*.js \
   tests/api/*.js

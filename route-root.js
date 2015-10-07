@@ -1,7 +1,7 @@
-var fs = require('fs')
-  , indexBody = fs.readFileSync('./public/build/index.html')
+var indexTemplate = './react/index.jsx'
+  , render = require('./html-render')
 
 module.exports = function *root(){
-  this.body = indexBody
+  this.body = render(indexTemplate)
   this.type = 'html'
 }

@@ -1,6 +1,5 @@
 #!/bin/bash
 
 set -e
-test $SKIP_PRECOMPILE || ./bin/precompile
 
 exec node --harmony start-server.js
