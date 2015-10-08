@@ -8,7 +8,7 @@ module.exports = serveFile
 function *serveFile(page, next) {
   var assetSource = getAssetSource(page)
   if(!fs.existsSync(assetSource)) { return yield next }
-  this.type = contentTypes[path.extname(assetSource)]
+  this.type = contentTypes[path.extname(page)]
   this.body = build(assetSource)
 
 }
