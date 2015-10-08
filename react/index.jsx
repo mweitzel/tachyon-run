@@ -18,6 +18,8 @@ module.exports = React.createClass({
         <head>
           <script src='index.js'>
           </script>
+          <link rel="stylesheet" type="text/css" href="application.css">
+          </link>
         </head>
         <body>hello world
         </body>
