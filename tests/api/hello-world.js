@@ -19,7 +19,7 @@ test('simple "/" request returns 200 OK', function (t) {
   , function(response) {
       response.pipe(concat({encoding: 'string'}, function(body){
         t.equal(response.statusCode, 200)
-        t.ok(body.indexOf('hello world') > -1)
+        t.ok(body.indexOf('body') > -1)
       }))
     }
   )

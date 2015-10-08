@@ -1,4 +1,6 @@
 var React = require('react')
+  , Canvas = require('./canvas')
+  , canvasProps = require('../canvas-properties')
 
 module.exports = React.createClass({
   setPath: function(newPath) {
@@ -21,7 +23,10 @@ module.exports = React.createClass({
           <link rel="stylesheet" type="text/css" href="application.css">
           </link>
         </head>
-        <body>hello world
+        <body>
+          <div className='canvas-container'>
+            <Canvas {...canvasProps} />
+          </div>
         </body>
       </html>
     )

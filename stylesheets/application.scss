@@ -1,1 +1,12 @@
-html { color: #bb0; }
+html { padding: 0px; }
+body { margin: 0px; }
+
+.canvas-container {
+  background: grey;
+  padding: 1em
+}
+canvas {
+  background: white;
+  display: table;
+  margin: auto;
+}
