@@ -54,6 +54,20 @@ test('get "/index.js" returns js file', function (t) {
   )
 })
 
+test('get "/application.css" returns css file', function (t) {
+  t.plan(2)
+
+  request(
+    {path:'/application.css'}
+  , function(response) {
+      response.pipe(concat({encoding: 'string'}, function(body){
+        t.equal(response.statusCode, 200)
+        t.equal(response.headers['content-type'], 'application/octet-stream')
+      }))
+    }
+  )
+})
+
 test('close server', function(t) {
   t.plan(1)
   server.close(function(){
