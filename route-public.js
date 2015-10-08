@@ -27,5 +27,5 @@ var sourceExtensions = {
 
 var contentTypes = {
   '.js': 'application/javascript'
-, '.css': 'application/javascript'
+, '.css': 'text/css'
 }

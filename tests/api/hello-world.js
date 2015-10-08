@@ -62,7 +62,7 @@ test('get "/application.css" returns css file', function (t) {
   , function(response) {
       response.pipe(concat({encoding: 'string'}, function(body){
         t.equal(response.statusCode, 200)
-        t.equal(response.headers['content-type'], 'application/octet-stream')
+        t.equal(response.headers['content-type'], 'text/css; charset=utf-8')
       }))
     }
   )
