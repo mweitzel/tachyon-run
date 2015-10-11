@@ -14,6 +14,7 @@ var builders = {
   '.js': function (page) {
     return browserify({
       entries: page
+    , debug: true
     }).bundle()
   }
 , '.scss': function(page) {
