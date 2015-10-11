@@ -4,4 +4,4 @@ set -e
 
 test -f test-env-vars.sh && source test-env-vars.sh
 
-exec node --harmony tests/tap.js tests/unit/*.js
+exec node --harmony test/tap.js test/unit/*.js
