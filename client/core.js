@@ -55,14 +55,12 @@ Core.prototype = {
     this.update()
     this.window.requestAnimationFrame(this.updateAndRegisterNextUpdate.bind(this))
   }
-, init: function() {
-    if( !paused ) { return }
-    updateAndRegisterNextUpdate()
-  }
 , paused: true,
   pause: function(){ this.paused = true },
-  play: function(){ this.paused = false },
-  togglePaused: function(){ this.paused = !this.paused },
+  play: function(){ this.paused = false ; this.updateAndRegisterNextUpdate() }
+, start: function(){ return this.play() }
+, stop: function(){ return this.pause() }
+, togglePaused: function(){ this.paused = !this.paused },
 }
 
 function Input(core) {

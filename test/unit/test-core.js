@@ -37,6 +37,14 @@ test('#update calls draw on each entity', function(t) {
   })
 })
 
+test('#start leaves game unpaused', function(t) {
+  t.plan(1)
+  var c = new Core(mockWindow(), mockCanvasContext())
+  c.start()
+  t.false(c.paused)
+  c.stop()
+})
+
 function mockWindow() {
   var w = td.create()
   w.document = td.create()
