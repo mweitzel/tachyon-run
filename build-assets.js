@@ -1,5 +1,6 @@
 require('./import-jsx')
 var browserify = require('browserify')
+  , brfs = require('brfs')
   , sass = require('node-sass')
   , path = require('path')
   , fs = require('fs')
@@ -15,6 +16,7 @@ var builders = {
     return browserify({
       entries: page
     , debug: true
+    , trasform: brfs
     }).bundle()
   }
 , '.scss': function(page) {
