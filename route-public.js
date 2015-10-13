@@ -10,7 +10,6 @@ function *serveFile(page, next) {
   if(!fs.existsSync(assetSource)) { return yield next }
   this.type = contentTypes[path.extname(page)]
   this.body = build(assetSource)
-
 }
 
 function getAssetSource(pageName) {
