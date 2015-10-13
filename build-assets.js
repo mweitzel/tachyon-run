@@ -16,7 +16,7 @@ var builders = {
     return browserify({
       entries: page
     , debug: true
-    , trasform: brfs
+    , transform: brfs
     }).bundle()
   }
 , '.scss': function(page) {
