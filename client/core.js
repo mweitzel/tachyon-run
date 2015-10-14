@@ -65,9 +65,8 @@ Core.prototype = {
 
 function Input(core) {
   this.core = core
-
-  core.document.addEventListener('keydown', keyDown.bind(this))
-  core.document.addEventListener('keyup', keyUp.bind(this))
+  this.keyCodesDown = []
+  this.keyCodesUp = []
 
   function keyDown(event){
     if(!this.getKey(event.keyCode)) //doesn't catch bs refires of the keypres..sssssssss!
@@ -77,12 +76,15 @@ function Input(core) {
   function keyUp(event){
     this.keyCodesUp[event.keyCode] = event.timeStamp
   }
+
+  this.keyDown = keyDown.bind(this)
+  this.keyUp = keyUp.bind(this)
+  core.document.addEventListener('keydown', this.keyDown)
+  core.document.addEventListener('keyup', this.keyUp)
 }
 
 Input.prototype = {
-  keyCodesDown: []
-, keyCodesUp: []
-, downAt: function(keyCode){
+  downAt: function(keyCode){
     return this.keyCodesDown[keyCode] || 0
   }
 , upAt: function(keyCode){
@@ -104,5 +106,4 @@ Input.prototype = {
 , downDuration: function(keyCode){
     return Math.max(0, this.core.lastUpdate - this.downAt(keyCode))
   }
-
 }
