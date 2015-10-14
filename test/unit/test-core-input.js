@@ -19,7 +19,7 @@ test('#getKeyDown only registers the frame it was pressed', function(t) {
   t.true(input.getKeyDown(kc), 'getKeyDown registers on downpress after last input, before step is done')
 
   input.keyCodesDown[kc] = 17
-  t.false(input.getKeyDown(1), 'getKeyDown does not register on downpress after last input, but before step it occurs in')
+  t.false(input.getKeyDown(kc), 'getKeyDown does not register on downpress after last input, but before step it occurs in')
 })
 
 test('#keyDown only applies if #keyUp since last #keyDown, to prevent repeattsssssssssssss', function(t) {
@@ -40,6 +40,6 @@ test('#keyDown only applies if #keyUp since last #keyDown, to prevent repeattsss
 
   input.keyDown({keyCode: kc, timeStamp: 4 })
 
-  t.equals(input.keyCodesDown[kc], 2, 'only first keyDown after keyUp registers')
+  t.equals(input.keyCodesDown[kc], 3, 'only first keyDown after keyUp registers')
 
 })

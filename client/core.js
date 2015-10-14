@@ -6,7 +6,6 @@ function Core(window, context) {
   this.lastUpdate = new Date().getTime()
   this.input = new Input(this)
   this.context = context
-
 }
 
 Core.prototype = {
@@ -18,6 +17,9 @@ Core.prototype = {
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw(this.context)
     }
+  }
+, get nextUpdate() {
+    return this.lastUpdate + this.physicsTimeStep
   }
 , step: function() {
     for (var i=0; i < this.entities.length; i++) {
@@ -69,7 +71,8 @@ function Input(core) {
   this.keyCodesUp = []
 
   function keyDown(event){
-    if(!this.getKey(event.keyCode)) //doesn't catch bs refires of the keypres..sssssssss!
+    // doesn't catch bs refires of the keypres..sssssssss!
+    if(this.downAt(event.keyCode) <= this.upAt(event.keyCode))
       this.keyCodesDown[event.keyCode] = event.timeStamp
   }
 
@@ -96,8 +99,8 @@ Input.prototype = {
     return ((this.downAt(keyCode) > this.upAt(keyCode)) && this.downAt(keyCode) < this.core.lastUpdate + this.core.physicsTimeStep) || this.getKeyDown(keyCode)
   }
 , getKeyDown: function(keyCode){
-    //frames are not backed up
-    return  (this.downAt(keyCode) > this.core.lastUpdate && this.downAt(keyCode) < this.core.lastUpdate + this.core.physicsTimeStep)
+    return this.core.lastUpdate <= this.downAt(keyCode)
+        && this.downAt(keyCode) <  this.core.nextUpdate
   }
 , getKeyUp: function(keyCode){
     //frames are not backed up
