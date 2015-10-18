@@ -1,0 +1,14 @@
+{
+	"name": "{{{name}}}",
+	"cells": [
+		{{#files}}
+	    {
+	        "x": {{x}},
+	        "y": {{y}},
+	        "w": {{width}},
+	        "h": {{height}},
+	        "name": "{{{name}}}"
+	    }{{^isLast}},{{/isLast}}
+	    {{/files}}
+    ]
+}
