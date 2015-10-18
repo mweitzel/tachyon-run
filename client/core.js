@@ -15,7 +15,7 @@ Core.prototype = {
     this.context.clearRect(0, 0, 640, 480)
 
     for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].draw(this.context)
+      this.entities[i].draw && this.entities[i].draw(this.context)
     }
   }
 , get nextUpdate() {
@@ -23,7 +23,7 @@ Core.prototype = {
   }
 , step: function() {
     for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].update()
+      this.entities[i].update && this.entities[i].update()
     }
     this.lastUpdate += this.physicsTimeStep
   }
