@@ -13,11 +13,14 @@ module.exports = function(page) {
 
 var builders = {
   '.js': function (page) {
-    return browserify({
+    var browserified = browserify({
       entries: page
     , debug: true
     , transform: brfs
-    }).bundle()
+    })
+    return process.env.MINIFY_JS
+      ? browserified.plugin('minifyify', {map: 'bundle.map.json', output: 'bundle.map.json'}).bundle()
+      : browserified.bundle()
   }
 , '.scss': function(page) {
     return sass.renderSync({ file: page }).css
