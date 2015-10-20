@@ -1,18 +1,17 @@
 var test = require('tape')
+  , td = require('testdouble')
   , Sprite = require('../../client/sprite')
   , CSprite = Sprite.bind(null
     , { frames: {
-          "john_3.png": {}
-        , "john_1.png": {}
-        , "john_2.png": {}
-        , "john_8.png": {}
-        , "john_9.png": {}
-        , "john_10.png": {}
-        , "larry.png": {}
+          "john_3.png": { frame: {} }
+        , "john_1.png": { frame: {} }
+        , "john_2.png": { frame: {} }
+        , "john_8.png": { frame: {} }
+        , "john_9.png": { frame: {} }
+        , "john_10.png": { frame: {} }
+        , "larry.png": { frame: { } }
         } }
-    , {
-      flower: { mspf: 17, loop: false }
-      }
+    , { larry: { fps: 12345, loop: false } }
     )
 
 test('Sprite', function(t) {
@@ -44,11 +43,11 @@ test('#getFrame is based off of start time and elapsed time', function(t) {
   var now = 0
   var s = new CSprite('john', now)
   var msPerFrame = s.mspf
-  t.equal(s.getFrame(0),          'john_1.png', 'with no elapsed time, first frame')
-  t.equal(s.getFrame(s.mspf - 1), 'john_1.png', 'same frame until enough time elapsed')
-  t.equal(s.getFrame(s.mspf),     'john_2.png', 'different frame once time elapses')
-  t.equal(s.getFrame(s.mspf*2),   'john_3.png', 'different frame once time elapses')
-  t.equal(s.getFrame(s.mspf*3-1), 'john_3.png', 'different frame once time elapses')
+  t.equal(s.getFrame(0).name,          'john_1.png', 'with no elapsed time, first frame')
+  t.equal(s.getFrame(s.mspf - 1).name, 'john_1.png', 'same frame until enough time elapsed')
+  t.equal(s.getFrame(s.mspf).name,     'john_2.png', 'different frame once time elapses')
+  t.equal(s.getFrame(s.mspf*2).name,   'john_3.png', 'different frame once time elapses')
+  t.equal(s.getFrame(s.mspf*3-1).name, 'john_3.png', 'different frame once time elapses')
 })
 
 test('#getFrame rolls around only when loop is true', function(t) {
@@ -56,7 +55,34 @@ test('#getFrame rolls around only when loop is true', function(t) {
   var s = new CSprite('john', 0)
   var fullCycleTime = s.frameNames.length * s.mspf
   s.loop = true
-  t.equal(s.getFrame(fullCycleTime + 1), 'john_1.png', 'rolls back around if loop')
+  t.equal(s.getFrame(fullCycleTime + 1).name, 'john_1.png', 'rolls back around if loop')
   s.loop = false
-  t.equal(s.getFrame(fullCycleTime + 1), 'john_10.png', 'stays at end if no loop')
+  t.equal(s.getFrame(fullCycleTime + 1).name, 'john_10.png', 'stays at end if no loop')
+})
+
+test('sprite meta data overrides default', function(t) {
+  t.plan(2)
+  var s = new CSprite('larry', 0)
+  t.equal(s.fps, 12345)
+  t.false(s.loop)
+})
+
+test('Sprite has method #draw which assumes "this" has a sprite object', function(t) {
+  t.plan(1)
+  var context = { drawImage: td.create() }
+    , gameObject = {
+        draw: Sprite.draw
+      , sprite: {
+          getFrame: td.create()
+        , atlas: { image: td.create() }
+        }
+      }
+    , xyhw = [1,2,3,4]
+  td.when(gameObject.sprite.getFrame()).thenReturn({data: xyhw})
+
+  gameObject.draw(context)
+
+  t.doesNotThrow(function() {
+    td.verify(context.drawImage())
+  })
 })

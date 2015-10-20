@@ -6,7 +6,7 @@ module.exports = Sprite
 function Sprite(atlas, meta, name, startTime) {
   this.startTime = firstDefined([startTime, now()])
   this.atlas = atlas
-  this.spriteData = meta
+  meta[name] && _.extend(this, meta[name])
   this.name = name
   this.frameNames = Object
     .keys(atlas.frames)
@@ -34,8 +34,13 @@ Sprite.prototype = {
 , get maxFrameIndex() {
     return this.totalFrames - 1
   }
-, getFrame: function(time) {
+, getFrameName: function(time) {
     return this.frameNames[this.frameIndex(time)]
+  }
+, getFrame: function(time) {
+    var name = this.getFrameName(time)
+    var data = this.atlas.frames[name].frame
+    return { name: name, data: [data.x, data.y, data.w, data.h] }
   }
 , frameIndex: function(time) {
     return this.loop
@@ -50,14 +55,27 @@ Sprite.prototype = {
   }
 }
 
-// context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-
 function firstDefined(arr) {
   for(var i = 0; i < arr.length; i++)
     if(arr[i] !== undefined)
       return arr[i]
 }
 
+Sprite.draw = function(ctx) {
+  var src_xywh = this.sprite.getFrame().data
+  ctx.drawImage(
+    this.sprite.atlas.image
+  , src_xywh[0]
+  , src_xywh[1]
+  , src_xywh[2]
+  , src_xywh[3]
+  , Math.round(this.x)
+  , Math.round(this.y)
+  , src_xywh[2]
+  , src_xywh[3]
+  )
+}
+
 function now() {
-  return new Date().getTime()
+  return Date.now()
 }
