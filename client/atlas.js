@@ -4,8 +4,15 @@ var format = require('../format-base64-for-html.js')
   , atlasIndex = require('./sprite-atlas-index.js')
 
 module.exports = {
-  image: new Image(data)
+  image: (function() {
+    var img = new Image()
+    img.src = data
+    return img
+  })()
 , index: atlasIndex
+, get frames() {
+    return this.index.frames
+  }
 , getFrameData: function(frameName) {
     return this.index.frames[frameName]
   }
