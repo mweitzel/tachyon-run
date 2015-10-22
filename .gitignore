@@ -1,3 +1,4 @@
 public/build/*
 local-env-vars.sh
 bundle.map.json
+media/atlas-1.*
