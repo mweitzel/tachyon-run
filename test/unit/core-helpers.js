@@ -1,8 +1,14 @@
 var td = require('testdouble')
+  , props = require('../../canvas-properties')
 
 module.exports = {
   mockCanvasContext: function() {
-    return { clearRect: td.create() }
+    return {
+      clearRect: td.create()
+    , setTransform: td.create()
+    , width: props.width
+    , height: props.height
+    }
   }
 , mockWindow: function() {
     var w = td.create()

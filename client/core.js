@@ -6,13 +6,25 @@ function Core(window, context) {
   this.lastUpdate = new Date().getTime()
   this.input = new Input(this)
   this.context = context
+  this.cameraCenter = { x: 0, y: 0 }
 }
 
 Core.prototype = {
   physicsTimeStep: 1000/60
 , entities: []
+, get cameraSize() {
+    return { x: this.context.width, y: this.context.height }
+  }
 , draw: function() {
-    this.context.clearRect(0, 0, 640, 480)
+    var translateDrawingsX = Math.floor(this.cameraCenter.x + (this.cameraSize.x/2))
+    var translateDrawingsY = Math.floor(this.cameraCenter.y + (this.cameraSize.y/2))
+    this.context.setTransform(1, 0, 0, 1, translateDrawingsX, translateDrawingsY)
+    this.context.clearRect(
+      -translateDrawingsX
+    , -translateDrawingsY
+    , this.context.width
+    , this.context.height
+    )
 
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw && this.entities[i].draw(this.context)
