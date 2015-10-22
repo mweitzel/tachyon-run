@@ -4,4 +4,6 @@ set -e
 
 test -f dev-env-vars.sh && source dev-env-vars.sh
 
+./bin/build-sprites
+
 exec ./bin/start-server
