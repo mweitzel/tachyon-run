@@ -1,7 +1,7 @@
 module.exports = {
   id: 'viewport'
-, width: '384px'
-, height: '216px'
+, width: 384
+, height: 216
 }
 
 /*
