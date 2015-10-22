@@ -2,4 +2,4 @@
 
 set -e
 
-node node_modules/gamefroot-texture-packer/index.js media/sprites/* -n media/atlas
+node node_modules/gamefroot-texture-packer/index.js media/sprites/*png -n media/atlas
