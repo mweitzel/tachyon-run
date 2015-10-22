@@ -6,7 +6,11 @@ var keys = require('./keys')
 
 module.exports = function(core) {
   core.entities.push(new MenuObject(core))
-  core.entities.push(new Dude())
+  core.entities.push(new Dude(10, 10))
+  core.entities.push(new Dude(50, 50))
+  core.entities.push(new Dude(-50, -50))
+  core.entities.push(new Dude(-50, 50))
+  core.entities.push(new Dude(50, -50))
 }
 
 function MenuObject(core) { this.core = core }
@@ -18,15 +22,17 @@ MenuObject.prototype = {
   }
 }
 
-function Dude() {
-    this.sprite = new Sprite('charles')
+function Dude(x, y) {
+  this.x = x
+  this.y = y
+  this.sprite = new Sprite('charles')
 }
 
 Dude.prototype = {
-  x: 100
-, y: 100
+  x: 0
+, y: 0
 , update: function() {
-    if(Math.random() < 0.99) { return }
+    if(Math.random() < 0.9) { return }
     Math.random() > 0.5
       ? this.x++
       : this.x--
