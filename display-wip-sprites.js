@@ -19,7 +19,7 @@ function displayQueue(queue, i) {
     .then(function(ansi) {
       console.log(twoHundredBlankLines + ansi)
       console.log('Current File:\n  ', fileName)
-      console.log('Command:\n  ', process.argv.join(' '))
+      console.log('Command:\n  ', process.argv.join(' \\\n    '))
       setTimeout(function(){
         displayQueue(queue, (i+1) % queue.length)
       }, 1000/fps)
