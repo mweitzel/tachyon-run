@@ -1,9 +1,6 @@
 var format = require('../format-base64-for-html')
 var keys = require('./keys')
-  , atlas = require('./atlas')
-  , spriteMeta = require('./sprite-meta-data')
-  , Sprite = require('./sprite').bind(null, atlas, spriteMeta)
-  , drawSprite = require('./sprite').draw
+  , Sprite = require('./sprite-preconfigured')
   , Cursor = require('./level-editor-cursor')
 
 
@@ -19,5 +16,5 @@ BlockA.prototype = {
   x: 0
 , y: 0
 , sprite: new Sprite('block_a')
-, draw: drawSprite
+, draw: Sprite.draw
 }
