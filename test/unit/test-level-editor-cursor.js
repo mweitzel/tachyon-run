@@ -40,5 +40,5 @@ test('z value is 1000, so it always displays on top', function(t){
 })
 
 function coreStub() {
-  return { input: { getKeyDown: td.create() }, cameraCenter: {} }
+  return { input: { getKeyDown: td.create(), getKey: td.create() }, cameraCenter: {} }
 }
