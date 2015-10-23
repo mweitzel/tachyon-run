@@ -25,6 +25,6 @@ test('core has a centerable camera on which draws are based, even if moved', fun
   t.doesNotThrow(function() {
     c.cameraCenter = { x: 1000, y: 1000 }
     c.draw()
-    td.verify(ctx.setTransform(1,0,0,1, 1000+192, 1000+108))
+    td.verify(ctx.setTransform(1,0,0,1, 192-1000, 108-1000))
   })
 })

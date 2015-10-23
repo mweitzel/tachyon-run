@@ -1,4 +1,8 @@
 var keys = require('./keys')
+  , atlas = require('./atlas')
+  , spriteMeta = require('./sprite-meta-data')
+  , Sprite = require('./sprite').bind(null, atlas, spriteMeta)
+  , drawSprite = require('./sprite').draw
 
 module.exports = Cursor
 
@@ -17,11 +21,9 @@ Cursor.prototype = {
     var pressed = this.core.input.getKeyDown.bind(this.core.input)
     if(pressed(keys.RIGHT)) { this.x += 16 }
     if(pressed(keys.LEFT))  { this.x -= 16 }
-    if(pressed(keys.UP))    { this.y += 16 }
-    if(pressed(keys.DOWN))  { this.y -= 16 }
+    if(pressed(keys.UP))    { this.y -= 16 }
+    if(pressed(keys.DOWN))  { this.y += 16 }
   }
-, draw: function(ctx) {
-    ctx.fillRect(20,20,10,10)
-    
-  }
+, sprite: new Sprite('highlight')
+, draw: drawSprite
 }

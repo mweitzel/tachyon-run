@@ -16,8 +16,8 @@ Core.prototype = {
     return { x: this.context.width, y: this.context.height }
   }
 , draw: function() {
-    var translateDrawingsX = Math.floor(this.cameraCenter.x + (this.cameraSize.x/2))
-    var translateDrawingsY = Math.floor(this.cameraCenter.y + (this.cameraSize.y/2))
+    var translateDrawingsX = Math.floor((this.cameraSize.x/2) - this.cameraCenter.x)
+    var translateDrawingsY = Math.floor((this.cameraSize.y/2) - this.cameraCenter.y)
     this.context.setTransform(1, 0, 0, 1, translateDrawingsX, translateDrawingsY)
     this.context.clearRect(
       -translateDrawingsX

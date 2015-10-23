@@ -21,7 +21,7 @@ test('arrow keys trigger position movements', function(t) {
 
   t.equals(c.y, 0)
   c.update()
-  t.equals(c.y, 16)
+  t.equals(c.y, -16)
 })
 
 test('when position changes, so does core.cameraCenter', function(t) {
