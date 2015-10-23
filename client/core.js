@@ -1,3 +1,4 @@
+var _ = require('lodash')
 module.exports = Core
 
 function Core(window, context) {
@@ -16,6 +17,7 @@ Core.prototype = {
     return { x: this.context.width, y: this.context.height }
   }
 , draw: function() {
+    this.entities = _.sortBy(this.entities, function(e) { return (e.z||0) })
     var translateDrawingsX = Math.floor((this.cameraSize.x/2) - this.cameraCenter.x)
     var translateDrawingsY = Math.floor((this.cameraSize.y/2) - this.cameraCenter.y)
     this.context.setTransform(1, 0, 0, 1, translateDrawingsX, translateDrawingsY)

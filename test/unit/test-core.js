@@ -46,6 +46,14 @@ test('#start leaves game unpaused', function(t) {
   c.stop()
 })
 
+test('#draw sorts entities by z axis (undefined z defaults to 0)', function(t) {
+  t.plan(1)
+  var c = new Core(help.mockWindow(), help.mockCanvasContext())
+  c.entities = [{ z: 10 }, { z: 9 }, { z: 11 }, { z: 8 }, {}, { z:-1}]
+  c.draw()
+  t.deepEqual(c.entities, [{ z:-1 }, {},  { z: 8 }, { z: 9 }, { z: 10 }, { z: 11 }])
+})
+
 function GameObject() { }
 GameObject.prototype.update = function() {}
 GameObject.prototype.draw = function() {}
