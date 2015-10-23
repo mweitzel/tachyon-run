@@ -24,6 +24,13 @@ Cursor.prototype = {
     if(pressed(keys.LEFT))  { this.x -= 16 }
     if(pressed(keys.UP))    { this.y -= 16 }
     if(pressed(keys.DOWN))  { this.y += 16 }
+    var isDown = this.core.input.getKey.bind(this.core.input)
+    if(isDown(keys.SHIFT)) {
+      if(isDown(keys.RIGHT)) { this.x += 16 }
+      if(isDown(keys.LEFT))  { this.x -= 16 }
+      if(isDown(keys.UP))    { this.y -= 16 }
+      if(isDown(keys.DOWN))  { this.y += 16 }
+    }
   }
 , sprite: new Sprite('highlight')
 , draw: drawSprite
