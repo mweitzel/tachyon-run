@@ -13,6 +13,7 @@ function Cursor(core) {
 Cursor.prototype = {
   __x: 0
 , __y: 0
+, get z() { return 1000 }
 , set x(x) { this.__x = x; this.core.cameraCenter.x = x }
 , set y(y) { this.__y = y; this.core.cameraCenter.y = y }
 , get x( ) { return this.__x }

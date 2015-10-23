@@ -33,6 +33,12 @@ test('when position changes, so does core.cameraCenter', function(t) {
   t.deepEquals(core.cameraCenter, { x: 20, y: 43 })
 })
 
+test('z value is 1000, so it always displays on top', function(t){
+  t.plan(1)
+  c = new Cursor()
+  t.equals(c.z, 1000)
+})
+
 function coreStub() {
   return { input: { getKeyDown: td.create() }, cameraCenter: {} }
 }
