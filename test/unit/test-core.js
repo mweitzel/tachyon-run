@@ -1,4 +1,5 @@
 var test = require('tape')
+    a = this
   , Core = require('../../client/core.js')
   , td = require('testdouble')
   , help = require('./core-helpers')
@@ -10,17 +11,17 @@ test('can instantiate engine instance', function(t) {
   t.ok(c.entities)
 })
 
-test('#step calls update on each entity', function(t) {
+test('#step calls update on each entity, core passed as arg', function(t) {
   t.plan(1)
-  var c = new Core(help.mockWindow(), help.mockCanvasContext())
+  var core = new Core(help.mockWindow(), help.mockCanvasContext())
   var go1 = td.create(GameObject)
   var go2 = td.create(GameObject)
-  c.entities.push(go1)
-  c.entities.push(go2)
-  c.step()
+  core.entities.push(go1)
+  core.entities.push(go2)
+  core.step()
   t.doesNotThrow(function() {
-    td.verify(go1.update())
-    td.verify(go2.update())
+    td.verify(go1.update(core))
+    td.verify(go2.update(core))
   })
 })
 
