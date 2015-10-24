@@ -18,13 +18,17 @@ Loader.prototype = {
     })
     setTimeout( // don't mutate array while core is iterating over it
       function(){
-        emptyArray(this.core.entities)
+        this.__prepCoreForNewScene()
         new scenes[sceneName](this.core)
         this.core.play()
         callback && callback()
       }.bind(this)
       , 0
     )
+  }
+, __prepCoreForNewScene: function(scenename) {
+    emptyArray(this.core.entities)
+    this.core.cameraCenter = { x: 0, y: 0 } // god knows what happens to this object
   }
 }
 

@@ -5,33 +5,35 @@ var keys = require('./keys')
   , spriteNames = getSpriteNames(Object.keys(atlasIndex.frames))
   , Cursor = require('./level-editor-cursor')
   , Preview = require('./level-editor-piece-previewer')
+  , delegate = require('../delegate-with-transform')
 
 
 module.exports = function(core) {
-  this.core = core
-  core.entities.push(new Cursor(core))
+  var cursor = new Cursor()
+  delegate(core.cameraCenter, cursor, 'x')
+  delegate(core.cameraCenter, cursor, 'y')
 
   // temporary, for visual reference
+  core.entities.push(cursor)
   core.entities.push(new BlockA())
 
-  var preview = this.preview = new Preview(makeSprites(spriteNames), core)
+  var preview = this.preview = new Preview(makeSprites(spriteNames))
   p = preview
   var cameraSize = core.cameraSize
   preview.follow(core.cameraCenter, -cameraSize.x/2, -cameraSize.y/2)
   core.entities.push(preview)
 
-  core.entities.push(new KeyController(core, preview))
+  core.entities.push(new KeyController(preview))
 }
 
-function KeyController(core, preview) {
-  this.core = core
+function KeyController(preview) {
   this.preview = preview
 }
 
 KeyController.prototype = {
-  update: function() {
-    if(this.core.input.getKeyDown(keys['['])) { this.preview.previous() }
-    if(this.core.input.getKeyDown(keys[']'])) { this.preview.next() }
+  update: function(core) {
+    if(core.input.getKeyDown(keys['['])) { this.preview.previous() }
+    if(core.input.getKeyDown(keys[']'])) { this.preview.next() }
   }
 }
 

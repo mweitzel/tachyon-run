@@ -7,7 +7,7 @@ var test = require('tape')
 test('adds cursor to the scene', function(t) {
   t.plan(1)
 
-  var core = { entities: { push: td.create() }, cameraSize: { x:10, y:10 } }
+  var core = { entities: { push: td.create() }, cameraSize: { x:10, y:10 }, cameraCenter: {}  }
   var editor = new Editor(core)
 
   t.doesNotThrow(function() {
@@ -18,7 +18,7 @@ test('adds cursor to the scene', function(t) {
 test('adds piece previewer to the scene', function(t) {
   t.plan(1)
 
-  var core = { entities: { push: td.create() }, cameraSize: { x:10, y:10 } }
+  var core = { entities: { push: td.create() }, cameraSize: { x:10, y:10 }, cameraCenter: {}  }
   var editor = new Editor(core)
 
   t.doesNotThrow(function() {

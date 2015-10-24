@@ -3,7 +3,7 @@ var keys = require('./keys')
   , Sprite = require('./sprite-preconfigured')
 
 module.exports = function(core) {
-  core.entities.push(new MenuObject(core))
+  core.entities.push(new MenuObject())
   core.entities.push(new Dude(10, 10))
   core.entities.push(new Dude(50, 50))
   core.entities.push(new Dude(-50, -50))
@@ -11,12 +11,12 @@ module.exports = function(core) {
   core.entities.push(new Dude(50, -50))
 }
 
-function MenuObject(core) { this.core = core }
+function MenuObject() { }
 
 MenuObject.prototype = {
-  update: function() {
-    if(this.core.input.getKeyDown(keys.ENTER))
-      this.core.sceneLoader.load('level-editor')
+  update: function(core) {
+    if(core.input.getKeyDown(keys.ENTER))
+      core.sceneLoader.load('level-editor')
   }
 }
 

@@ -3,7 +3,7 @@ var Sprite = require('./sprite-preconfigured')
 
 module.exports = Previewer
 
-function Previewer(sprites, core) {
+function Previewer(sprites) {
   this.__sprites = sprites
 }
 
