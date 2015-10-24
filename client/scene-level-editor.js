@@ -8,16 +8,33 @@ var keys = require('./keys')
 
 
 module.exports = function(core) {
+  this.core = core
   core.entities.push(new Cursor(core))
 
   // temporary, for visual reference
   core.entities.push(new BlockA())
 
-  var preview = new Preview(makeSprites(spriteNames), core)
+  var preview = this.preview = new Preview(makeSprites(spriteNames), core)
+  p = preview
   var cameraSize = core.cameraSize
   preview.follow(core.cameraCenter, -cameraSize.x/2, -cameraSize.y/2)
   core.entities.push(preview)
+
+  core.entities.push(new KeyController(core, preview))
 }
+
+function KeyController(core, preview) {
+  this.core = core
+  this.preview = preview
+}
+
+KeyController.prototype = {
+  update: function() {
+    if(this.core.input.getKeyDown(keys['['])) { this.preview.previous() }
+    if(this.core.input.getKeyDown(keys[']'])) { this.preview.next() }
+  }
+}
+
 
 function BlockA() { }
 BlockA.prototype = {
