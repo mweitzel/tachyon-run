@@ -6,6 +6,7 @@ module.exports = {
   }
 , images: {
     atlas: [ 'png', fs.readFileSync('media/atlas-1.png', 'base64') ]
+  , fontAtlas: [ 'png', fs.readFileSync('media/font/font-atlas.png', 'base64') ]
   }
 , text: {
     atlas: [ 'json', fs.readFileSync('media/atlas-1.json', 'ascii') ]
