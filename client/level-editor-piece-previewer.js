@@ -1,5 +1,6 @@
 var Sprite = require('./sprite-preconfigured')
   , delegate = require('../delegate-with-transform')
+  , StringSprite = require('./renderable-string')
 
 module.exports = Previewer
 
@@ -38,10 +39,27 @@ Previewer.prototype = {
 , update: function() {
 
   }
-, draw: Sprite.draw
-, follow: function(obj, offsetX, offsetY) {
-    
-    delegate(this, obj, 'x', function(x) { return x + offsetX })
-    delegate(this, obj, 'y', function(y) { return y + offsetY })
+, get currentStringSprite() {
+    if(this.__cachedStringSprite && this.__cachedStringSprite.string == this.active.name)
+      return this.__cachedStringSprite
+    else {
+      this.__cachedStringSprite = new StringSprite(this.active.name)
+      follow.call(this.__cachedStringSprite, this, this.currentSpriteWidth(), 0)
+    }
+    return this.__cachedStringSprite
   }
+, currentSpriteWidth: function() {
+    return this.active.getFrame().data[3] // [x,y,w,h]
+  }
+, draw: function(ctx) {
+    this.currentStringSprite.draw(ctx)
+    console.log(this.active.name)
+    Sprite.draw.call(this, ctx)
+  }
+, follow: follow
+}
+
+function follow(target, offsetX, offsetY) {
+  delegate(this, target, 'x', function(x) { return x + offsetX })
+  delegate(this, target, 'y', function(y) { return y + offsetY })
 }
