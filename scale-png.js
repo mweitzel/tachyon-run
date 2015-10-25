@@ -5,6 +5,14 @@ var fs = require('fs')
   , outFile = process.argv[3]
   , scaler = parseInt(process.argv[4])
 
+if(process.argv.length < 3 || process.argv.indexOf('--help') >= 0) {
+  console.log([
+    'Usage: (to scale by 10)'
+  , '  node scale-png infile.png outfile.png 10'
+  ].join('\n'))
+  process.exit()
+}
+
 fs.createReadStream(inFile)
   .pipe(new PNG({
       filterType: 4

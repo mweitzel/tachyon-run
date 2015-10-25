@@ -4,6 +4,14 @@ var fs = require('fs')
   , inFile = process.argv[2]
   , outFile = process.argv[3]
 
+if(process.argv.length < 3 || process.argv.indexOf('--help') >= 0) {
+  console.log([
+    'Usage:'
+  , '  node create-palette-from-png infile.png outfile.png'
+  ].join('\n'))
+  process.exit()
+}
+
 
 fs.createReadStream(inFile)
   .pipe(new PNG({
