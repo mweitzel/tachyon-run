@@ -6,34 +6,46 @@ var keys = require('./keys')
   , Cursor = require('./level-editor-cursor')
   , Preview = require('./level-editor-piece-previewer')
   , delegate = require('../delegate-with-transform')
+  , follow = require('./follow')
+  , Placer = require('./level-editor-piece-placer')
 
 
 module.exports = function(core) {
+  function add(obj) { core.entities.push(obj) }
+
   var cursor = new Cursor()
-  delegate(core.cameraCenter, cursor, 'x')
-  delegate(core.cameraCenter, cursor, 'y')
+  follow.call(core.cameraCenter, cursor)
+  add(cursor)
 
   // temporary, for visual reference
-  core.entities.push(cursor)
-  core.entities.push(new BlockA())
+  var block = new BlockA()
+  block.__isLevelPiece = true
+  add(block)
 
-  var preview = this.preview = new Preview(makeSprites(spriteNames))
-  p = preview
+  var spriteArray = makeSprites(spriteNames)
+  var preview = new Preview(spriteArray)
+  var placer = new Placer(spriteArray)
   var cameraSize = core.cameraSize
-  preview.follow(core.cameraCenter, -cameraSize.x/2, -cameraSize.y/2)
-  core.entities.push(preview)
+  follow.call(preview, core.cameraCenter, -cameraSize.x/2, -cameraSize.y/2)
+  add(preview)
 
-  core.entities.push(new KeyController(preview))
+  add(new KeyController(preview, cursor, placer))
 }
 
-function KeyController(preview) {
+function KeyController(preview, cursor, placer) {
   this.preview = preview
+  this.cursor = cursor
+  this.placer = placer
 }
 
 KeyController.prototype = {
   update: function(core) {
-    if(core.input.getKeyDown(keys['['])) { this.preview.previous() }
-    if(core.input.getKeyDown(keys[']'])) { this.preview.next() }
+    var down = core.input.getKeyDown.bind(core.input)
+    if(down(keys['['])) { this.preview.previous() }
+    if(down(keys[']'])) { this.preview.next() }
+    if(down(keys.V)) {
+      this.placer.addPiece(core.entities, this.cursor, this.preview.active.name)
+    }
   }
 }
 
