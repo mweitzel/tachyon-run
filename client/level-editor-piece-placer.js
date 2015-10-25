@@ -9,14 +9,17 @@ function PiecePlacer(sprites) {
 
 PiecePlacer.prototype = {
   addPiece: function(coreEntities, cursor, name) {
+    this.removeFromCoords(coreEntities, cursor.x, cursor.y)
+    coreEntities.push(this.__createGameObject(name, cursor.x, cursor.y))
+  }
+, removeFromCoords: function(coreEntities, x, y) {
     _.remove(coreEntities, function(gameObject) {
       return (
         gameObject.__isLevelPiece &&
-        gameObject.x === cursor.x &&
-        gameObject.y === cursor.y
+        gameObject.x === x &&
+        gameObject.y === y
       )
     })
-    coreEntities.push(this.__createGameObject(name, cursor.x, cursor.y))
   }
 , __createGameObject: function(name, x, y) {
     var sprite = _.find(this.__sprites, { name: name })

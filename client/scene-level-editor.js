@@ -46,6 +46,9 @@ KeyController.prototype = {
     if(down(keys.V)) {
       this.placer.addPiece(core.entities, this.cursor, this.preview.active.name)
     }
+    if(down(keys.D)) {
+      this.placer.removeFromCoords(core.entities, this.cursor.x, this.cursor.y)
+    }
   }
 }
 
