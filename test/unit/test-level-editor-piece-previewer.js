@@ -22,21 +22,8 @@ test('active returns current sprite', function(t) {
   t.equal(preview.active, 'c')
 })
 
-test('can follow object with x and y', function(t) {
-  t.plan(4)
-  var preview = new Previewer()
-  var cameraCenter = { x: 20, y: 30 }
-  var offsetX = 100
-  var offsetY = 200
-
-  preview.follow(cameraCenter, offsetX, offsetY)
-
-  t.equal(preview.x, 120)
-  t.equal(preview.y, 230)
-
-  cameraCenter.x = 500
-  cameraCenter.y = 300
-
-  t.equal(preview.x, 600)
-  t.equal(preview.y, 500)
+test('z value is 1000, so it always displays on top', function(t){
+  t.plan(1)
+  c = new Previewer()
+  t.equals(c.z, 1000)
 })

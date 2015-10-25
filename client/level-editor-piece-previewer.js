@@ -1,6 +1,6 @@
 var Sprite = require('./sprite-preconfigured')
-  , delegate = require('../delegate-with-transform')
   , StringSprite = require('./renderable-string')
+  , follow = require('./follow')
 
 module.exports = Previewer
 
@@ -14,6 +14,7 @@ Previewer.prototype = {
   __index: 0
 , x: -50
 , y: -50
+, z: 1000
 , get active() {
     return this.filteredSprites[this.__index % this.filteredSprites.length]
   }
@@ -53,13 +54,7 @@ Previewer.prototype = {
   }
 , draw: function(ctx) {
     this.currentStringSprite.draw(ctx)
-    console.log(this.active.name)
     Sprite.draw.call(this, ctx)
   }
-, follow: follow
 }
 
-function follow(target, offsetX, offsetY) {
-  delegate(this, target, 'x', function(x) { return x + offsetX })
-  delegate(this, target, 'y', function(y) { return y + offsetY })
-}
