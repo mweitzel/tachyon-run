@@ -17,11 +17,6 @@ module.exports = function(core) {
   follow.call(core.cameraCenter, cursor)
   add(cursor)
 
-  // temporary, for visual reference
-  var block = new BlockA()
-  block.__isLevelPiece = true
-  add(block)
-
   var spriteArray = makeSprites(spriteNames)
   var preview = new Preview(spriteArray)
   var placer = new Placer(spriteArray)
@@ -43,10 +38,10 @@ KeyController.prototype = {
     var down = core.input.getKeyDown.bind(core.input)
     if(down(keys['['])) { this.preview.previous() }
     if(down(keys[']'])) { this.preview.next() }
-    if(down(keys.V)) {
+    if(core.input.getKey(keys.V)) {
       this.placer.addPiece(core.entities, this.cursor, this.preview.active.name)
     }
-    if(down(keys.D)) {
+    if(core.input.getKey(keys.D)) {
       this.placer.removeFromCoords(core.entities, this.cursor.x, this.cursor.y)
     }
   }
