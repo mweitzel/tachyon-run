@@ -8,13 +8,12 @@ function Previewer(sprites) {
   this.__sprites = sprites
 }
 
-
 Previewer.prototype = {
-
   __index: 0
-, x: -50
-, y: -50
+, x: 0
+, y: 0
 , z: 1000
+, layers: []
 , get active() {
     return this.filteredSprites[this.__index % this.filteredSprites.length]
   }
