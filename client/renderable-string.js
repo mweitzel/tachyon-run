@@ -4,26 +4,32 @@ var charData = require('../media/font/font-atlas')
   , charSprites = chars.map(function(char) { return new CharSprite(char) })
   , delegate = require('../delegate-with-transform')
   , badCharacterSpriteIndex = chars.indexOf("\nbad")
+  , _ = require('lodash')
 
 c = charData
 module.exports = CanvasString
 
 function CanvasString(string) {
   this.string = string
-  this.chars = string.split("").map(function(char, i) {
-    var index = chars.indexOf(char)
-    index = index >= 0 ? index : badCharacterSpriteIndex
-    var charObj = {
-      sprite: charSprites[index]
-    , char: char
-    , i: i
-    , draw: CharSprite.draw
-    , xOffset: (8 * i)
-    }
-    delegate(charObj, this, 'x', function(x) { return charObj.xOffset + x })
-    delegate(charObj, this, 'y')
-    return charObj
-  }.bind(this))
+  this.chars = _.flatten(
+    string.split('\n').map(function(line, h) {
+      return line.split("").map(function(char, i) {
+        var index = chars.indexOf(char)
+        index = index >= 0 ? index : badCharacterSpriteIndex
+        var charObj = {
+          sprite: charSprites[index]
+        , char: char
+        , i: i
+        , draw: CharSprite.draw
+        , xOffset: (8 * i)
+        , yOffset: (16* h)
+        }
+        delegate(charObj, this, 'x', function(x){ return charObj.xOffset + x })
+        delegate(charObj, this, 'y', function(y){ return charObj.yOffset + y })
+        return charObj
+      }.bind(this))
+    }.bind(this))
+  )
 }
 
 CanvasString.prototype = {
