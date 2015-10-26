@@ -1,6 +1,5 @@
 var scenes = {
   'menu': require('./scene-menu')
-, 'drift': require('./scene-drift')
 , 'level-editor': require('./scene-level-editor')
 }
 
