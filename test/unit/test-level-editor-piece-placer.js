@@ -43,6 +43,20 @@ test('does not remove non __isLevelPiece pieces from same x y when placing', fun
   t.equal(coreEntities[1].sprite.name, 'foo')
 })
 
+test('does not remove __isLevelPiece pieces from same x y but different layer', function(t) {
+  t.plan(3)
+  var coreEntities = [{x: 0, y: 0, layer: 'background', __isLevelPiece: true, sprite: { name: 'background-piece' }}]
+  var cursor = { x: 0, y: 0 }
+  var sprites = [ { name: 'foo' }, { name: 'bar'} ]
+
+  var placer = new Placer(sprites)
+  placer.addPiece(coreEntities, cursor, 'foo', 'foreground')
+
+  t.equal(coreEntities.length, 2)
+  t.equal(coreEntities[0].sprite.name, 'background-piece')
+  t.equal(coreEntities[1].sprite.name, 'foo')
+})
+
 test('can remove piece given x and y', function(t) {
   t.plan(1)
   var coreEntities = [{x: 0, y: 0, __isLevelPiece: true, sprite: { name: 'other-sprite' }}]
