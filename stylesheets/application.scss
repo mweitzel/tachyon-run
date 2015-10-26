@@ -3,14 +3,14 @@ body { margin: 0px; }
 
 .canvas-container {
   background: grey;
-  padding: 1em
+  padding: 0.25em
 }
 canvas {
   background: white;
   display: table;
   margin: auto;
-  width: 384 * 2;
-  height: 216 * 2;
+  width: 384 * 3;
+  height: 216 * 3;
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
