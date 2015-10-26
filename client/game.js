@@ -7,5 +7,5 @@ module.exports = function(canvasElement) {
   ctx.height = canvasElement.height
   var core = new Core(this, ctx)
   core.sceneLoader = new SceneLoader(core)
-  core.sceneLoader.load('menu')
+  core.sceneLoader.load('level-editor')
 }
