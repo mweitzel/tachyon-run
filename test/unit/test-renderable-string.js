@@ -32,3 +32,11 @@ test('newlines are considered', function(t) {
   t.equal(string.chars[1].y, 16)
   t.equal(string.chars[6].y, 32)
 })
+
+test('height derived from newlines in string', function(t) {
+  t.plan(2)
+  var string = new Rstring('no newlines')
+  t.equal(string.height, 16)
+  var string = new Rstring('one \n newline')
+  t.equal(string.height, 32)
+})
