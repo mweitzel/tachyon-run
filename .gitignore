@@ -3,3 +3,4 @@ local-env-vars.sh
 bundle.map.json
 media/atlas-1.*
 *.piko
+*.piko-png
