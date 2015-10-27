@@ -1,10 +1,6 @@
 var _ = require('lodash')
   , drawSprite = require('./sprite').draw
-  , zIndicesForLayers = {
-      background: -100
-    , ground: 0
-    , foreground: 100
-    }
+  , zLayers = require('./layer-z-defaults')
 
 module.exports = PiecePlacer
 
@@ -29,17 +25,18 @@ PiecePlacer.prototype = {
   }
 , __createGameObject: function(layer, name, x, y) {
     var sprite = _.find(this.__sprites, { name: name })
-    return new LevelEditorGameObject(layer, sprite, x, y)
+    return new LevelEditorGameObject({
+      layer: layer
+    , sprite: sprite
+    , x: x, y: y
+    , name: name
+    })
   }
 }
 
-function LevelEditorGameObject(layer, sprite, x, y) {
-  this.sprite = sprite
-  this.layer = layer
-  this.name = sprite.name
-  this.x = x
-  this.y = y
-  this.z = zIndicesForLayers[layer]
+function LevelEditorGameObject(attrs) {
+  _.merge(this, attrs)
+  this.z = zLayers[this.layer]
   this.__isLevelPiece = true
 }
 

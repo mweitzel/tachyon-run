@@ -2,6 +2,7 @@ var test = require('tape')
   , Cursor = require('../../client/level-editor-cursor')
   , td = require('testdouble')
   , keys = require('../../client/keys')
+  , zLayers = require('../../client/layer-z-defaults')
 
 test('arrow keys trigger position movements', function(t) {
   t.plan(4)
@@ -23,22 +24,11 @@ test('arrow keys trigger position movements', function(t) {
   c.update(core)
   t.equals(c.y, -16)
 })
-/*
-test('when position changes, so does core.cameraCenter', function(t) {
-  t.plan(2)
-  var core = coreStub()
-  c = new Cursor()
-  c.x = 20
-  c.y = 43
-  t.equals(core.cameraCenter.x, 20)
-  t.equals(core.cameraCenter.y, 43)
-})
-*/
 
-test('z value is 1000, so it always displays on top', function(t){
+test('z value is gui, so it always displays on top of game objects', function(t){
   t.plan(1)
   c = new Cursor()
-  t.equals(c.z, 1000)
+  t.equals(c.z, zLayers.gui)
 })
 
 function coreStub() {

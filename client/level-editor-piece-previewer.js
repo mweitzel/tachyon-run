@@ -1,6 +1,7 @@
 var Sprite = require('./sprite-preconfigured')
   , StringSprite = require('./renderable-string')
   , follow = require('./follow')
+  , zLayers = require('./layer-z-defaults')
 
 module.exports = Previewer
 
@@ -12,7 +13,7 @@ Previewer.prototype = {
   __index: 0
 , x: 0
 , y: 0
-, z: 1000
+, z: zLayers.gui
 , layers: []
 , get active() {
     return this.filteredSprites[this.__index % this.filteredSprites.length]

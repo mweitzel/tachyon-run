@@ -3,6 +3,7 @@ var keys = require('./keys')
   , spriteMeta = require('./sprite-meta-data')
   , Sprite = require('./sprite').bind(null, atlas, spriteMeta)
   , drawSprite = require('./sprite').draw
+  , zLayers = require('./layer-z-defaults')
 
 module.exports = Cursor
 
@@ -12,7 +13,7 @@ function Cursor() {
 Cursor.prototype = {
   x: 0
 , y: 0
-, get z() { return 1000 }
+, get z() { return zLayers.gui }
 , update: function(core) {
     var pressed = core.input.getKeyDown.bind(core.input)
     if(pressed(keys.RIGHT)) { this.x += 16 }
