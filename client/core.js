@@ -81,8 +81,8 @@ Core.prototype = {
 
 function Input(core) {
   this.core = core
-  this.keyCodesDown = []
-  this.keyCodesUp = []
+  this.keyCodesDown = new Array(256).fill(0)
+  this.keyCodesUp = new Array(256).fill(0)
 
   function keyDown(event){
     // doesn't catch bs refires of the keypres..sssssssss!
