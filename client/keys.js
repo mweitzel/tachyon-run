@@ -7,6 +7,7 @@ module.exports = {
 , ALT: 18
 , BREAK: 19
 , CAPS: 20
+, ESCAPE: 27
 , SPACE: 32
 , PG_UP: 33
 , PG_DOWN: 34
@@ -31,6 +32,7 @@ module.exports = {
 , 9: 57
 , '[': 219
 , ']': 221
+, '/': 191
 , A: 65
 , B: 66
 , C: 67
