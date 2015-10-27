@@ -27,6 +27,7 @@ Core.prototype = {
     , this.context.width
     , this.context.height
     )
+    this.context.origin = [-translateDrawingsX, -translateDrawingsY]
 
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw && this.entities[i].draw(this.context)
