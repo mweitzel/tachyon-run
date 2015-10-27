@@ -26,6 +26,10 @@ test('serializes blocks from a level', function(t) {
     , sprite: sprites[1]
     , draw: draw
     , x: 5, y: 6 }
+  , { __isLevelPiece: true
+    , layer: 'meta'
+    , name: 'bastion'
+    , background: '#000' }
   , { name: 'banana'
     , x: 7, y: 8 }
   ]
@@ -35,11 +39,15 @@ test('serializes blocks from a level', function(t) {
 
   t.deepEqual(
     JSON.parse(serialized)
-  , { ground: { block_a: [[1,2],[3,4]], block_b: [[5,6]] } }
+  , { ground: { block_a: [[1,2],[3,4]], block_b: [[5,6]] }
+    , meta: { background: '#000', name: 'bastion' }
+    }
   )
 
   t.deepEqual(
-    saver.parse(serialized)
-  , _(levelPieces).reject({name:'banana'}).value()
+    _.sortBy( saver.parse(serialized)                       , byXYName)
+  , _.sortBy( _(levelPieces).reject({name:'banana'}).value(), byXYName)
   )
+
+  function byXYName(obj) { return [obj.x, obj.y, obj.name].join('-') }
 })

@@ -1,9 +1,10 @@
 var _ = require('lodash')
   , drawSprite = require('./sprite').draw
-  , savedAttrs = [
+  , groundPieceSavedAttrs = [
       'x'
     , 'y'
     ]
+
 
 module.exports = Saver
 
@@ -25,17 +26,31 @@ Saver.prototype = {
 , clear: function(entities) {
     _.remove(entities, function(piece) { return piece.__isLevelPiece })
   }
+, __findMetaEntities: function(entities) {
+    return _.find(entities, { layer: 'meta' })
+  }
+, __rejectMetaEntities: function(entities) {
+    return _.reject(entities, { layer: 'meta' })
+  }
+, __filterToLevelPieces: function(entities) {
+    return _.filter(entities, { __isLevelPiece: true })
+  }
 , serialize: function(entities) {
     var saveObject = {}
 
-    var toSave = _.filter(entities, { __isLevelPiece: true })
-    var layers = _.map(_.unique(toSave, 'layer'), 'layer')
-    var objNames = _.pluck(toSave, 'name')
+    var saveable = this.__filterToLevelPieces(entities)
+    var meta = this.__findMetaEntities(saveable)
+    saveObject.meta = this.__serializeMetaObj(meta)
+
+
+    var blocks = this.__rejectMetaEntities(saveable)
+    var layers = _.map(_.unique(blocks, 'layer'), 'layer')
+    var objNames = _.pluck(blocks, 'name')
 
     _.each(layers, function(layer) {
       var layerSaveObj = {}
       _.each(objNames, function(name) {
-        layerSaveObj[name] = _.chain(toSave)
+        layerSaveObj[name] = _.chain(blocks)
           .where({ name: name, layer: layer })
           .map(this.__objToAttrArray)
           .value()
@@ -45,9 +60,18 @@ Saver.prototype = {
 
     return JSON.stringify(saveObject)
   }
+, __serializeMetaObj: function(metaObj) {
+    return {
+      name: metaObj.name
+    , background: metaObj.background
+    }
+  }
+, __instanciateMetaObj: function(serializedMeta) {
+    return _.merge({ __isLevelPiece: true, layer: 'meta' }, serializedMeta)
+  }
 , __objToAttrArray: function(obj) {
     var returnObj = []
-    _.each(savedAttrs, function(attr) {
+    _.each(groundPieceSavedAttrs, function(attr) {
       returnObj.push(obj[attr])
     })
     return returnObj
@@ -55,14 +79,17 @@ Saver.prototype = {
 , __arrayToAttrObj: function(arr) {
     var returnObj = {}
     _.each(arr, function(attr, i) {
-      returnObj[savedAttrs[i]] = attr
+      returnObj[groundPieceSavedAttrs[i]] = attr
     })
     return returnObj
   }
 , parse: function(json) {
     var entities = []
     var serialized = JSON.parse(json)
-    var layers = _.keys(serialized)
+
+    entities.push(this.__instanciateMetaObj(serialized.meta))
+
+    var layers = _.without(_.keys(serialized), 'meta')
     _.forEach(layers, function(layer) {
       var objNames = _.keys(serialized[layer])
       _.forEach(objNames, function(name) {
