@@ -8,11 +8,15 @@ function Core(window, context) {
   this.input = new Input(this)
   this.context = context
   this.cameraCenter = { x: 0, y: 0 }
+  this.entities = []
+  this.priorityStack = []
 }
 
 Core.prototype = {
   physicsTimeStep: 1000/60
-, entities: []
+, removeEntity: function(obj) {
+    _.remove(this.entities, obj)
+  }
 , get cameraSize() {
     return { x: this.context.width, y: this.context.height }
   }
@@ -37,8 +41,13 @@ Core.prototype = {
     return this.lastUpdate + this.physicsTimeStep
   }
 , step: function() {
-    for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].update && this.entities[i].update(this)
+    if(this.priorityStack.length > 0) {
+      _.last(this.priorityStack).update && _.last(this.priorityStack).update(this)
+    }
+    else {
+      for (var i=0; i < this.entities.length; i++) {
+        this.entities[i].update && this.entities[i].update(this)
+      }
     }
     this.lastUpdate += this.physicsTimeStep
   }
@@ -82,8 +91,8 @@ Core.prototype = {
 
 function Input(core) {
   this.core = core
-  this.keyCodesDown = new Array(256).fill(0)
-  this.keyCodesUp = new Array(256).fill(0)
+  this.keyCodesDown = _.fill(new Array(256), 0)
+  this.keyCodesUp = _.fill(new Array(256), 0)
 
   function keyDown(event){
     // doesn't catch bs refires of the keypres..sssssssss!
