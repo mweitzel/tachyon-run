@@ -1,6 +1,3 @@
-var follow = require('./follow')
-  , _ = require('lodash')
-
 module.exports = BackgroundObj
 
 function BackgroundObj(backgroundString) {
@@ -20,7 +17,6 @@ BackgroundObj.prototype = {
   }
 , z: -1000
 , update: function(core) {
-//    if(typeof this.x != 'number') { follow.call(this, core.cameraCenter)}
   }
 }
 
@@ -29,7 +25,7 @@ function drawColor(ctx) {
   var storedFillStyle = ctx.fillStyle
 
   ctx.fillStyle = this.backgroundString
-  ctx.fillRect(2 * ctx.origin[0], 2 * ctx.origin[1], ctx.width * 2, ctx.height * 4)
+  ctx.fillRect(ctx.origin[0], ctx.origin[1], ctx.width, ctx.height)
 
   ctx.fillStyle = storedFillStyle
 }
