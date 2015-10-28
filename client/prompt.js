@@ -1,36 +1,73 @@
 var zIndex = require('./layer-z-defaults').prompt
   , _ = require('lodash')
   , keys = require('./keys')
+  , Rstring = require('./renderable-string')
+  , follow = require('./follow')
+  , delegate = require('../delegate-with-transform')
 
 module.exports = Prompt
 
-function Prompt(text, submitCB, cancelCB) {
+function Prompt(text, submitCB, cancelCB, alwaysCB) {
+  this.x = 0
+  this.y = 0
   this.promptText = text
   this.submitCB = submitCB
   this.cancelCB = cancelCB
+  this.alwaysCB = alwaysCB
+  this.rstring = new Rstring('')
+  this.updatePromptText()
 }
 
 Prompt.prototype = {
   z: zIndex
 , enteredText: ''
+, x: 0
+, y: 0
 , submit: function() {
-    this.submitCB(this.enteredText)
+    this.submitCB && this.submitCB(this.enteredText)
+    this.alwaysCB && this.alwaysCB(this.enteredText)
   }
-, cancel: function() { this.cancelCB() }
+, cancel: function() {
+    this.cancelCB && this.cancelCB(this.enteredText)
+    this.alwaysCB && this.alwaysCB(this.enteredText)
+  }
 , update: function(core) {
-    if(core.input.getKeyDown(keys.ESCAPE)) { return this.cancelCB() }
-    if(core.input.getKeyDown(keys.ENTER)) { return this.submitCB(this.enteredText) }
-  // screen for esc and enter
-    var shift = core.input.getKeyDown(keys.SHIFT)
+    if(core.input.getKeyDown(keys.ESCAPE)) { return this.cancel() }
+    if(core.input.getKeyDown(keys.ENTER)) { return this.submit() }
+    if(core.input.getKeyDown(keys.BACKSPACE)) {
+      this.enteredText = this.enteredText.slice(0,-1)
+      this.updatePromptText()
+    }
     var downHistory = core.input.keyCodesDown
     var keysPressedThisFrame = _.sortBy(
       _.filter(_.keys(downHistory), pressedThisFrame.bind(null, core))
     , function(keyCode){ return downHistory[keyCode] }
     )
-    _.forEach(keysPressedThisFrame, function(keyCode) {
+    var newChars = this.__getTextFromKeyCodesIfPresent(
+      keysPressedThisFrame
+    , core.input.getKeyDown(keys.SHIFT)
+    )
+    if(newChars.length > 0) {
+      this.enteredText += newChars
+      this.updatePromptText()
+    }
+  }
+, __getTextFromKeyCodesIfPresent: function(keyCodesInOrderOfPressing, capitalize) {
+    var collectedChars = ''
+    _.forEach(keyCodesInOrderOfPressing, function(keyCode) {
       var char = _.findKey(keys , function(value) { return value == keyCode } )
-      this.enteredText += shift ? char.toUpperCase() : char.toLowerCase()
+      char = char === 'SPACE' ? ' ' : char
+      if(typeof char !== 'string' || ( char.length !== 1 )) { return }
+      collectedChars += capitalize ? char.toUpperCase() : char.toLowerCase()
     }.bind(this))
+    return collectedChars
+  }
+, updatePromptText: function() {
+    follow.call(this.rstring, this)
+    this.rstring.string = [this.promptText, this.enteredText].join('\n')
+  }
+, draw: function(ctx) {
+    this.rstring.draw(ctx)
   }
 }
 
