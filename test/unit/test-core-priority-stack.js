@@ -1,6 +1,7 @@
 var test = require('tape')
   , td = require('testdouble')
   , Core = require('../../client/core')
+  , helper = require('./core-helpers')
 
 test('if non empty, only priority stack will recieve update calls', function(t) {
   t.plan(2)
@@ -36,5 +37,25 @@ test('if multiple, only top of is called', function(t) {
   })
   t.doesNotThrow(function() {
     td.verify(priorityObj2.update(core))
+  })
+})
+
+test('priority entities recieve draw calls', function(t) {
+  t.plan(1)
+  var core = new Core(
+    { document: {addEventListener:function(){}} }
+  , helper.mockCanvasContext()
+  )
+  var priorityObj1 = { draw: td.create() }
+  var priorityObj2 = { draw: td.create() }
+
+  core.priorityStack.push(priorityObj1)
+  core.priorityStack.push(priorityObj2)
+
+  core.draw()
+
+  t.doesNotThrow(function() {
+    td.verify(priorityObj2.draw(core.context))
+    td.verify(priorityObj2.draw(core.context))
   })
 })

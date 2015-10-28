@@ -36,6 +36,9 @@ Core.prototype = {
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw && this.entities[i].draw(this.context)
     }
+    for (var i=0; i < this.priorityStack.length; i++) {
+      this.priorityStack[i].draw && this.priorityStack[i].draw(this.context)
+    }
   }
 , get nextUpdate() {
     return this.lastUpdate + this.physicsTimeStep
