@@ -17,6 +17,9 @@ Core.prototype = {
 , removeEntity: function(obj) {
     _.remove(this.entities, obj)
   }
+, removePriorityObj: function(obj) {
+    _.remove(this.priorityStack, obj)
+  }
 , get cameraSize() {
     return { x: this.context.width, y: this.context.height }
   }
