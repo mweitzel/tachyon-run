@@ -22,3 +22,13 @@ test('delegates with transform if provided', function(t) {
 })
 
 test('delegate setting with and without provided transform')
+
+test.only('can set it twice on the same object', function(t) {
+  t.plan(1)
+  var a = {}
+    , b = {}
+  t.doesNotThrow(function() {
+    delegate(a, b, 'x')
+    delegate(a, b, 'x')
+  })
+})

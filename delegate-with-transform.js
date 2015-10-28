@@ -6,5 +6,6 @@ module.exports = function(delegator, delegatee, jobName, getTransform) {
       }
       return delegatee[jobName]
     }
+    , configurable: true
   })
 }
