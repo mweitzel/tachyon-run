@@ -101,6 +101,10 @@ function Input(core) {
   this.keyCodesUp = _.fill(new Array(256), 0)
 
   function keyDown(event){
+    if(event.keyCode == 8) { //backspace
+      event.preventDefault()
+      event.stopPropagation()
+    }
     // doesn't catch bs refires of the keypres..sssssssss!
     if(this.downAt(event.keyCode) <= this.upAt(event.keyCode))
       this.keyCodesDown[event.keyCode] = event.timeStamp
