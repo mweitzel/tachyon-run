@@ -3,6 +3,7 @@ var _ = require('lodash')
   , groundPieceSavedAttrs = [
       'x'
     , 'y'
+    , 'script'
     ]
 
 
@@ -48,6 +49,7 @@ Saver.prototype = {
     var objNames = _.pluck(blocks, 'name')
 
     _.each(layers, function(layer) {
+      var objNames = _.pluck(_.where(blocks, {layer: layer}), 'name')
       var layerSaveObj = {}
       _.each(objNames, function(name) {
         layerSaveObj[name] = _.chain(blocks)
@@ -72,7 +74,8 @@ Saver.prototype = {
 , __objToAttrArray: function(obj) {
     var returnObj = []
     _.each(groundPieceSavedAttrs, function(attr) {
-      returnObj.push(obj[attr])
+      if(obj[attr])
+        returnObj.push(obj[attr])
     })
     return returnObj
   }

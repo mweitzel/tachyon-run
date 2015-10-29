@@ -5,7 +5,7 @@ var test = require('tape')
 
 test('serializes blocks from a level', function(t) {
   t.plan(2)
-  var sprites = [ { name: 'block_a' }, { name: 'block_b' } ]
+  var sprites = [ { name: 'block_a' }, { name: 'block_b' } , { name: 'token_door' } ]
   var saver = new Saver(sprites)
   var levelPieces = [
     { __isLevelPiece: true
@@ -27,11 +27,18 @@ test('serializes blocks from a level', function(t) {
     , draw: draw
     , x: 5, y: 6 }
   , { __isLevelPiece: true
+    , layer: 'script'
+    , name: 'token_door'
+    , script: 'whatever istructions'
+    , sprite: sprites[2]
+    , draw: draw
+    , x: 7, y: 8 }
+  , { __isLevelPiece: true
     , layer: 'meta'
     , name: 'bastion'
     , background: '#000' }
   , { name: 'banana'
-    , x: 7, y: 8 }
+    , x: 8, y: 9 }
   ]
 
 
@@ -40,6 +47,7 @@ test('serializes blocks from a level', function(t) {
   t.deepEqual(
     JSON.parse(serialized)
   , { ground: { block_a: [[1,2],[3,4]], block_b: [[5,6]] }
+    , script: { token_door: [ [ 7, 8, 'whatever istructions' ] ] }
     , meta: { background: '#000', name: 'bastion' }
     }
   )
