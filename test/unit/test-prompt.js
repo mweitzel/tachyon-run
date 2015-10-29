@@ -45,6 +45,7 @@ test('enter triggers submit', function(t) {
   var prompt = new Prompt('whats up?', t.pass.bind(t), t.fail.bind(t))
   var core = stubCore()
   core.input.getKeyDown = function(keyCode) { if(keyCode == keys.ENTER) return true }
+  core.input.getKey = function() { }
   prompt.update(core)
 })
 
@@ -53,6 +54,7 @@ test('escape triggets cancel', function(t) {
   var prompt = new Prompt('whats up?', t.fail.bind(t), t.pass.bind(t))
   var core = stubCore()
   core.input.getKeyDown = function(keyCode) { if(keyCode == keys.ESCAPE) return true }
+  core.input.getKey = function() { }
   prompt.update(core)
 })
 
