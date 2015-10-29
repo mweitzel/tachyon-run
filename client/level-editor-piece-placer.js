@@ -11,7 +11,9 @@ function PiecePlacer(sprites) {
 PiecePlacer.prototype = {
   addPiece: function(coreEntities, cursor, name, layer) {
     this.removeFromCoords(coreEntities, cursor.x, cursor.y, layer)
-    coreEntities.push(this.__createGameObject(layer, name, cursor.x, cursor.y))
+    var piece = this.__createGameObject(layer, name, cursor.x, cursor.y)
+    coreEntities.push(piece)
+    return piece
   }
 , removeFromCoords: function(coreEntities, x, y, layer) {
     _.remove(coreEntities, function(gameObject) {

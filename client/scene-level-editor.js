@@ -67,9 +67,10 @@ KeyController.prototype = {
       ? new Prompt(core, 'filter tiles:', function(response) { this.preview.filter = response }.bind(this))
       : new Prompt(core, 'command:', this.handler.bind(null, core))
     }
-    if(down(keys.F)) { while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
-    if(down(keys.G)) { while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
-    if(down(keys.B)) { while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
+    var clrFilter = function() { if(this.layerSelector.layer == 'script'){this.preview.filter = ''} }.bind(this)
+    if(down(keys.F)) { clrFilter(); while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
+    if(down(keys.G)) { clrFilter(); while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
+    if(down(keys.B)) { clrFilter(); while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
     if(down(keys.S)) {
       this.preview.filter = 'token'
       while(this.layerSelector.layer != 'script') { this.layerSelector.nextLayer() }
@@ -77,12 +78,24 @@ KeyController.prototype = {
     if(down(keys['['])) { this.preview.previous() }
     if(down(keys[']'])) { this.preview.next() }
     if(core.input.getKey(keys.V)) {
-      this.placer.addPiece(
-        core.entities
-      , this.cursor
-      , this.preview.active.name
-      , this.layerSelector.layer
-      )
+      if(this.layerSelector.layer == 'script') {
+        var piece = placePiece.call(this)
+        new Prompt(core, 'enter script for block'
+        , function(scriptText) { piece.script = scriptText }
+        , core.removeEntity.bind(core, piece)
+        )
+      }
+      else {
+        placePiece.call(this)
+      }
+      function placePiece() {
+        return this.placer.addPiece(
+          core.entities
+        , this.cursor
+        , this.preview.active.name
+        , this.layerSelector.layer
+        )
+      }
     }
     if(core.input.getKey(keys.D)) {
       this.placer.removeFromCoords(
