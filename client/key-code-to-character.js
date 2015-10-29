@@ -19,9 +19,19 @@ var capitalizedKeyMap = {
   , 8: '*'
   , 9: '('
   , 0: ')'
+  , "'": '"'
+  ,"\\": '|'
+  , '-': '_'
+  , '=': '+'
+  , '[': '{'
+  , ']': '}'
+  , ';': ':'
+  , ',': '<'
+  , '.': '>'
+  , '/': '?'
+  , '`': '~'
 }
 
 function keyShift(char) {
-  console.log(char)
   return capitalizedKeyMap[char] || char.toUpperCase()
 }
