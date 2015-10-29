@@ -19,10 +19,13 @@ Previewer.prototype = {
     return this.filteredSprites[this.__index % this.filteredSprites.length]
   }
 , get filteredSprites() {
-    return _.filter(
+    var trimmed = _.filter(
       this.sprites
     , function(sprite) { return _.startsWith(sprite.name, this.filter) }.bind(this)
     )
+    return trimmed.length > 0
+      ? trimmed
+      : this.sprites
   }
 , next: function() {
     this.__index = this.__index + 1 % this.sprites.length

@@ -28,3 +28,14 @@ test('z value is of gui, so it always displays on top', function(t){
   c = new Previewer()
   t.equals(c.z, zLayers.gui)
 })
+
+test('when you filter to something over specific, it cancels out', function(t) {
+  t.plan(3)
+  var sprites = [{ name:'apple'},{name:'bannana'}]
+  var preview = new Previewer(sprites)
+  t.equal(preview.active.name, 'apple')
+  preview.filter = 'b'
+  t.equal(preview.active.name, 'bannana')
+  preview.filter = 'bbbbb'
+  t.equal(preview.active.name, 'apple')
+})
