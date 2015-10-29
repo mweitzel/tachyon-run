@@ -104,7 +104,10 @@ function Input(core) {
   this.keyCodesUp = _.fill(new Array(256), 0)
 
   function keyDown(event){
-    if(event.keyCode == 8) { //backspace
+    if(event.keyCode == 8   // backspace
+    || event.keypres == 9   // tab
+    || event.keypres == 191 // '/'
+    ) {
       event.preventDefault()
       event.stopPropagation()
     }
