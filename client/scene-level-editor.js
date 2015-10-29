@@ -56,15 +56,21 @@ function KeyController(preview, cursor, placer, saver, layerSelector, handler) {
   this.handler = handleCommand.bind(null, saver)
 }
 
+
+
 KeyController.prototype = {
   update: function(core) {
     var down = core.input.getKeyDown.bind(core.input)
-    if(down(keys['['])) { this.preview.previous() }
-    if(down(keys[']'])) { this.preview.next() }
-    if(down(keys['/'])) { new Prompt(core, 'command:', this.handler.bind(null, core)) }
+    if(down(keys['/'])) {
+      core.input.getKey(keys.SHIFT)
+      ? new Prompt(core, 'filter tiles:', function(response) { this.preview.filter = response }.bind(this))
+      : new Prompt(core, 'command:', this.handler.bind(null, core))
+    }
     if(down(keys.F)) { while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
     if(down(keys.G)) { while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
     if(down(keys.B)) { while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
+    if(down(keys['['])) { this.preview.previous() }
+    if(down(keys[']'])) { this.preview.next() }
     if(core.input.getKey(keys.V)) {
       this.placer.addPiece(
         core.entities

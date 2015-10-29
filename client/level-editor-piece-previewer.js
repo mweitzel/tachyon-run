@@ -2,6 +2,7 @@ var Sprite = require('./sprite-preconfigured')
   , StringSprite = require('./renderable-string')
   , follow = require('./follow')
   , zLayers = require('./layer-z-defaults')
+  , _ = require('lodash')
 
 module.exports = Previewer
 
@@ -14,12 +15,14 @@ Previewer.prototype = {
 , x: 0
 , y: 0
 , z: zLayers.gui
-, layers: []
 , get active() {
     return this.filteredSprites[this.__index % this.filteredSprites.length]
   }
 , get filteredSprites() {
-    return this.sprites
+    return _.filter(
+      this.sprites
+    , function(sprite) { return _.startsWith(sprite.name, this.filter) }.bind(this)
+    )
   }
 , next: function() {
     this.__index = this.__index + 1 % this.sprites.length
