@@ -1,0 +1,3 @@
+module.exports = {
+  textBackground: '#EFF'
+}

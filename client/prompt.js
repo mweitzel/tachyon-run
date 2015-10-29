@@ -4,6 +4,8 @@ var zIndex = require('./layer-z-defaults').prompt
   , Rstring = require('./renderable-string')
   , follow = require('./follow')
   , delegate = require('../delegate-with-transform')
+  , colors = require('./colors')
+  , codeToChar = require('./key-code-to-character')
 
 module.exports = Prompt
 
@@ -16,6 +18,9 @@ function Prompt(text, submitCB, cancelCB, alwaysCB) {
   this.alwaysCB = alwaysCB
   this.rstring = new Rstring('')
   this.updatePromptText()
+  delegate(this, this.rstring, 'width')
+  delegate(this, this.rstring, 'height')
+  this.backgroundColor = colors.textBackground
 }
 
 Prompt.prototype = {
@@ -45,7 +50,7 @@ Prompt.prototype = {
     )
     var newChars = this.__getTextFromKeyCodesIfPresent(
       keysPressedThisFrame
-    , core.input.getKeyDown(keys.SHIFT)
+    , core.input.getKey(keys.SHIFT)
     )
     if(newChars.length > 0) {
       this.enteredText += newChars
@@ -55,11 +60,8 @@ Prompt.prototype = {
 , __getTextFromKeyCodesIfPresent: function(keyCodesInOrderOfPressing, capitalize) {
     var collectedChars = ''
     _.forEach(keyCodesInOrderOfPressing, function(keyCode) {
-      var char = _.findKey(keys , function(value) { return value == keyCode } )
-      char = char === 'SPACE' ? ' ' : char
-      if(typeof char !== 'string' || ( char.length !== 1 )) { return }
-      collectedChars += capitalize ? char.toUpperCase() : char.toLowerCase()
-    }.bind(this))
+      collectedChars += codeToChar(capitalize, keyCode)
+    })
     return collectedChars
   }
 , updatePromptText: function() {
@@ -67,6 +69,10 @@ Prompt.prototype = {
     this.rstring.string = [this.promptText, this.enteredText].join('\n')
   }
 , draw: function(ctx) {
+    ctx.fillStyle = '#000'
+    ctx.fillRect(this.x-1, this.y-1, this.width+2, this.height+2)
+    ctx.fillStyle = this.backgroundColor
+    ctx.fillRect(this.x, this.y, this.width, this.height)
     this.rstring.draw(ctx)
   }
 }
