@@ -32,7 +32,7 @@ test('pressing keys adds to the entered text', function(t) {
   var core = {
     // mashed keys in browser and collected timestamps
     input: { keyCodesDown: { 63: 0 , 64: 0 , 65: 1445967716203 , 66: 0 , 67: 1445967716495 , 68: 1445967716383 , 69: 0 , 70: 0 , 71: 0 , 72: 0 , 73: 0 , 74: 1445967716039 , 75: 1445967715999 , 76: 1445967716190 , 77: 0 , 78: 1445967716106 , 79: 1445967716490 , 80: 0 , 81: 0 , 82: 0 , 83: 1445967716263 , 84: 0 , 85: 0
-    }, getKeyDown: function() {return false} }
+    }, getKeyDown: function() {return false}, getKey: function() {}}
   , lastUpdate: 1445967716203 - 100
   , physicsTimeStep: 200
   }

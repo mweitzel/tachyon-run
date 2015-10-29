@@ -15,7 +15,7 @@ test('chars are drawn when string is drawn', function(t) {
   var string = new Rstring('asdf')
   string.chars = new Array(5).fill().map(function() {return { draw: td.create() } })
 
-  var ctx = {}
+  var ctx = { fillRect: td.create() }
   string.draw(ctx)
 
   t.doesNotThrow(function(){
@@ -39,4 +39,10 @@ test('height derived from newlines in string', function(t) {
   t.equal(string.height, 16)
   var string = new Rstring('one \n newline')
   t.equal(string.height, 32)
+})
+
+test('width derived from longest line in string', function(t) {
+  t.plan(1)
+  var string = new Rstring('1234\n1234567\n123')
+  t.equal(string.width, 56)
 })
