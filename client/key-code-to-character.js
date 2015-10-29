@@ -4,7 +4,7 @@ var _ = require('lodash')
 module.exports = function(capitalize, keyCode) {
   var char = _.findKey(keys , function(value) { return value == keyCode } )
   char = char === 'SPACE' ? ' ' : char
-  if(typeof char !== 'string' || ( char.length !== 1 )) { return }
+  if(typeof char !== 'string' || ( char.length !== 1 )) { return '' }
   return capitalize ? keyShift(char) : char.toLowerCase()
 }
 

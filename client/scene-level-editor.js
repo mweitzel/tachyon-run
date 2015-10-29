@@ -10,7 +10,10 @@ var keys = require('./keys')
   , Placer = require('./level-editor-piece-placer')
   , Saver = require('./level-editor-serialize')
   , LayerSelector = require('./layer-selector')
-
+  , Prompt = require('./priority-prompt')
+  , BackgroundObj = require('./background')
+  , handleCommand = require('./level-editor-handle-command')
+  , MetaWatcher = require('./meta-data-watcher')
 
 module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
@@ -36,14 +39,21 @@ module.exports = function(core) {
   add(preview)
 
   add(new KeyController(preview, cursor, placer, saver, layerSelector))
+
+  add({ layer: 'meta', __isLevelPiece: true, name: 'defualt-editor' , background: '#393' })
+  var background = new BackgroundObj('#000')
+  add(new MetaWatcher(background))
+  add( background)
 }
 
-function KeyController(preview, cursor, placer, saver, layerSelector) {
+
+function KeyController(preview, cursor, placer, saver, layerSelector, handler) {
   this.preview = preview
   this.cursor = cursor
   this.placer = placer
   this.saver = saver
   this.layerSelector = layerSelector
+  this.handler = handleCommand.bind(null, saver)
 }
 
 KeyController.prototype = {
@@ -51,6 +61,7 @@ KeyController.prototype = {
     var down = core.input.getKeyDown.bind(core.input)
     if(down(keys['['])) { this.preview.previous() }
     if(down(keys[']'])) { this.preview.next() }
+    if(down(keys['/'])) { new Prompt(core, 'command:', this.handler.bind(null, core)) }
     if(down(keys.F)) { while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
     if(down(keys.G)) { while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
     if(down(keys.B)) { while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
@@ -73,6 +84,7 @@ KeyController.prototype = {
     if(down(keys.W)) {
       this.saver.save(core.entities, function(data){
         localStorage.levelQuickSave = data
+        console.log(data)
       })
     }
     if(down(keys.E)) {
