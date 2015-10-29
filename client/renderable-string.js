@@ -33,6 +33,7 @@ CanvasString.prototype = {
       char.draw(ctx)
     })
   }
+, get string() { return this.__string }
 , set string(str) {
     this.__string = str
     this.chars = _.flatten(
