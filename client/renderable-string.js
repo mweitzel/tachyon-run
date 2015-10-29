@@ -5,6 +5,7 @@ var charData = require('../media/font/font-atlas')
   , delegate = require('../delegate-with-transform')
   , badCharacterSpriteIndex = chars.indexOf("\nbad")
   , _ = require('lodash')
+  , colors = require('./colors')
 
 c = charData
 module.exports = CanvasString
@@ -16,11 +17,21 @@ function CanvasString(string) {
 CanvasString.prototype = {
   x: 0
 , y: 0
+, backgroundColor: colors.textBackground
 , get height() {
     return this.__string.split('\n').length * 16
   }
+, get width() {
+    return 8 * Math.max.apply(Math,
+      (this.__string.split('\n')).map(function(str) { return str.length })
+    )
+  }
 , draw: function(ctx) {
-    this.chars.forEach(function(char) { char.draw(ctx) })
+    ctx.fillStyle = this.backgroundColor
+    this.chars.forEach(function(char) {
+      ctx.fillRect(char.x, char.y, 8, 16)
+      char.draw(ctx)
+    })
   }
 , set string(str) {
     this.__string = str
