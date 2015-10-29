@@ -14,6 +14,7 @@ var keys = require('./keys')
   , BackgroundObj = require('./background')
   , handleCommand = require('./level-editor-handle-command')
   , MetaWatcher = require('./meta-data-watcher')
+  , Inspector = require('./overlay-inspector')
 
 module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
@@ -45,6 +46,10 @@ module.exports = function(core) {
   var background = new BackgroundObj('#000')
   add(new MetaWatcher(background))
   add( background)
+
+  var inspector = new Inspector(cursor, layerSelector)
+  follow.call(inspector, core.cameraCenter, cameraSize.x/2, -cameraSize.y/2)
+  add(inspector)
 }
 
 
