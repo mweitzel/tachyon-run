@@ -26,6 +26,7 @@ module.exports = function(core) {
     'ground'
   , 'background'
   , 'foreground'
+  , 'script'
   ]
   var layerSelector = new LayerSelector(layers)
   add(layerSelector)
@@ -69,6 +70,10 @@ KeyController.prototype = {
     if(down(keys.F)) { while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
     if(down(keys.G)) { while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
     if(down(keys.B)) { while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
+    if(down(keys.S)) {
+      this.preview.filter = 'token'
+      while(this.layerSelector.layer != 'script') { this.layerSelector.nextLayer() }
+    }
     if(down(keys['['])) { this.preview.previous() }
     if(down(keys[']'])) { this.preview.next() }
     if(core.input.getKey(keys.V)) {
