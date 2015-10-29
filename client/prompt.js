@@ -37,6 +37,7 @@ Prompt.prototype = {
     this.alwaysCB && this.alwaysCB(this.enteredText)
   }
 , update: function(core) {
+    if(core.input.getKey(keys.CTRL) && core.input.getKeyDown(keys.C)) { return this.cancel() }
     if(core.input.getKeyDown(keys.ESCAPE)) { return this.cancel() }
     if(core.input.getKeyDown(keys.ENTER)) { return this.submit() }
     if(core.input.getKeyDown(keys.BACKSPACE)) {
