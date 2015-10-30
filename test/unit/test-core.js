@@ -39,6 +39,36 @@ test('#update calls draw on each entity', function(t) {
   })
 })
 
+test('#update does not call drawDebug when core.debug is not set', function(t) {
+  t.plan(1)
+  var c = new Core(help.mockWindow(), help.mockCanvasContext())
+
+  var go = td.create(GameObject)
+  c.entities.push(go)
+
+  c.update()
+
+  t.throws(function() {
+    td.verify(go.drawDebug())
+  })
+})
+
+test.only('#update calls drawDebug on each entity if core.debug is set', function(t) {
+  t.plan(1)
+  var c = new Core(help.mockWindow(), help.mockCanvasContext())
+
+  var go = td.create(GameObject)
+  c.entities.push(go)
+
+  c.debug = true
+  c.update()
+
+  t.doesNotThrow(function() {
+    td.verify(go.drawDebug())
+  })
+})
+
+
 test('#start leaves game unpaused', function(t) {
   t.plan(1)
   var c = new Core(help.mockWindow(), help.mockCanvasContext())
@@ -58,3 +88,4 @@ test('#draw sorts entities by z axis (undefined z defaults to 0)', function(t) {
 function GameObject() { }
 GameObject.prototype.update = function() {}
 GameObject.prototype.draw = function() {}
+GameObject.prototype.drawDebug = function() {}

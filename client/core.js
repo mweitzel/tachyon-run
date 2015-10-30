@@ -38,6 +38,9 @@ Core.prototype = {
 
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw && this.entities[i].draw(this.context)
+      if(this.debug) {
+        this.entities[i].drawDebug && this.entities[i].drawDebug(this.context)
+      }
     }
 
     this.context.setTransform(1, 0, 0, 1, 0, 0)// translateDrawingsX, translateDrawingsY)
