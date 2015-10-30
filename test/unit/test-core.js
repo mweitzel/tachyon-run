@@ -53,7 +53,7 @@ test('#update does not call drawDebug when core.debug is not set', function(t) {
   })
 })
 
-test.only('#update calls drawDebug on each entity if core.debug is set', function(t) {
+test('#update calls drawDebug on each entity if core.debug is set', function(t) {
   t.plan(1)
   var c = new Core(help.mockWindow(), help.mockCanvasContext())
 

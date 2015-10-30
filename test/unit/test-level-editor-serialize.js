@@ -60,7 +60,7 @@ test('serializes blocks from a level', function(t) {
   function byXYName(obj) { return [obj.x, obj.y, obj.name].join('-') }
 })
 
-test.only('can save objects with values of 0', function(t) {
+test('can save objects with values of 0', function(t) {
   t.plan(1)
   var sprites = [ { name: 'block_a' } ]
   var saver = new Saver(sprites)
