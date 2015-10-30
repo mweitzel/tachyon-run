@@ -95,7 +95,11 @@ Core.prototype = {
   }
 , paused: true
 , pause: function(){ this.paused = true }
-, play: function(){ this.paused = false ; this.updateAndRegisterNextUpdate() }
+, play: function(){
+    this.paused = false
+    this.updateAndRegisterNextUpdate()
+    this.lastUpdate = new Date().getTime()
+  }
 , start: function(){ return this.play() }
 , stop: function(){ return this.pause() }
 , togglePaused: function(){ this.paused = !this.paused }
