@@ -22,7 +22,7 @@ test('focuses on object under cursor of current layer', function(t) {
   t.true(inspector.renderString.string.indexOf('potato') > -1)
 })
 
-test.only('if nothing selected, render string is blank', function(t) {
+test('if nothing selected, render string is only x,y', function(t) {
   t.plan(2)
   var cursor = { x: 20, y: 20 }
   var layerSelector = { layer: 'ground' }
@@ -31,5 +31,5 @@ test.only('if nothing selected, render string is blank', function(t) {
 
   inspector.update(core)
   t.equal(inspector.selected, undefined)
-  t.equal(inspector.renderString.string, '--')
+  t.equal(inspector.renderString.string, '20,20')
 })
