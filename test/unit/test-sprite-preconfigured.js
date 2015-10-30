@@ -19,3 +19,17 @@ test('can draw', function(t) {
   t.plan(1)
   t.equal(Sprite.draw, SpriteUnconfigured.draw)
 })
+
+test('sprites have width and height', function(t) {
+  t.plan(2)
+  var s = new Sprite('block_a')
+  t.equal(s.width, 16)
+  t.equal(s.height, 16)
+})
+
+test('even when they have no frames', function(t) {
+  t.plan(2)
+  var s = new Sprite('block_aaaaaaaaaaaaaaaaaaa')
+  t.equal(s.width, 0)
+  t.equal(s.height, 0)
+})

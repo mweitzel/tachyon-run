@@ -12,6 +12,18 @@ function Sprite(atlas, meta, name, startTime) {
     .keys(atlas.frames)
     .filter(function(a) { return a.startsWith(name) })
     .sort(byLastChunkAsInt)
+
+  initializeWidthHeight.call(this)
+}
+
+function initializeWidthHeight() {
+  var startFrameName = this.getFrameName(this.startTime)
+  var startFrame = this.atlas.frames[startFrameName]
+  this.width = this.height = 0
+  if(startFrameName) {
+    this.width = startFrame.frame.w
+    this.height = startFrame.frame.h
+  }
 }
 
 function byLastChunkAsInt(str1, str2) {
