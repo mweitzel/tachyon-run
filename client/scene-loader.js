@@ -1,6 +1,7 @@
 var scenes = {
   'menu': require('./scene-menu')
 , 'level-editor': require('./scene-level-editor')
+, 'blank': require('./scene-blank')
 }
 
 module.exports = Loader

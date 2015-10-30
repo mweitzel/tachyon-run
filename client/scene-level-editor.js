@@ -15,6 +15,7 @@ var keys = require('./keys')
   , handleCommand = require('./level-editor-handle-command')
   , MetaWatcher = require('./meta-data-watcher')
   , Inspector = require('./overlay-inspector')
+  , loadPlayableFromEditorEntities = require('./load-playable-level-from-editor-entities')
 
 module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
@@ -72,6 +73,11 @@ KeyController.prototype = {
       ? new Prompt(core, 'filter tiles:', function(response) { this.preview.filter = response }.bind(this))
       : new Prompt(core, 'command:', this.handler.bind(null, core))
     }
+    if(core.input.getKey(keys.SHIFT) && down(keys.P)) {
+      this.saver.save(core.entities, setToLocalStorageAndLog)
+      var editorEntities = this.saver.parse(getLevelDataFromLocalStorage())
+      return loadPlayableFromEditorEntities(core, editorEntities)
+    }
     var clrFilter = function() { if(this.layerSelector.layer == 'script'){this.preview.filter = ''} }.bind(this)
     if(down(keys.F)) { clrFilter(); while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
     if(down(keys.G)) { clrFilter(); while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
@@ -111,18 +117,24 @@ KeyController.prototype = {
       )
     }
     if(down(keys.W)) {
-      this.saver.save(core.entities, function(data){
-        localStorage.levelQuickSave = data
-        console.log(data)
-      })
+      this.saver.save(core.entities, setToLocalStorageAndLog)
     }
     if(down(keys.E)) {
-      this.saver.load(core.entities, localStorage.levelQuickSave)
+      this.saver.load(core.entities, getLevelDataFromLocalStorage())
     }
     if(down(keys.Q)) {
       this.saver.clear(core.entities)
     }
   }
+}
+
+function setToLocalStorageAndLog(data) {
+  localStorage.levelQuickSave = data
+  console.log(data)
+}
+
+function getLevelDataFromLocalStorage() {
+  return localStorage.levelQuickSave
 }
 
 
