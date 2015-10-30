@@ -41,7 +41,8 @@ Saver.prototype = {
 
     var saveable = this.__filterToLevelPieces(entities)
     var meta = this.__findMetaEntities(saveable)
-    saveObject.meta = this.__serializeMetaObj(meta)
+    if(meta)
+      saveObject.meta = this.__serializeMetaObj(meta)
 
 
     var blocks = this.__rejectMetaEntities(saveable)
@@ -74,7 +75,7 @@ Saver.prototype = {
 , __objToAttrArray: function(obj) {
     var returnObj = []
     _.each(groundPieceSavedAttrs, function(attr) {
-      if(obj[attr])
+      if(typeof obj[attr] !== 'undefined')
         returnObj.push(obj[attr])
     })
     return returnObj
@@ -90,7 +91,8 @@ Saver.prototype = {
     var entities = []
     var serialized = JSON.parse(json)
 
-    entities.push(this.__instanciateMetaObj(serialized.meta))
+    if(serialized.meta)
+      entities.push(this.__instanciateMetaObj(serialized.meta))
 
     var layers = _.without(_.keys(serialized), 'meta')
     _.forEach(layers, function(layer) {
