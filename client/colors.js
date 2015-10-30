@@ -1,3 +1,4 @@
 module.exports = {
-  textBackground: '#EFF'
+  debugCollider: '#D33'
+, textBackground: '#EFF'
 }
