@@ -19,8 +19,8 @@ Loader.prototype = {
       function(){
         this.__prepCoreForNewScene()
         new scenes[sceneName](this.core)
+        callback && callback(this.core)
         this.core.play()
-        callback && callback()
       }.bind(this)
       , 0
     )
