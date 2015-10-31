@@ -36,6 +36,7 @@ function lastChunkAsInt(string) {
 
 Sprite.prototype = {
   fps: 10
+, mirror: false
 , get mspf() {
     return 1/(this.fps/1000)
   }
@@ -75,17 +76,33 @@ function firstDefined(arr) {
 
 Sprite.draw = function(ctx) {
   var src_xywh = this.sprite.getFrame().data
-  ctx.drawImage(
-    this.sprite.atlas.image
-  , src_xywh[0]
-  , src_xywh[1]
-  , src_xywh[2]
-  , src_xywh[3]
-  , Math.round(this.x)
-  , Math.round(this.y)
-  , src_xywh[2]
-  , src_xywh[3]
-  )
+  if(this.sprite.mirror) {
+    var atlasW = this.sprite.atlas.image.width
+    ctx.drawImage(
+      this.sprite.atlas.image.mirror
+    , atlasW - (src_xywh[0] + src_xywh[2])
+    , src_xywh[1]
+    , src_xywh[2]
+    , src_xywh[3]
+    , Math.round(this.x)
+    , Math.round(this.y)
+    , src_xywh[2]
+    , src_xywh[3]
+    )
+  }
+  else {
+    ctx.drawImage(
+      this.sprite.atlas.image
+    , src_xywh[0]
+    , src_xywh[1]
+    , src_xywh[2]
+    , src_xywh[3]
+    , Math.round(this.x)
+    , Math.round(this.y)
+    , src_xywh[2]
+    , src_xywh[3]
+    )
+  }
 }
 
 function now() {
