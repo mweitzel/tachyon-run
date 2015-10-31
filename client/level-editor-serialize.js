@@ -1,4 +1,5 @@
 var _ = require('lodash')
+  , beget = require('../beget')
   , drawSprite = require('./sprite').draw
   , groundPieceSavedAttrs = [
       'x'
@@ -110,7 +111,7 @@ Saver.prototype = {
 , generateObject: function(name, attrs) {
     var a = _.merge(
       { name: name
-      , sprite: _.find(this.sprites, { name: name })
+      , sprite: beget(_.find(this.sprites, { name: name }))
       , __isLevelPiece: true
       , draw: drawSprite
       }
