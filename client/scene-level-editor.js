@@ -137,15 +137,6 @@ function getLevelDataFromLocalStorage() {
   return localStorage.levelQuickSave
 }
 
-
-function BlockA() { }
-BlockA.prototype = {
-  x: 0
-, y: 0
-, sprite: new Sprite('block_a')
-, draw: Sprite.draw
-}
-
 function makeSprites() {
   return spriteNames.map(function(name) {
     return new Sprite(name)
