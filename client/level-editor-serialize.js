@@ -1,6 +1,7 @@
 var _ = require('lodash')
   , beget = require('../beget')
   , drawSprite = require('./sprite').draw
+  , zLayers = require('./layer-z-defaults')
   , groundPieceSavedAttrs = [
       'x'
     , 'y'
@@ -102,6 +103,7 @@ Saver.prototype = {
         _.forEach(serialized[layer][name], function(objAttrList) {
           var attrs = this.__arrayToAttrObj(objAttrList)
           attrs.layer = layer
+          attrs.z = zLayers[layer]
           entities.push(this.generateObject(name, attrs))
         }.bind(this))
       }.bind(this))

@@ -11,24 +11,28 @@ test('serializes blocks from a level', function(t) {
   var levelPieces = [
     { __isLevelPiece: true
     , layer: 'ground'
+    , z: 0
     , name: 'block_a'
     , sprite: beget( sprites[0] )
     , draw: draw
     , x: 1, y: 2 }
   , { __isLevelPiece: true
     , layer: 'ground'
+    , z: 0
     , name: 'block_a'
     , sprite: beget( sprites[0] )
     , draw: draw
     , x: 3, y: 4 }
   , { __isLevelPiece: true
     , layer: 'ground'
+    , z: 0
     , name: 'block_b'
     , sprite: beget( sprites[1] )
     , draw: draw
     , x: 5, y: 6 }
   , { __isLevelPiece: true
     , layer: 'script'
+    , z: 200
     , name: 'token_door'
     , script: 'whatever istructions'
     , sprite: beget( sprites[2] )
@@ -69,6 +73,7 @@ test('can save objects with values of 0', function(t) {
   var levelPieces = [
     { __isLevelPiece: true
     , layer: 'ground'
+    , z: 0
     , name: 'block_a'
     , sprite: beget( sprites[0] )
     , draw: draw
