@@ -49,6 +49,19 @@ test('#intersects finds oddly boxes', function(t) {
   t.true(collider.intersects(b1, b2))
 })
 
+test('#intersects finds perfectly overlapping boxes', function(t) {
+/*
+    ---
+   |   |   <- actually two boxes
+   |   |
+    ---
+*/
+  t.plan(1)
+  var b1 = [10, 10, 10, 10]
+    , b2 = [10, 10, 10, 10]
+  t.true(collider.intersects(b1, b2))
+})
+
 test('collidingSide returns left when left is closest', function(t) {
 /*
   -------
