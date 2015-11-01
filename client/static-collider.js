@@ -5,7 +5,8 @@ module.exports = Collider
 function Collider() { }
 
 Collider.prototype = {
-  bounds: function() {
+  collidable: true
+, bounds: function() {
     return [this.x, this.y, this.width, this.height]
   }
 , drawDebug: function(ctx) {
