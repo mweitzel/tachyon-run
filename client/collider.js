@@ -134,18 +134,22 @@ function intersects(b1, b2) {
 
 function xOverlaps(b1, b2) {
   return (
-      ( b1[0] <= b2[0] + b2[2] && b1[0] >= b2[0] )                 // my left  is between their right and left
-   || ( b1[0] + b1[2] <= b2[0] + b2[2] && b1[0] + b1[2] >= b2[0] ) // my right is between their right and left
-   || ( b2[0] <= b1[0] + b1[2] && b2[0] >= b1[0] )                 // their left  is between my right and left
-   || ( b2[0] + b2[2] <= b1[0] + b1[2] && b2[0] + b2[2] >= b1[0] ) // their right is between my right and left
+      ( b1[0] < b2[0] + b2[2] && b1[0] > b2[0] )                 // my left  is between their right and left
+   || ( b1[0] + b1[2] < b2[0] + b2[2] && b1[0] + b1[2] > b2[0] ) // my right is between their right and left
+   || ( b2[0] < b1[0] + b1[2] && b2[0] > b1[0] )                 // their left  is between my right and left
+   || ( b2[0] + b2[2] < b1[0] + b1[2] && b2[0] + b2[2] > b1[0] ) // their right is between my right and left
+   || ( b1[0] == b2[0] )                                         // left are same
+   || ( b1[0] + b1[2] == b2[0] + b2[2] )                         // rights are same
   )
 }
 
 function yOverlaps(b1, b2) {
   return (
-      ( b1[1] <= b2[1] + b2[3] && b1[1] >= b2[1] )                 // my bottom  is between their top and bottom
-   || ( b1[1] + b1[3] <= b2[1] + b2[3] && b1[1] + b1[3] >= b2[1] ) // my top     is between their top and bottom
-   || ( b2[1] <= b1[1] + b1[3] && b2[1] >= b1[1] )                 // their bottom is between my top and bottom
-   || ( b2[1] + b2[3] <= b1[1] + b1[3] && b2[1] + b2[3] >= b1[1] ) // their top    is between my top and bottom
+      ( b1[1] < b2[1] + b2[3] && b1[1] > b2[1] )                 // my bottom  is between their top and bottom
+   || ( b1[1] + b1[3] < b2[1] + b2[3] && b1[1] + b1[3] > b2[1] ) // my top     is between their top and bottom
+   || ( b2[1] < b1[1] + b1[3] && b2[1] > b1[1] )                 // their bottom is between my top and bottom
+   || ( b2[1] + b2[3] < b1[1] + b1[3] && b2[1] + b2[3] > b1[1] ) // their top    is between my top and bottom
+   || ( b1[1] == b2[1] )                                         // tops are same
+   || ( b1[1] + b1[3] == b2[1] + b2[3] )                         // bottoms are same
   )
 }
