@@ -75,6 +75,7 @@ function firstDefined(arr) {
 }
 
 Sprite.draw = function(ctx) {
+  var topLeft = spriteTopLeft(this)
   var src_xywh = this.sprite.getFrame().data
   if(this.sprite.mirror) {
     var atlasW = this.sprite.atlas.image.width
@@ -84,8 +85,8 @@ Sprite.draw = function(ctx) {
     , src_xywh[1]
     , src_xywh[2]
     , src_xywh[3]
-    , Math.round(this.x)
-    , Math.round(this.y)
+    , topLeft[0]
+    , topLeft[1]
     , src_xywh[2]
     , src_xywh[3]
     )
@@ -97,12 +98,30 @@ Sprite.draw = function(ctx) {
     , src_xywh[1]
     , src_xywh[2]
     , src_xywh[3]
-    , Math.round(this.x)
-    , Math.round(this.y)
+    , topLeft[0]
+    , topLeft[1]
     , src_xywh[2]
     , src_xywh[3]
     )
   }
+}
+
+function spriteTopLeft(obj) {
+  var x
+  var y
+  if(typeof obj.spriteX !== 'undefined') {
+    x = obj.spriteX
+  }
+  else{
+    x = obj.x
+  }
+  if(typeof obj.spriteY !== 'undefined') {
+    y = obj.spriteY
+  }
+  else{
+    y = obj.y
+  }
+  return [Math.round(x),Math.round(y)]
 }
 
 function now() {
