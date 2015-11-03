@@ -1,10 +1,6 @@
 var _ = require('lodash')
   , Sprite = require('./sprite-preconfigured')
-  , collider = require('./collider')
-  , StaticCollider = require('./static-collider')
   , keys = require('./keys')
-  , applyPhysics = require('./apply-physics')
-  , spyReturns = require('../tee-callback')
   , sprites = require('./all-sprites')
 
 module.exports = Player
@@ -26,8 +22,6 @@ Player.prototype = _.merge(
       return [this.x-7, this.y-24, 14, 24]
     }
   , draw: Sprite.draw
-  , drawDebug: StaticCollider.prototype.drawDebug
-  , squidgedBoundsForDebugDraw: StaticCollider.prototype.squidgedBoundsForDebugDraw
   , respondToControllerIntent: function(core) {
       if(core.input.getKey(keys.RIGHT)) {
         this.sprite.mirror = true
