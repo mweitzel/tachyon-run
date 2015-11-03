@@ -55,19 +55,19 @@ enemies
 
 
 module.exports = {
-  playerShouldRespondTo:playerShouldRespondTo
-, collidesWith: collidesWith
+  collidesWith: collidesWith
 , intersects: intersects
 , collidingSide: collidingSide
+, defaultShoudlRespond: defaultShoudlRespond
 }
 
-function playerShouldRespondTo(player, other) {
-  return other.collidable
-   && ( (player.hasMoved && other.layer == 'ground')
-      || other.team === 'enemy'
-      || other.isTrigger
-      )
-   && collidesWith.call(player, other)
+function defaultShoudlRespond(other) {
+  return this.collidable
+  && other.collidable
+  && ( other.layer == 'ground'
+    || ( this.team != other.team )
+    )
+  && collidesWith.call(this, other)
 }
 
 function collidesWith(other) {
