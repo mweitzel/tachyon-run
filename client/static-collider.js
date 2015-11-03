@@ -11,7 +11,9 @@ Collider.prototype = {
   }
 , drawDebug: function(ctx) {
     ctx.lineWidth = 0.5//this.lineWidth || 1
-    ctx.strokeStyle=colors.debugCollider
+    ctx.strokeStyle=this.collidable
+    ? colors.debugCollider.collidable
+    : colors.debugCollider.nonCollidable
     ctx.beginPath()
     ctx.rect.apply(ctx, this.squidgedBoundsForDebugDraw(this.bounds()))
     ctx.stroke()

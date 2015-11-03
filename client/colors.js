@@ -1,4 +1,4 @@
 module.exports = {
-  debugCollider: '#D33'
+  debugCollider: { collidable: '#D33', nonCollidable: '#33D' }
 , textBackground: '#EFF'
 }
