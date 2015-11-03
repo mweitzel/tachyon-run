@@ -34,6 +34,9 @@ module.exports = function(core) {
   add(layerSelector)
   var spriteArray = makeSprites(spriteNames)
   var saver = new Saver(spriteArray)
+  try{ saver.load(core.entities, getLevelDataFromLocalStorage()) }
+  catch(e) { saver.clear(core.entities) }
+
   var preview = new Preview(spriteArray)
   var placer = new Placer(spriteArray)
   var cameraSize = core.cameraSize
@@ -76,7 +79,7 @@ KeyController.prototype = {
     if(core.input.getKey(keys.SHIFT) && down(keys.P)) {
       this.saver.save(core.entities, setToLocalStorageAndLog)
       var editorEntities = this.saver.parse(getLevelDataFromLocalStorage())
-      return loadPlayableFromEditorEntities(core, editorEntities)
+      return loadPlayableFromEditorEntities(core, editorEntities, this.cursor)
     }
     var clrFilter = function() { if(this.layerSelector.layer == 'script'){this.preview.filter = ''} }.bind(this)
     if(down(keys.F)) { clrFilter(); while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
