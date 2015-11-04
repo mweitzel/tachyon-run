@@ -153,3 +153,43 @@ test('collidingSide when no axis overlap, returns closest', function(t) {
   , 'bottom'
   )
 })
+
+test('determines shortest vector of escape', function(t) {
+/*
+ -------
+|       |  b2
+|      -+---
+|     | |   |
+ -----+-    | b1
+      |     |
+       -----
+*/
+  t.plan(1)
+  var b1 = [9,8,4,4]
+    , b2 = [0,0,10,10]
+
+  t.deepEqual(
+    collider.escapeVector(b1, b2)
+  , [1, 0]
+  )
+})
+
+test('determines shortest vector of escape', function(t) {
+/*
+ -------
+|       |  b1
+|      -+---
+|     | |   |
+ -----+-    | b2
+      |     |
+       -----
+*/
+  t.plan(1)
+  var b1= [0,0,10,10]
+    , b2 = [9,8,4,4]
+
+  t.deepEqual(
+    collider.escapeVector(b1, b2)
+  , [-1, 0]
+  )
+})

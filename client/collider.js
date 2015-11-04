@@ -53,15 +53,18 @@ enemies
 
 */
 
+var _ = require('lodash')
 
 module.exports = {
   collidesWith: collidesWith
 , intersects: intersects
 , collidingSide: collidingSide
-, defaultShoudlRespond: defaultShoudlRespond
+, defaultShouldRespond: defaultShouldRespond
+, escapeVector: escapeVector
+, proximityTo: proximityTo
 }
 
-function defaultShoudlRespond(other) {
+function defaultShouldRespond(other) {
   return this.collidable
   && other.collidable
   && ( other.layer == 'ground'
@@ -152,4 +155,37 @@ function yOverlaps(b1, b2) {
    || ( b1[1] == b2[1] )                                         // tops are same
    || ( b1[1] + b1[3] == b2[1] + b2[3] )                         // bottoms are same
   )
+}
+
+function escapeVector(b1, b2) {
+  var possibleEscapes = _.sortBy(
+    [
+      [b2[0] - (b1[0] + b1[2]), 0]  // its left minus my right
+    , [(b2[0] + b2[2]) - b1[0], 0]  // its right minus my left
+    , [0, b2[1] - (b1[1] + b1[3])]  // its top minus my bottom
+    , [0, (b2[1] + b2[3]) - b1[1]]  // its bottom minus my top
+    ]
+  , cheaterMagnitude
+  )
+  return possibleEscapes[0]
+  function cheaterMagnitude(xy) { // because I know one of them will always be 0
+    if(xy[0] === 0)
+      return Math.abs(xy[1])
+    return Math.abs(xy[0])
+  }
+}
+
+function magnitude(xy) {
+  return Math.sqrt(xy[0]*xy[0] + xy[1] * xy[1])
+}
+
+function proximityTo(otherObj) {
+  return distance(this.bounds(), otherObj.bounds())
+}
+
+function distance(b1, b2) {
+  return magnitude([
+    (b1[0] + b1[2]) - (b2[0] + b2[2])
+  , (b1[1] + b1[3]) - (b2[1] + b2[3])
+  ])
 }
