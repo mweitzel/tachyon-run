@@ -7,13 +7,35 @@ module.exports = function(stepSize, object, getEntitiesToRespondToCB) {
   var allEntitiesToRespondTo = getEntitiesToRespondToCB()
   var ground = _.filter( allEntitiesToRespondTo , { layer: 'ground' })
 
-  var timeReversed = reversePhysicsUntilDecollide(object, ground, stepSize, substeps)
+  var count = 0
+  var max = 4
+
+  var collidingGround = closestCollidingObject(object, ground)
+  object.__lastGroundCollisionSides = []
+
+  while(collidingGround && count < max) {
+    count++
+    escapeProximity(object, collidingGround)
+    collidingGround = closestCollidingObject(object, ground)
+  }
 
   _.each(['x', 'y'], roundIfUnderThreshold.bind(object, 0.0001))
+}
 
-  respondToGroundCollisions.call(object, ground)
+function escapeProximity(movable, stationary) {
+  return applyEscapeVector(
+    movable
+  , collider.escapeVector(movable.bounds(), stationary.bounds())
+  )
+}
 
-  incrementCoords(object, timeReversed)
+function closestCollidingObject(object, potentialColliders) {
+  return _.first(
+    _.sortBy(
+      _.filter(potentialColliders, collider.collidesWith.bind(object))
+    , collider.proximityTo.bind(object)
+    )
+  )
 }
 
 function roundIfUnderThreshold(threshold, attr) {
@@ -22,33 +44,32 @@ function roundIfUnderThreshold(threshold, attr) {
   }
 }
 
-function reversePhysicsUntilDecollide(object, ground, maxReverseTime, substeps) {
-  var backSteps = 0
-
-  var collidingGround = _.find(ground, collider.collidesWith.bind(object))
-
-  var backStepSize = maxReverseTime / substeps
-
-  while(collidingGround && backSteps < substeps) {
-    backSteps++
-    collidingGround = _.find(ground, collider.collidesWith.bind(object))
-    incrementCoords(object, -backStepSize)
+function applyEscapeVector(object, escapeVector) {
+  object.x += escapeVector[0]
+  object.y += escapeVector[1]
+  if(escapeVector[0]){
+    if(escapeVector[0] > 0) {
+      object.__lastGroundCollisionSides.push('left')
+      object.dx = Math.max(0, object.dx)
+    }
+    else {
+      object.__lastGroundCollisionSides.push('right')
+      object.dx = Math.min(0, object.dx)
+    }
   }
-
-  return backSteps * backStepSize
+  else if(escapeVector[1]) {
+    if(escapeVector[1] > 0) {
+      object.__lastGroundCollisionSides.push('top')
+      object.dy = Math.max(0, object.dy)
+    }
+    else {
+      object.__lastGroundCollisionSides.push('bottom')
+      object.dy = Math.min(0, object.dy)
+    }
+  }
 }
 
 function incrementCoords(obj, stepSize) {
   obj.x += obj.dx * stepSize
   obj.y += obj.dy * stepSize
-}
-
-function respondToGroundCollisions(ground) {
-  var gBounds = _.map(ground, function(g) { return g.bounds() })
-  var sides = _.map(gBounds, collider.collidingSide.bind(null, this.bounds()))
-  if( sides.indexOf('left') > -1) { this.dx = 0 }
-  if( sides.indexOf('right') > -1) { this.dx = 0 }
-  if( sides.indexOf('bottom') > -1) { this.dy = 0 }
-  if( sides.indexOf('top') > -1) { this.dy = 0 }
-  this.__lastGroundCollisionSides = sides
 }
