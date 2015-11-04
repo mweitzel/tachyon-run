@@ -1,3 +1,5 @@
+var maxTileSize = 32
+  , TileMap = require('./tile-map')
 var scenes = {
   'menu': require('./scene-menu')
 , 'level-editor': require('./scene-level-editor')
@@ -29,6 +31,14 @@ Loader.prototype = {
 , __prepCoreForNewScene: function(scenename) {
     emptyArray(this.core.entities)
     this.core.cameraCenter = { x: 0, y: 0 } // god knows what happens to this object
+    this.core.tileMap = new TileMap(maxTileSize)
+    this.core.beforeUpdate = function(core) {
+      for(var i = 0; i < core.entities.length; i++) {
+        var ent = core.entities[i]
+        if(typeof ent.bounds === 'function' && !ent.__cachedTileKeys)
+          core.tileMap.cache(ent)
+      }
+    }
   }
 }
 
