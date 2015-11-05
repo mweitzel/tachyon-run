@@ -17,4 +17,5 @@ test("sends 'this' object's x and y as first arguments", function(t) {
     spawn.apply({x:5, y:10}, ['test_1', 'banana'])
   , {x:5, y:10, other:'banana'}
   )
+  delete spawn.spawnable.test_1
 })
