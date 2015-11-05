@@ -4,6 +4,7 @@ var _ = require('lodash')
   , StaticCollider = require('./static-collider')
   , delegate = require('../delegate-with-transform')
   , deferToSprite = ['width', 'height']
+  , scriptToObj = require('./level-editor-script-to-game-object')
 
 
 module.exports = convertParsedLevelDataToPlayable
@@ -11,7 +12,22 @@ module.exports = convertParsedLevelDataToPlayable
 function convertParsedLevelDataToPlayable(levelEditorEntities) {
   makeGroundPiecesStaticCollidable(levelEditorEntities)
   addBackGroundAndMetaDataWatcher(levelEditorEntities)
+  replaceScriptsWithObjects(levelEditorEntities)
   return levelEditorEntities
+}
+
+function replaceScriptsWithObjects(entities) {
+  var scripts = _.filter(entities, { __isLevelPiece: true, layer: 'script' })
+  _.forEach(
+    scripts
+  , _.remove.bind(_, entities)
+  )
+  _.forEach(
+    _.compact(scripts.map(function(scriptObj) {
+      return scriptToObj(scriptObj)
+    }))
+  , entities.push.bind(entities)
+  )
 }
 
 function addBackGroundAndMetaDataWatcher(entities) {
