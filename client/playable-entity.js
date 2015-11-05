@@ -2,6 +2,7 @@ var _ = require('lodash')
   , collider = require('./collider')
   , applyPhysics = require('./apply-physics')
   , spyReturns = require('../tee-callback')
+  , StaticCollider = require('./static-collider')
 
 module.exports = Playable
 
@@ -35,6 +36,8 @@ Playable.prototype = {
 , bounds: function() {
     return [this.x - this.width/2, this.y - this.height/2, this.width, this.height]
   }
+, drawDebug: StaticCollider.prototype.drawDebug
+, squidgedBoundsForDebugDraw: StaticCollider.prototype.squidgedBoundsForDebugDraw
 , gravityConstant: 1
 , respondToControllerIntent: function() {}
 , damagesMe: function(obj) {
@@ -60,6 +63,8 @@ Playable.prototype = {
     , spyReturns(spy, this.findEntitiesToRespondTo.bind(this, core))
     )
 
+    core.tileMap.cache(this)
+
     var stillCollidesWithMe = _.filter(
       spy.pop()
     , collider.collidesWith.bind(this)
@@ -76,9 +81,12 @@ Playable.prototype = {
     this.postPhysicsAndDamageHandler(stillCollidesWithMe)
   }
 , findEntitiesToRespondTo: function(core) {
-    return _.filter(core.entities, collider.defaultShoudlRespond.bind(this))
+    return _.filter(
+      core.tileMap.getOthersNear(this)
+    , collider.defaultShouldRespond.bind(this)
+    )
   }
-, postPhysicsAndDamageHandler: function(prePhysicsCollisions) { }
+, postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) { }
 }
 
 function receiveDamageFrom(other) { }
