@@ -10,7 +10,7 @@ Collider.prototype = {
     return [this.x, this.y, this.width, this.height]
   }
 , drawDebug: function(ctx) {
-    ctx.lineWidth = 0.5//this.lineWidth || 1
+    ctx.lineWidth = 0.5
     ctx.strokeStyle=this.collidable
     ? colors.debugCollider.collidable
     : colors.debugCollider.nonCollidable
