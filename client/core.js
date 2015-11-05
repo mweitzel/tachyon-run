@@ -1,4 +1,4 @@
-var _ = require('lodash')
+ _ = require('lodash')
 module.exports = Core
 
 function Core(window, context) {
@@ -39,7 +39,7 @@ Core.prototype = {
     for (var i=0; i < this.entities.length; i++) {
       this.entities[i].draw && this.entities[i].draw(this.context)
       if(this.debug) {
-        this.entities[i].drawDebug && this.entities[i].drawDebug(this.context)
+        this.entities[i].drawDebug && this.entities[i].drawDebug(this.context, this)
       }
     }
 
