@@ -57,6 +57,7 @@ Core.prototype = {
       _.last(this.priorityStack).update && _.last(this.priorityStack).update(this)
     }
     else {
+      typeof this.beforeUpdate === 'function' && this.beforeUpdate(this)
       for (var i=0; i < this.entities.length; i++) {
         this.entities[i].update && this.entities[i].update(this)
       }
