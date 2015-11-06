@@ -1,5 +1,5 @@
 var applyNewFunc = require('../new-f-apply')
-  , config = require('./config').tileSize
+  , tileSize = require('./config').tileSize
 
 var spawnable = spawn.spawnable = {
   dummy: require('./spawnable/dummy')
@@ -17,5 +17,5 @@ function spawn() {
   ].concat(Array.prototype.slice.call(arguments, 1))
   var S = spawnable[spawnableIdentifier]
   if(!S) { return }
-  return applyNewFunc(S, spawnableArgs) // Array.prototype.slice.call(arguments, 1))
+  return applyNewFunc(S, spawnableArgs)
 }
