@@ -1,5 +1,5 @@
 var applyNewFunc = require('../new-f-apply')
-  , tileSize = 16
+  , config = require('./config').tileSize
 
 var spawnable = spawn.spawnable = {
   dummy: require('./spawnable/dummy')
