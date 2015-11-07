@@ -10,7 +10,7 @@ module.exports = function follow(target, offsetX, offsetY) {
     return Math.round(
       (offsetX || 0) + this.__xInterpolate
     )
-  })
+  }.bind(this))
   delegate(this, target, 'y', function(y) {
     if(typeof this.__yInterpolate === 'undefined')
       this.__yInterpolate = target.y
