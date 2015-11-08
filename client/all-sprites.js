@@ -13,5 +13,7 @@ var _ = require('lodash')
 module.exports = sprites
 
 sprites.get = function(name) {
-  return beget(_.find(sprites, {name: name}))
+  var foundSprite = _.find(sprites, {name: name})
+  if(!foundSprite) { return }
+  return beget(foundSprite)
 }
