@@ -2,6 +2,7 @@ var convertParsedToPlayable = require('./convert-parsed-level-data-to-playable')
   , Player = require('./player')
   , keys = require('./keys')
   , follow = require('./smooth-camera-follow')
+  , genBounds = require('./generate-encapsulating-bound')
 
 module.exports = function loadPlayableLevel(core, editorEntities, cursor) {
   core.sceneLoader.load('blank', function(core) {
@@ -12,7 +13,17 @@ module.exports = function loadPlayableLevel(core, editorEntities, cursor) {
 
     var player = new Player(centerOfCursor(cursor))
     core.entities.push(player)
-    follow.call(core.cameraCenter, player, 0, (player.height/2)-(core.cameraSize.y/3))
+
+    var groundBounds = _.map(
+        _.filter(core.entities, {layer:'ground'})
+      , function(o) { return o.bounds() }
+      )
+    var bounds = genBounds(groundBounds)
+    core.cameraCenter.follow = function(obj, offsetX, offsetY) {
+      follow.call(core.cameraCenter, obj, offsetX, offsetY, bounds, core.cameraSize)
+    }
+
+    core.cameraCenter.follow(player, 0, -(player.height))
 
     core.entities.push({
       update: function(core) {
