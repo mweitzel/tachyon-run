@@ -2,7 +2,6 @@ module.exports = function(boundsArray) {
   return boundsArray
   .reduce(
     function(prev, current) {
-      console.log(prev, current, right(current))
       var nextX = Math.min(prev[0], current[0])
         , nextY = Math.min(prev[1], current[1])
       return [
