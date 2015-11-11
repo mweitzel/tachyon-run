@@ -7,7 +7,6 @@ var charData = require('../media/font/font-atlas')
   , _ = require('lodash')
   , colors = require('./colors')
 
-c = charData
 module.exports = CanvasString
 
 function CanvasString(string) {
