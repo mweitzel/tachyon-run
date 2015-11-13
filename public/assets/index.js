@@ -1,4 +1,9 @@
 var domready = require('domready')
-  , main = require('../../client/main.js')
 
-if(!module.parent) { domready(main) }
+if(!module.parent) {
+  domready(function() {
+    require(
+      '../../client/main.js'
+    ).apply(this, arguments)
+  })
+}
