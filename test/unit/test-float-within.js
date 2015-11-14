@@ -55,7 +55,16 @@ test('h-middle is h-center and v-middle is v-center', function(t) {
   t.equal(float.waysToFloat['h-center'], float.waysToFloat['h-middle'])
   t.equal(float.waysToFloat['v-center'], float.waysToFloat['v-middle'])
 })
-// hmid and hcenter are same
+
+test('middle is combination of h-middle and v-middle', function(t) {
+  t.plan(1)
+  var obj = boundsToObj(1,2,3,4)
+  var bounds = [5,6,7,8]
+  t.deepEqual(
+    float(bounds, ['h-middle', 'v-middle'], obj)
+  , float(bounds, ['middle'], obj)
+  )
+})
 
 function boundsToObj(x,y,w,h) {
   return { x: x,  y: y, width: w, height: h }

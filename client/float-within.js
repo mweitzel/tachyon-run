@@ -19,6 +19,9 @@ var waysToFloat = {
 , 'h-center': hMid
 , 'v-middle': vMid
 , 'v-center': vMid
+, middle: function(obj, bounds) {
+    return _.merge(hMid(obj, bounds), vMid(obj, bounds))
+  }
 }
 
 function hMid(obj, bounds) {
