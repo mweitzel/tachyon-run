@@ -26,7 +26,7 @@ function replaceScriptsWithObjects(entities) {
     _.compact(scripts.map(function(scriptObj) {
       return scriptToObj(scriptObj)
     }))
-  , entities.push.bind(entities)
+  , function(obj) { entities.push(obj) }
   )
 }
 
