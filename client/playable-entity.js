@@ -78,7 +78,8 @@ Playable.prototype = {
     , receiveDamageFrom.bind(this)
     )
 
-    this.postPhysicsAndDamageHandler(stillCollidesWithMe)
+    this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
+    this.pickSprite && this.pickSprite(core)
   }
 , findEntitiesToRespondTo: function(core) {
     return _.filter(
