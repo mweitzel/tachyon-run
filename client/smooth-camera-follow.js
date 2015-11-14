@@ -14,7 +14,9 @@ module.exports = function follow(target, offsetX, offsetY, bounds, cameraSize) {
     if(typeof this.__xInterpolate === 'undefined')
       this.__xInterpolate = target.x
 
-    this.__xInterpolate = ((this.__xInterpolate * 10) + target.x)/11
+    this.__xInterpolate = ((this.__xInterpolate * 20) + target.x)/21
+    this.__xInterpolate = Math.min(this.__xInterpolate, target.x + 20)
+    this.__xInterpolate = Math.max(this.__xInterpolate, target.x - 20)
 
     var tx = (offsetX || 0) + this.__xInterpolate
     if(restrict) {
