@@ -1,4 +1,5 @@
- _ = require('lodash')
+var _ = require('lodash')
+
 module.exports = Core
 
 function Core(window, context) {
