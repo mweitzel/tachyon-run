@@ -196,8 +196,13 @@ function proximityTo(otherObj) {
 }
 
 function distance(b1, b2) {
+  // this makes distance polymorphic
+  // it works with both bounds and points
+  // by extending points into tiny bounds
+  if(b1.length < 4) { b1 = b1.concat(0,0,0,0) }
+  if(b2.length < 4) { b2 = b2.concat(0,0,0,0) }
   return magnitude([
-    (b1[0] + b1[2]) - (b2[0] + b2[2])
-  , (b1[1] + b1[3]) - (b2[1] + b2[3])
+    (b1[0] + b1[2]/2) - (b2[0] + b2[2]/2)
+  , (b1[1] + b1[3]/2) - (b2[1] + b2[3]/2)
   ])
 }
