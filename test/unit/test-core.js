@@ -32,6 +32,7 @@ test('#update calls draw on each entity', function(t) {
   var go2 = td.create(GameObject)
   c.entities.push(go1)
   c.entities.push(go2)
+  c.lastUpdate = c.lastUpdate - c.physicsTimeStep
   c.update()
   t.doesNotThrow(function() {
     td.verify(go1.draw())
@@ -60,6 +61,7 @@ test('#update calls drawDebug on each entity if core.debug is set', function(t) 
   var go = td.create(GameObject)
   c.entities.push(go)
 
+  c.lastUpdate = c.lastUpdate - c.physicsTimeStep
   c.debug = true
   c.update()
 
