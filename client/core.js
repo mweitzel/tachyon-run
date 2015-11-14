@@ -13,13 +13,15 @@ function Core(window, context) {
   this.priorityStack = []
 }
 
+function eqeqeq(obj) { return this === obj }
+
 Core.prototype = {
   physicsTimeStep: 1000/60
 , removeEntity: function(obj) {
-    _.remove(this.entities, obj)
+    _.remove(this.entities, eqeqeq.bind(obj))
   }
 , removePriorityObj: function(obj) {
-    _.remove(this.priorityStack, obj)
+    _.remove(this.priorityStack, eqeqeq.bind(obj))
   }
 , get cameraSize() {
     return { x: this.context.width, y: this.context.height }
