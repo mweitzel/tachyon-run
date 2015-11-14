@@ -63,6 +63,8 @@ module.exports = {
 , escapeVector: escapeVector
 , proximityTo: proximityTo
 , objClosestTo: objClosestTo
+, magnitude: magnitude
+, distance: distance
 }
 
 function defaultShouldRespond(other) {
