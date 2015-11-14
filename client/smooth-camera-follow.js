@@ -1,13 +1,13 @@
 var delegate = require('../delegate-with-transform')
-  , tilesize = require('./config').tileSize
+  , tileSize = require('./config').tileSize
 
 module.exports = function follow(target, offsetX, offsetY, bounds, cameraSize) {
   var restrict = !!bounds
   if(restrict) {
-    var left   = bounds[0]             + (cameraSize.x/2) - (1.5*tilesize)
-      , right  = bounds[0] + bounds[2] - (cameraSize.x/2) + (1.5*tilesize)
-      , top    = bounds[1]             + (cameraSize.y/2) - (1.5*tilesize)
-      , bottom = bounds[1] + bounds[3] - (cameraSize.y/2) + (1.5*tilesize)
+    var left   = bounds[0]             + (cameraSize.x/2) - (1.5*tileSize)
+      , right  = bounds[0] + bounds[2] - (cameraSize.x/2) + (1.5*tileSize)
+      , top    = bounds[1]             + (cameraSize.y/2) - (1.5*tileSize)
+      , bottom = bounds[1] + bounds[3] - (cameraSize.y/2) + (1.5*tileSize)
   }
 
   delegate(this, target, 'x', function(x) {
