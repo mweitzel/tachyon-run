@@ -62,6 +62,7 @@ module.exports = {
 , defaultShouldRespond: defaultShouldRespond
 , escapeVector: escapeVector
 , proximityTo: proximityTo
+, objClosestTo: objClosestTo
 }
 
 function defaultShouldRespond(other) {
@@ -177,6 +178,15 @@ function escapeVector(b1, b2) {
 
 function magnitude(xy) {
   return Math.sqrt(xy[0]*xy[0] + xy[1] * xy[1])
+}
+
+function objClosestTo(objs) {
+  return _.first(
+    _.sortBy(
+      objs
+    , proximityTo.bind(this)
+    )
+  )
 }
 
 function proximityTo(otherObj) {
