@@ -86,9 +86,13 @@ Core.prototype = {
     }
 
     // perform updates for all due frames, up to 0.5 seconds ago
+    var stepsTaken = 0
     while(this.lastUpdate < currentTime - this.physicsTimeStep){
+      stepsTaken++
       this.step()
     }
+    if(stepsTaken === 0) { return }
+    // draws are expensive, so don't double draw, it causes jitter
 
     this.draw()
   }
