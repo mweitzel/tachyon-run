@@ -12,7 +12,7 @@ test('focuses on object under cursor of current layer', function(t) {
   var cursor = { x: 20, y: 20 }
   var layerSelector = { layer: 'ground' }
   var inspector = new Inspector(cursor, layerSelector)
-  core = {entities:[
+  var core = {entities:[
     { layer: 'ground', name: 'potato', x: 20, y: 20 }
   , { layer: 'ground', name: 'tomato', x: 30, y: 20 }
   ]}
@@ -27,7 +27,7 @@ test('if nothing selected, render string is only x,y', function(t) {
   var cursor = { x: 20, y: 20 }
   var layerSelector = { layer: 'ground' }
   var inspector = new Inspector(cursor, layerSelector)
-  core = {entities:[ ]}
+  var core = {entities:[ ]}
 
   inspector.update(core)
   t.equal(inspector.selected, undefined)
