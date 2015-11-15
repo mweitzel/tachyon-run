@@ -1,9 +1,11 @@
 module.exports = {
   background: -100
 , ground:     0
-, foreground: 100
-, script:     200
-, gui:        300
-, menu:       400
-, prompt:     500
+, tangible:   100
+, projectile: 200
+, foreground: 300
+, script:     400
+, gui:        500
+, menu:       600
+, prompt:     700
 }
