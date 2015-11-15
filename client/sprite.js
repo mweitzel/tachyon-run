@@ -36,6 +36,8 @@ function lastChunkAsInt(string) {
 
 Sprite.prototype = {
   fps: 10
+, x: 0
+, y: 0
 , mirror: false
 , get mspf() {
     return 1/(this.fps/1000)
