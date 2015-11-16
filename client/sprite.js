@@ -81,17 +81,19 @@ Sprite.draw = function(ctx) {
   var src_xywh = this.sprite.getFrame().data
   if(this.sprite.mirror) {
     var atlasW = this.sprite.atlas.image.width
+    ctx.scale(-1, 1)
     ctx.drawImage(
-      this.sprite.atlas.image.mirror
-    , atlasW - (src_xywh[0] + src_xywh[2])
+      this.sprite.atlas.image
+    , src_xywh[0]
     , src_xywh[1]
     , src_xywh[2]
     , src_xywh[3]
-    , topLeft[0]
+    , -topLeft[0]
     , topLeft[1]
-    , src_xywh[2]
+    , -src_xywh[2]
     , src_xywh[3]
     )
+    ctx.scale(-1, 1)
   }
   else {
     ctx.drawImage(
