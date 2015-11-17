@@ -12,4 +12,5 @@ module.exports = function(canvasElement) {
 
   debug.exposeCore(core)
   debug.exposeLodash()
+  debug.exposeWhatever && debug.exposeWhatever()
 }
