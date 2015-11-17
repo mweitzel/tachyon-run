@@ -11,7 +11,7 @@ test('creates sub region by passing bounds and ratio for each componant', functi
   )
 })
 
-test.only('can grab middle third of region passing all 1/3', function(t) {
+test('can grab middle third of region passing all 1/3', function(t) {
   t.plan(1)
   var bounds = [0,0,100,100]
   t.deepEqual(
