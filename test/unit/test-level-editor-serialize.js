@@ -32,7 +32,7 @@ test('serializes blocks from a level', function(t) {
     , x: 5, y: 6 }
   , { __isLevelPiece: true
     , layer: 'script'
-    , z: 200
+    , z: 400
     , name: 'token_door'
     , script: 'whatever istructions'
     , sprite: beget( sprites[2] )

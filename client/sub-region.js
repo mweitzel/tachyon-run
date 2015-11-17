@@ -13,10 +13,10 @@ module.exports = subRegion
 
 function subRegion(bounds, fractionalCoords) {
   return [
-    bounds[0] + fractionBounds[0] * bounds[2]
-  , bounds[1] + fractionBounds[1] * bounds[3]
-  , fractionBounds[2] * bounds[2]
-  , fractionBounds[3] * bounds[3]
+    bounds[0] + fractionalCoords[0] * bounds[2]
+  , bounds[1] + fractionalCoords[1] * bounds[3]
+  , fractionalCoords[2] * bounds[2]
+  , fractionalCoords[3] * bounds[3]
   ]
 }
 

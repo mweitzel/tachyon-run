@@ -10,3 +10,12 @@ test('creates sub region by passing bounds and ratio for each componant', functi
   , [100, 100, 66.6, 50]        .map(round)
   )
 })
+
+test.only('can grab middle third of region passing all 1/3', function(t) {
+  t.plan(1)
+  var bounds = [0,0,100,100]
+  t.deepEqual(
+    sub(bounds, [1/3,1/3,1/3,1/3])  .map(round)
+  , [33.333,33.333,33.3333,33.333]   .map(round)
+  )
+})
