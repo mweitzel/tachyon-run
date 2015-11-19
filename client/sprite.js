@@ -39,6 +39,7 @@ Sprite.prototype = {
 , x: 0
 , y: 0
 , mirror: false
+, enmirror: function() { this.mirror = true; return this }
 , get mspf() {
     return 1/(this.fps/1000)
   }
