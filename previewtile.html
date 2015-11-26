@@ -1,0 +1,31 @@
+<head>
+  <style>
+    body {
+      background-repeat: repeat;
+      image-rendering: pixelated;
+    }
+    div {
+      display: none;
+    }
+  </style>
+</head>
+<div></div>
+<script>
+  var hash = location.hash.slice(1,location.hash.length)
+  if(hash == '') {
+    document.body.innerHTML = 'put relative path to tiled image after a # in the url bar'
+  }
+  else {
+    var refresh = 50
+    setInterval(
+      function() {
+        var wat = "url('"+hash+"?"+Date.now()+"')";
+        document.body.children[0].style.backgroundImage = wat
+        setTimeout(function() {
+          document.body.style.backgroundImage = wat
+        }
+        , refresh-1)
+      }
+    , refresh)
+  }
+</script>
