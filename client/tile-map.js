@@ -60,4 +60,14 @@ TileMap.prototype = {
       )
     )
   }
+, removeObj: function(object) {
+    _.forEach(
+      object.__cachedTileKeys
+    , function(key) {
+        this.map[key] = this.map[key] || []
+        _.remove(this.map[key], object)
+      }.bind(this)
+    )
+    object.__cachedTileKeys = []
+  }
 }

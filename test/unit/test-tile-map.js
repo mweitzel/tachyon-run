@@ -173,3 +173,34 @@ test('retrieves all objects cached with that key', function(t) {
   , [top]
   )
 })
+
+test.only('removeObj removes all references from both tile-map and object', function(t) {
+  t.plan(4)
+
+  var obj = { bounds: function() { return [5,5,32,32] } }
+  var tm = new TileMap(32)
+
+  tm.cache(obj)
+
+  t.deepEqual(
+    _(obj.__cachedTileKeys).sort().value()
+  , _([ '0,0', '1,0', '0,1', '1,1' ]).sort().value()
+  )
+
+  t.deepEqual(
+    tm.map
+  , { '0,0': [obj], '1,0':[obj], '0,1':[obj], '1,1':[obj] }
+  )
+
+  tm.removeObj(obj)
+
+  t.deepEqual(
+    obj.__cachedTileKeys
+  , []
+  )
+
+  t.deepEqual(
+    tm.map
+  , { '0,0': [], '1,0':[], '0,1':[], '1,1':[] }
+  )
+})
