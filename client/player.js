@@ -3,10 +3,12 @@ var _ = require('lodash')
   , keys = require('./keys')
   , sprites = require('./all-sprites')
   , closestTo = require('./collider').objClosestTo
+  , saveFile = require('./save-file')
 
 module.exports = Player
 
 function Player(attrs) {
+  _.merge(this, saveFile.load().player)
   _.merge(this, attrs)
   this.sprite = sprites.get('char_c')
   this.__defineGetter__('spriteX', function() { return this.x - 16 })
