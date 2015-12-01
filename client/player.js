@@ -4,15 +4,25 @@ var _ = require('lodash')
   , sprites = require('./all-sprites')
   , closestTo = require('./collider').objClosestTo
   , saveFile = require('./save-file')
+  , zIndex = require('./layer-z-defaults').player
+  , dynamicWeapon = require('./dynamic-weapon')
 
 module.exports = Player
 
 function Player(attrs) {
   _.merge(this, saveFile.load().player)
   _.merge(this, attrs)
+  this.team = 'player'
   this.sprite = sprites.get('char_c')
+  this.sprite = sprites.get('char_indoor_stand')
   this.__defineGetter__('spriteX', function() { return this.x - 16 })
   this.__defineGetter__('spriteY', function() { return this.y - 32 })
+  this.currentWeapon = dynamicWeapon.create(
+    this.materiaXP
+  , this.getCurrentWeaponName()
+  , this.weaponsConfig[this.getCurrentWeaponName()].materia
+  , this
+  )
 }
 
 var PE = require('./playable-entity')
@@ -21,7 +31,8 @@ var PE = require('./playable-entity')
 Player.prototype = _.merge(
   beget(PE.prototype)
 , {
-    bounds: function() {
+    z: zIndex
+  , bounds: function() {
       return [this.x-7, this.y-24, 14, 24]
     }
   , draw: function(ctx) {
@@ -31,7 +42,7 @@ Player.prototype = _.merge(
       var getKey = core.input.getKey.bind(core.input)
       var mirroredLastTime = this.sprite.mirror
 
-      if(this.__lastGroundCollisionSides.indexOf('bottom') > -1)
+      if(this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1))
         this.sprite = sprites.get('char_indoor_stand')
       else
         this.sprite = sprites.get('char_indoor_stand')
@@ -52,7 +63,7 @@ Player.prototype = _.merge(
       //if not moving, show ? or ... to show inspectabll
     }
   , respondToControllerIntent: function(core) {
-      if(this.__lastGroundCollisionSides.indexOf('bottom') > -1) {
+      if(this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)) {
         if(core.input.getKey(keys.RIGHT)) {
           this.sprite.mirror = true
           this.dx += 0.02
@@ -96,6 +107,20 @@ Player.prototype = _.merge(
       if(core.input.getKeyDown(keys.F)) {
         this.currentWeapon && this.currentWeapon.fire(core)
       }
+    }
+  }
+, {
+    computeUnusedMaterias: function() {
+      return _.difference(
+        Object.keys(this.materiaXP)
+      , _.flatten(_.pluck(this.weaponsConfig, 'materia'))
+      )
+    }
+  }
+, {
+    currentWeapon: null
+  , getCurrentWeaponName: function() {
+      return Object.keys(this.weaponsConfig)[0]
     }
   }
 )
