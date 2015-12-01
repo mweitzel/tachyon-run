@@ -17,12 +17,7 @@ function Player(attrs) {
   this.sprite = sprites.get('char_indoor_stand')
   this.__defineGetter__('spriteX', function() { return this.x - 16 })
   this.__defineGetter__('spriteY', function() { return this.y - 32 })
-  this.currentWeapon = dynamicWeapon.create(
-    this.materiaXP
-  , this.getCurrentWeaponName()
-  , this.weaponsConfig[this.getCurrentWeaponName()].materia
-  , this
-  )
+  this.resetWeapon()
 }
 
 var PE = require('./playable-entity')
@@ -121,6 +116,14 @@ Player.prototype = _.merge(
     currentWeapon: null
   , getCurrentWeaponName: function() {
       return Object.keys(this.weaponsConfig)[0]
+    }
+  , resetWeapon: function() {
+      this.currentWeapon = dynamicWeapon.create(
+        this.materiaXP
+      , this.getCurrentWeaponName()
+      , this.weaponsConfig[this.getCurrentWeaponName()].materia
+      , this
+      )
     }
   }
 )
