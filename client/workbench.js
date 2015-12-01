@@ -26,7 +26,7 @@ function Workbench(core, player) {
   , this.materias
   ])
 
-  this.editableItems = new Round(Object.keys(this.player.weapons))
+  this.editableItems = new Round(Object.keys(this.player.weaponsConfig))
 
   this.setActiveWeapon()
 
@@ -139,33 +139,33 @@ Workbench.prototype = {
     : '--'
     this.currentItemSlotsFilledText.string = [
       this.renderCurrentWeaponMateria.array.length
-    , this.getPlayersItemFromCurrentEditable().materiaArity
+    , this.getConfigObjectFromPlayerBasedOnCurrentEditable().materiaArity
     ].join('/')
   }
 , tryToPutMateriaOnItem: function() {
     if(!this.currentWeaponHasOpenMateriaSlots()) { return }
     if(!this.materias.current) { return }
-    this.player.weapons[this.editableItems.current].materia.push(this.materias.current)
-    this.renderCurrentWeaponMateria.array = this.player.weapons[this.editableItems.current].materia
+    this.player.weaponsConfig[this.editableItems.current].materia.push(this.materias.current)
+    this.renderCurrentWeaponMateria.array = this.player.weaponsConfig[this.editableItems.current].materia
     this.materias.array = this.player.computeUnusedMaterias()
   }
 , currentWeaponHasOpenMateriaSlots: function() {
-    var actualWeapon = this.getPlayersItemFromCurrentEditable()
-    return actualWeapon.materia.length < actualWeapon.materiaArity
+    var actualWeaponConfig = this.getConfigObjectFromPlayerBasedOnCurrentEditable()
+    return actualWeaponConfig.materia.length < actualWeaponConfig.materiaArity
   }
 , tryToRemoveMateriaFromItem: function() {
     if(!this.renderCurrentWeaponMateria.current) { return }
     this.renderCurrentWeaponMateria.removeCurrent()
-    this.player.weapons[this.editableItems.current].materia = this.renderCurrentWeaponMateria.array
+    this.player.weaponsConfig[this.editableItems.current].materia = this.renderCurrentWeaponMateria.array
     this.materias.array = this.player.computeUnusedMaterias()
   }
 , setActiveWeapon: function() {
-    this.renderCurrentWeaponMateria = new Round(this.getPlayersItemFromCurrentEditable().materia)
+    this.renderCurrentWeaponMateria = new Round(this.getConfigObjectFromPlayerBasedOnCurrentEditable().materia)
     this.activeSprite = allSprites.get('weapon_'+this.editableItems.current+'_large')
     this.panels.array[0] = this.renderCurrentWeaponMateria
   }
-, getPlayersItemFromCurrentEditable: function() {
-    return this.player.weapons[this.editableItems.current]
+, getConfigObjectFromPlayerBasedOnCurrentEditable: function() {
+    return this.player.weaponsConfig[this.editableItems.current]
   }
 }
 
