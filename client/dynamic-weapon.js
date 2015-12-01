@@ -6,8 +6,8 @@ var _ = require('lodash')
   , weapons = require('./weapons')
 
 module.exports = {
-  create: function(playersMateriaAndXp, weaponName, materiaNamesConfiguredForThisItem, parent) {
-    var mats = _.merge(beget(materias), _.mapValues(playersMateriaAndXp, function(v) { return {xp:v} }))
+  create: function(playerMateriaXp, weaponName, materiaNamesConfiguredForThisItem, parent) {
+    var mats = _.merge(beget(materias), _.mapValues(playerMateriaXp, function(v) { return {xp:v} }))
     mats = _.pick(mats, materiaNamesConfiguredForThisItem)
     return new BassWeapon(weaponName, mats, parent)
   }
