@@ -1,5 +1,4 @@
 var _ = require('lodash')
-  , startsWith = function(s) { return String.prototype.startsWith.bind(s) }
 
 module.exports = Sprite
 
@@ -10,10 +9,14 @@ function Sprite(atlas, meta, name, startTime) {
   this.name = name
   this.frameNames = Object
     .keys(atlas.frames)
-    .filter(function(a) { return a.startsWith(name) })
+    .filter(function(a) { return startsWith(a, name) })
     .sort(byLastChunkAsInt)
 
   initializeWidthHeight.call(this)
+}
+
+function startsWith(str1, str2) {
+  return str1.slice(0,str2.length) === str2
 }
 
 function initializeWidthHeight() {
