@@ -2,7 +2,7 @@ module.exports = { load: load }
 function load() {
   return {
     player: {
-      weapons: {
+      weaponsConfig: {
         rod: { materia: [ 'redstone_bristar' ], materiaArity: 2 }
       , fists: { materia: [ ], materiaArity: 4 }
       , banana: { materia: [ ], materiaArity: 0 }
