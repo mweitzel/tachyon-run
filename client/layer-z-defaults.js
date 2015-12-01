@@ -2,6 +2,7 @@ module.exports = {
   background: -100
 , ground:     0
 , tangible:   100
+, player:     150
 , projectile: 200
 , foreground: 300
 , script:     400
