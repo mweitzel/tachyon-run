@@ -174,7 +174,7 @@ test('retrieves all objects cached with that key', function(t) {
   )
 })
 
-test.only('removeObj removes all references from both tile-map and object', function(t) {
+test('removeObj removes all references from both tile-map and object', function(t) {
   t.plan(4)
 
   var obj = { bounds: function() { return [5,5,32,32] } }
@@ -202,5 +202,19 @@ test.only('removeObj removes all references from both tile-map and object', func
   t.deepEqual(
     tm.map
   , { '0,0': [], '1,0':[], '0,1':[], '1,1':[] }
+  )
+})
+
+test('removeObj does not break when removing untiled ojbject', function(t) {
+  t.plan(1)
+
+  var tm = new TileMap(32)
+  var obj = {hat:'hii'}
+
+  tm.removeObj(obj)
+
+  t.deepEqual(
+    {hat:'hii'}
+  , obj
   )
 })

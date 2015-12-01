@@ -19,6 +19,7 @@ Core.prototype = {
   physicsTimeStep: 1000/60
 , removeEntity: function(obj) {
     _.remove(this.entities, eqeqeq.bind(obj))
+    this.tileMap.removeObj(obj)
   }
 , removePriorityObj: function(obj) {
     _.remove(this.priorityStack, eqeqeq.bind(obj))

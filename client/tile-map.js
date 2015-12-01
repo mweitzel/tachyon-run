@@ -61,6 +61,7 @@ TileMap.prototype = {
     )
   }
 , removeObj: function(object) {
+    if(!object.__cachedTileKeys) { return }
     _.forEach(
       object.__cachedTileKeys
     , function(key) {
