@@ -5,4 +5,5 @@ module.exports = {
 , menuBackground: '#152a3e'
 , menuBorder: '#000'
 , transparent: 'rgba(0,0,0,0)'
+, circuitMenuDivider: 'rgba(168,219,255,0.5)'
 }
