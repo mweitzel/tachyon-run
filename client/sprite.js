@@ -38,7 +38,10 @@ function lastChunkAsInt(string) {
 }
 
 Sprite.prototype = {
-  fps: 10
+  fps: 3
+, loopDuration: function() {
+    return this.mspf * this.frameNames.length
+  }
 , x: 0
 , y: 0
 , mirror: false
