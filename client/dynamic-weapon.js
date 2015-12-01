@@ -41,6 +41,9 @@ BassWeapon.prototype = {
       , x: this.x
       , y: this.y
       , encounterStats: this.generateAttackStats()
+      , spriteName: this.weaponAttrs.projectileSprite
+      , contrailSprite: this.weaponAttrs.contrailSprite
+      , emitContrailPeriod: this.weaponAttrs.emitContrailPeriod
       }
     )
   }
