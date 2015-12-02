@@ -1,4 +1,5 @@
 {
   "dancer": { "fps": 0.05, "loop": true }
 , "highlight": { "fps": 3 }
+, "poof_a": { "fps": 20, "loop": false }
 }
