@@ -17,7 +17,7 @@ var test = require('tape')
 test('Sprite', function(t) {
   t.plan(3)
   t.equal(typeof Sprite, 'function', 'exports as function')
-  t.equal(Sprite.prototype.fps, 10, 'defaultsto 60 fps')
+  t.equal(Sprite.prototype.fps, 3, 'defaultsto 3 fps')
   t.equal(Sprite.prototype.loop, true, 'defaults to loop')
 })
 
