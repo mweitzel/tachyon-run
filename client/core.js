@@ -127,8 +127,8 @@ function Input(core) {
 
   function keyDown(event){
     if(event.keyCode == 8   // backspace
-    || event.keypres == 9   // tab
-    || event.keypres == 191 // '/'
+    || event.keyCode == 9   // tab
+    || event.keyCode == 191 // '/'
     ) {
       event.preventDefault()
       event.stopPropagation()
