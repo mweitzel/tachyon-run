@@ -16,7 +16,7 @@ module.exports = {
 
 function BassWeapon(weaponName, materiasOnWeapon, parent) {
   this.weaponName = weaponName
-  var m = this.materias = materiasOnWeapon
+  this.materias = materiasOnWeapon
 
   this.weaponAttrs = beget(weapons[weaponName])
   _.forEach(this.materias, function(materia) {
