@@ -3,7 +3,7 @@ var removeAfter = require('./remove-obj-after-time')
   , sprites = require('./all-sprites')
   , Sprite = require('./sprite')
   , _ = require('lodash')
-  , delay = 1000
+  , delay = 200
   , zIndex = require('./layer-z-defaults').projectile
   , beget = require('../beget')
   , timedRemove = require('./remove-obj-after-time')
@@ -34,14 +34,23 @@ function spawnProjectile(core, options) {
   })
 
   core.entities.push(projectile)
-  removeAfter(core, projectile, delay)
+  var remover = removeAfter(core, projectile, delay)
+  projectile.callJustBeforeTimeoutRemoval = function(core) {
+    if(remover.deleteAfter - core.physicsTimeStep <= core.lastUpdate) {
+      projectile.emitTimeoutParticle(core)
+      projectile.callJustBeforeTimeoutRemoval = noop
+    }
+  }
   return projectile
 }
+
+function noop() {}
 
 function Projectile() {}
 Projectile.prototype = beget(DynamicCollider.prototype)
 Projectile.prototype.postPhysicsAndDamageHandler = function(core) {
   this.emitContrailIfReady(core)
+  this.callJustBeforeTimeoutRemoval(core)
 }
 Projectile.prototype.emitContrailIfReady = function(core) {
   if(this.shouldEmitContrail(core)) { this.emitContrail(core) }
@@ -53,12 +62,15 @@ Projectile.prototype.shouldEmitContrail = function(core) {
 }
 Projectile.prototype.emitContrail = function(core) {
   this.__lastContailEmittedTime = core.lastUpdate
-
-  var p = new Particle(this.contrailSprite, { x: this.x, y: this.y })
-  var duration = null // should be specified on weapon?
+  this.emitParticle(core, this.contrailSprite)
+}
+Projectile.prototype.emitTimeoutParticle = function(core) {
+  this.emitParticle(core, 'poof_a')
+}
+Projectile.prototype.emitParticle = function(core, spriteName) {
+  var p = new Particle(spriteName, { x: this.x, y: this.y })
   core.entities.push(p)
-  timedRemove(core, p, duration || p.sprite.loopDuration())
-  timedRemove(core, p, duration || p.sprite.loopDuration())
+  timedRemove(core, p, p.sprite.loopDuration())
 }
 
 function Particle(spriteName, options) {
