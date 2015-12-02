@@ -15,5 +15,7 @@ module.exports = sprites
 sprites.get = function(name) {
   var foundSprite = _.find(sprites, {name: name})
   if(!foundSprite) { return }
-  return beget(foundSprite)
+  var s = beget(foundSprite)
+  s.startTime = Date.now()
+  return s
 }
