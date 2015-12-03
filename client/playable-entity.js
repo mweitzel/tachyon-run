@@ -11,6 +11,7 @@ function Playable() {
 }
 
 function applyGravity() {
+  if(this.ignoreGravity) { return }
   this.dy += 0.01
 }
 
