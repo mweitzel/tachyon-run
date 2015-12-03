@@ -16,7 +16,7 @@ function Player(attrs) {
   this.sprite = sprites.get('char_c')
   this.sprite = sprites.get('char_indoor_stand')
   this.__defineGetter__('spriteX', function() { return this.x - 16 })
-  this.__defineGetter__('spriteY', function() { return this.y - 32 })
+  this.__defineGetter__('spriteY', function() { return this.y - 20 })
   this.resetWeapon()
 }
 
@@ -28,7 +28,7 @@ Player.prototype = _.merge(
 , {
     z: zIndex
   , bounds: function() {
-      return [this.x-7, this.y-24, 14, 24]
+      return [this.x-7, this.y-12, 14, 24]
     }
   , draw: function(ctx) {
       Sprite.draw.call(this, ctx)
