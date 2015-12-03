@@ -34,7 +34,7 @@ function spawnProjectile(core, options) {
   })
 
   core.entities.push(projectile)
-  var remover = removeAfter(core, projectile, delay)
+  var remover = removeAfter(core, projectile, options.lifeInMs)
   projectile.callJustBeforeTimeoutRemoval = function(core) {
     if(remover.deleteAfter - core.physicsTimeStep <= core.lastUpdate) {
       projectile.emitTimeoutParticle(core)

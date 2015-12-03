@@ -54,6 +54,7 @@ BassWeapon.prototype = {
       , ignoreGravity: !this.weaponAttrs.followsGravity
       , dx: normalDx * this.weaponAttrs.velocity
       , dy: normalDy * this.weaponAttrs.velocity
+      , lifeInMs: this.weaponAttrs.lifeInMs
       }
     )
   }
