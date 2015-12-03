@@ -3,6 +3,7 @@ var _ = require('lodash')
   , applyPhysics = require('./apply-physics')
   , spyReturns = require('../tee-callback')
   , StaticCollider = require('./static-collider')
+  , receiveDamageFrom = require('./receive-damage')
 
 module.exports = Playable
 
@@ -24,6 +25,7 @@ function applySpeedCaps() {
 
 Playable.prototype = {
   collidable: true
+, health: 1
 , x: 0
 , y: 0
 , dx: 0
@@ -51,6 +53,7 @@ Playable.prototype = {
       return true
   }
 , update: function(core) {
+    if(this.dieIfDead(core)) { return }
     this.respondToControllerIntent(core)
 
     applyGravity.call(this)
@@ -82,6 +85,12 @@ Playable.prototype = {
     this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
     this.pickSprite && this.pickSprite(core)
   }
+, applyDamage: function(damage) {
+    this.health -= damage
+  }
+, dieIfDead: function(core) {
+    if(this.health <= 0) { core.removeEntity(this) ; return true }
+  }
 , findEntitiesToRespondTo: function(core) {
     return _.filter(
       core.tileMap.getOthersNear(this)
@@ -90,5 +99,3 @@ Playable.prototype = {
   }
 , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) { }
 }
-
-function receiveDamageFrom(other) { }
