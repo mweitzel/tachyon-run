@@ -16,3 +16,11 @@ test('returns normalized vectors', function(t) {
   , [0,0,0].map(function() { return 1/Math.sqrt(3) })
   )
 })
+
+test('normalizing a zero vector returns zero vector', function(t) {
+  t.plan(1)
+  t.deepEqual(
+    vector.normalize([0,0])
+  , [0,0]
+  )
+})
