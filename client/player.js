@@ -34,21 +34,24 @@ Player.prototype = _.merge(
       Sprite.draw.call(this, ctx)
     }
   , pickSprite: function(core) {
-      var getKey = core.input.getKey.bind(core.input)
+
       var mirroredLastTime = this.sprite.mirror
+      this.sprite = sprites.get('char_indoor_stand')
+      this.sprite.mirror = mirroredLastTime
 
-      if(this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1))
-        this.sprite = sprites.get('char_indoor_stand')
-      else
-        this.sprite = sprites.get('char_indoor_stand')
-        //this.sprite = sprites.get('char_c')
-
-      this.sprite.mirror = (
+      this.sprite.mirror = this.isFacingRight(core)
+    }
+  , isFacingRight: function(core) {
+      var getKey = core.input.getKey.bind(core.input)
+      return (
         ( getKey(keys.RIGHT) && getKey(keys.LEFT) && this.dx > 0 )
       ||( !getKey(keys.RIGHT) && !getKey(keys.LEFT) && this.dx > 0 )
       ||( getKey(keys.RIGHT) && !getKey(keys.LEFT))
-      ||( Math.abs(this.dx) < 0.01 && mirroredLastTime )
+      ||( Math.abs(this.dx) < 0.01 && this.sprite.mirror )
       )
+    }
+  , isFacingLeft: function(core) {
+      return !this.isFacingRight(core)
     }
   , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) {
       var usable = _.filter(stillCollidesWithMe, function(obj) { return !!obj.use })
@@ -99,7 +102,7 @@ Player.prototype = _.merge(
         this.maxDy = 0.2
       }
 
-      if(core.input.getKeyDown(keys.F)) {
+      if(core.input.getKey(keys.F)) {
         this.currentWeapon && this.currentWeapon.fire(core)
       }
     }
