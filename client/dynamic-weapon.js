@@ -4,6 +4,8 @@ var _ = require('lodash')
   , spawnProjectile = require('./spawn-projectile')
   , follow = require('./follow')
   , weapons = require('./weapons')
+  , vector = require('../vector')
+  , toVector = require('./word-directions').toVector
 
 module.exports = {
   create: function(playerMateriaXp, weaponName, materiaNamesConfiguredForThisItem, parent) {
@@ -35,6 +37,11 @@ function attackBuffFromMateria(materia) {
 
 BassWeapon.prototype = {
   fire: function(core) {
+    var dir = vector.normalize(toVector(this.parent.directionsOfIntent(core)))
+    var normalDx = dir[0]
+    var normalDy = dir[1]
+    if(!this.canFire(core)) { return }
+    this.lastShot = core.lastUpdate
     spawnProjectile(
       core
     , { team: this.team
@@ -44,8 +51,15 @@ BassWeapon.prototype = {
       , spriteName: this.weaponAttrs.projectileSprite
       , contrailSprite: this.weaponAttrs.contrailSprite
       , emitContrailPeriod: this.weaponAttrs.emitContrailPeriod
+      , ignoreGravity: !this.weaponAttrs.followsGravity
+      , dx: normalDx * this.weaponAttrs.velocity
+      , dy: normalDy * this.weaponAttrs.velocity
       }
     )
+  }
+, canFire: function(core) {
+    this.lastShot = this.lastShot || 0
+    return this.lastShot + this.weaponAttrs.firePeriod <= core.lastUpdate
   }
 , generateAttackStats: function() {
     return this.weaponAttrs
