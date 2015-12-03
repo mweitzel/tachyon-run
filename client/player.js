@@ -53,6 +53,20 @@ Player.prototype = _.merge(
   , isFacingLeft: function(core) {
       return !this.isFacingRight(core)
     }
+  , directionsOfIntent: function(core) {
+      if(core.input.getKey(keys.DOWN)) { return ['down'] }
+      var dirs = []
+      if(core.input.getKey(keys.LEFT)) { dirs.push('left') }
+      if(core.input.getKey(keys.RIGHT)) { dirs.push('right') }
+      if(dirs[0] === 'left' && dirs[1] === 'right') {
+        dirs = this.isFacingRight(core) ? ['right'] : ['left']
+      }
+      if(core.input.getKey(keys.UP)) { dirs.push('up') }
+      if(dirs.length === 0) {
+        dirs.push(this.isFacingRight(core) ? 'right' : 'left')
+      }
+      return dirs
+    }
   , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) {
       var usable = _.filter(stillCollidesWithMe, function(obj) { return !!obj.use })
       if(!_.isEmpty(usable) && core.input.getKeyDown(keys.E)){
