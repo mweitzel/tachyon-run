@@ -6,4 +6,5 @@ module.exports = {
 , menuBorder: '#000'
 , transparent: 'rgba(0,0,0,0)'
 , circuitMenuDivider: 'rgba(168,219,255,0.5)'
+, hudBackground: 'rgba(31,61,128,0.8)'
 }

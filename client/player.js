@@ -6,6 +6,7 @@ var _ = require('lodash')
   , saveFile = require('./save-file')
   , zIndex = require('./layer-z-defaults').player
   , dynamicWeapon = require('./dynamic-weapon')
+  , drawHUD = require('./player-hud')
 
 module.exports = Player
 
@@ -142,5 +143,8 @@ Player.prototype = _.merge(
       , this
       )
     }
+  }
+, {
+    drawHUD: drawHUD
   }
 )
