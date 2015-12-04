@@ -53,7 +53,7 @@ Playable.prototype = {
       return true
   }
 , update: function(core) {
-    if(this.dieIfDead(core)) { return }
+    if(this.removeIfDead(core)) { return }
     this.respondToControllerIntent(core)
 
     applyGravity.call(this)
@@ -82,14 +82,20 @@ Playable.prototype = {
     , receiveDamageFrom.bind(this)
     )
 
+    if(this.isDead()) { return }
+
     this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
     this.pickSprite && this.pickSprite(core)
   }
+, isDead: function() { return (this.health || 0) <= 0 }
 , applyDamage: function(damage) {
     this.health -= damage
   }
-, dieIfDead: function(core) {
-    if(this.health <= 0) { core.removeEntity(this) ; return true }
+, removeIfDead: function(core) {
+    if(this.isDead()) { this.remove(core) ; return true }
+  }
+, remove: function(core) {
+    core.removeEntity(this)
   }
 , findEntitiesToRespondTo: function(core) {
     return _.filter(
