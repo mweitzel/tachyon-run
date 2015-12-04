@@ -51,8 +51,10 @@ Core.prototype = {
     this.context.setTransform(1, 0, 0, 1, 0, 0)// translateDrawingsX, translateDrawingsY)
     this.context.origin = [0, 0]
 
-    for (var i=0; i < this.entities.length; i++) {
-      this.entities[i].drawHUD && this.entities[i].drawHUD(this.context, this)
+    if(this.priorityStack.length === 0) {
+      for (var i=0; i < this.entities.length; i++) {
+        this.entities[i].drawHUD && this.entities[i].drawHUD(this.context, this)
+      }
     }
 
     for (var i=0; i < this.priorityStack.length; i++) {
