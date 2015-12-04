@@ -5,16 +5,14 @@ var Sprite = require('./sprite')
   , hudBackgroundValue = 'rgba(31,61,128,0.8)'
   , hudForeground = 'rgba(212,237,255,1)'
   , playerHealthHudBackgroundMaxWidth = 50
+  , config = require('./config')
 
 
 module.exports = function(ctx, core) {
   drawPlayerHealth.call(this, ctx)
   if(this.currentWeapon) {
-    drawSpriteAt.call(
-      ctx
-    , 'small_screen_frame'
-    , currentWeaponTopLeft
-    )
+    ctx.fillStyle = hudBackgroundValue
+    drawOval(ctx, currentWeaponTopLeft[0], currentWeaponTopLeft[1], config.tileSize, config.tileSize)
     drawSpriteAt.call(
       ctx
     , ['weapon', this.currentWeapon.weaponName, 'small'].join('_')
