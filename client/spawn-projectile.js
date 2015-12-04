@@ -7,6 +7,7 @@ var removeAfter = require('./remove-obj-after-time')
   , zIndex = require('./layer-z-defaults').projectile
   , beget = require('../beget')
   , timedRemove = require('./remove-obj-after-time')
+  , config = require('./config')
 
 module.exports = spawnProjectile
 
@@ -20,6 +21,7 @@ function spawnProjectile(core, options) {
   projectile.sprite = sprites.get(options.spriteName)
   projectile.width = projectile.sprite.width - 2
   projectile.height = projectile.sprite.height - 2
+  projectile.damageDealt = 0
 
   projectile.maxDx = projectile.maxDy = 100
   projectile.minDx = projectile.minDy = -100
@@ -48,7 +50,7 @@ function noop() {}
 
 function Projectile() {}
 Projectile.prototype = beget(DynamicCollider.prototype)
-Projectile.prototype.postPhysicsAndDamageHandler = function(core) {
+Projectile.prototype.postPhysicsAndDamageHandler = function(core, stillCollidesWithMe) {
   this.emitContrailIfReady(core)
   this.callJustBeforeTimeoutRemoval(core)
 }
@@ -72,9 +74,33 @@ Projectile.prototype.emitParticle = function(core, spriteName) {
   core.entities.push(p)
   timedRemove(core, p, p.sprite.loopDuration())
 }
+Projectile.prototype.dealtDamage = function(damage) {
+  this.damageDealt += damage
+}
+Projectile.prototype.removeIfDead = function(core) {
+  if(!this.isDead()) {
+    return false
+  }
+  else {
+    core.removeEntity(this)
+    var spread = config.tileSize/2 * Math.sqrt(this.damageTypes.length)
+    for(var i = 0; i < this.damageTypes.length; i++) {
+      var p = new Particle(this.damageTypes[i]+'_hit', this.randomPoint(spread))
+      core.entities.push(p)
+      timedRemove(core, p, p.sprite.loopDuration())
+    }
+    return true
+  }
+}
+Projectile.prototype.randomPoint = function(scaler) {
+  return {
+    x: this.x + (Math.random() - 0.5) * scaler
+  , y: this.y + (Math.random() - 0.5) * scaler
+  }
+}
 
 function Particle(spriteName, options) {
-  this.sprite = sprites.get(spriteName)
+  this.sprite = sprites.get(spriteName) || sprites.get('not_found')
   this.x = options.x
   this.y = options.y
   this.spriteX = this.x - this.sprite.width/2
