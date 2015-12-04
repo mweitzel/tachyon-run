@@ -19,6 +19,8 @@ function load() {
       , bluestone_placehold_5: 1
       , bluestone_placehold_6: 1
       }
+    , health: 20
+    , maxHealth: 20
     }
   , lastSavePoint: null
   , plotPoints: [ ]
