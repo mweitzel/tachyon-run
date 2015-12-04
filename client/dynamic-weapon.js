@@ -55,6 +55,7 @@ BassWeapon.prototype = {
       , dx: normalDx * this.weaponAttrs.velocity
       , dy: normalDy * this.weaponAttrs.velocity
       , lifeInMs: this.weaponAttrs.lifeInMs
+      , damageTypes: attackTypesFromMateria(Object.keys(this.materias))
       }
     )
   }
