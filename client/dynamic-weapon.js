@@ -67,10 +67,10 @@ BassWeapon.prototype = {
   }
 }
 
-function attackTypesFromMateria(materiaList) {
+function attackTypesFromMateria(materiaNameList) {
   return _.without(
     _.map(
-      materiaList
+      materiaNameList
     , function(materiaName) { return materias[materiaName].type }
     )
   , 'summon'
