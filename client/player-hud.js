@@ -2,16 +2,20 @@ var Sprite = require('./sprite')
   , allSprites = require('./all-sprites')
   , healthTopLeft = [8, 8]
   , currentWeaponTopLeft = [8, 8 + 18]
-  , hudBackgroundValue = 'rgba(31,61,128,0.8)'
-  , hudForeground = 'rgba(212,237,255,1)'
+  , colors = require('./colors')
+  , hudForeground = colors.hudForeground
+  , hudBackground = colors.hudBackground
+  , hudBackgroundValues = colors.hudBackgroundValues
+  , hudWarningBackgroundValues = colors.hudWarningBackgroundValues
   , playerHealthHudBackgroundMaxWidth = 50
   , config = require('./config')
+  , oscillate = require('../oscillate-between-values')
 
 
 module.exports = function(ctx, core) {
-  drawPlayerHealth.call(this, ctx)
+  drawPlayerHealth.call(this, ctx, core)
   if(this.currentWeapon) {
-    ctx.fillStyle = hudBackgroundValue
+    ctx.fillStyle = hudBackground
     drawOval(ctx, currentWeaponTopLeft[0], currentWeaponTopLeft[1], config.tileSize, config.tileSize)
     drawSpriteAt.call(
       ctx
@@ -29,13 +33,16 @@ function drawOval(ctx, x, y, w, h) {
   ctx.fill()
 }
 
-function drawPlayerHealth(ctx) {
+function drawPlayerHealth(ctx, core) {
   var playerHealthHudBackgroundWidth = variableMaxWidth.call(this)
   var playerHealthHudForegroundMaxWidth = playerHealthHudBackgroundWidth
   var healthRatio = this.health / this.maxHealth
-  var remainingHealthWidth = healthRatio * playerHealthHudForegroundMaxWidth - 4
+  var remainingHealthWidth = Math.ceil(healthRatio * playerHealthHudForegroundMaxWidth - 4)
 
-  ctx.fillStyle = hudBackgroundValue
+  ctx.fillStyle = healthRatio >= 1/3
+  ? hudBackground
+  : oscilateBackgroundToRed(core.lastUpdate)
+
   drawOval(ctx, healthTopLeft[0], healthTopLeft[1], playerHealthHudBackgroundWidth, 16)
   ctx.fillStyle = hudForeground
   drawOval(ctx, healthTopLeft[0]+2, healthTopLeft[1]+2, remainingHealthWidth, 16-4)
@@ -55,4 +62,25 @@ function drawSpriteAt(name, topLeft) {
     }
   , this
   )
+}
+
+function buildWarningRGBA(time) {
+  return [
+    oscillate(hudBackgroundValues[0], hudWarningBackgroundValues[0], time)
+  , oscillate(hudBackgroundValues[1], hudWarningBackgroundValues[1], time)
+  , oscillate(hudBackgroundValues[2], hudWarningBackgroundValues[2], time)
+  ].map(Math.round.bind(Math))
+   .concat(
+     oscillate(hudBackgroundValues[3], hudWarningBackgroundValues[3], time)
+    )
+}
+
+function oscilateBackgroundToRed(time) {
+  var slow = 100
+  return [
+    'rgba('
+  , buildWarningRGBA(time/slow)
+    .join(',')
+  , ')'
+  ].join('')
 }
