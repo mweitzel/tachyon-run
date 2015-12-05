@@ -7,4 +7,7 @@ module.exports = {
 , transparent: 'rgba(0,0,0,0)'
 , circuitMenuDivider: 'rgba(168,219,255,0.5)'
 , hudBackground: 'rgba(31,61,128,0.8)'
+, hudForeground: 'rgba(168,219,255,1)'
+, hudBackgroundValues: [31,61,128,0.8]
+, hudWarningBackgroundValues: [255,0,0,0.8]
 }
