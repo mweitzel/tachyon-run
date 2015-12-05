@@ -10,9 +10,9 @@ BackgroundObj.prototype = {
 , set backgroundString(backgroundString) {
     this.__backgroundString = backgroundString
     this.sprite = sprites.get(this.__backgroundString)
-    this.draw = this.sprite
-    ? drawTiledImage
-    : drawColor
+    this.draw = (this.__backgroundString[0] === '#')
+    ? drawColor
+    : drawTiledImage
   }
 , get backgroundString() {
     return this.__backgroundString
