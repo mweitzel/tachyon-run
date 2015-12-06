@@ -4,6 +4,7 @@ var _ = require('lodash')
   , spyReturns = require('../tee-callback')
   , StaticCollider = require('./static-collider')
   , receiveDamageFrom = require('./receive-damage')
+  , Sprite = require('./sprite-preconfigured')
 
 module.exports = Playable
 
@@ -26,6 +27,8 @@ function applySpeedCaps() {
 Playable.prototype = {
   collidable: true
 , health: 1
+, invincibleTimeAfterDamage: 0
+, flickerTimeAfterDamage: 1
 , x: 0
 , y: 0
 , dx: 0
@@ -79,17 +82,59 @@ Playable.prototype = {
           stillCollidesWithMe
         , this.damagesMe.bind(this)
         )
-    , receiveDamageFrom.bind(this)
+    , function(other) { receiveDamageFrom.call(this, other, core) }.bind(this)
     )
 
     if(this.isDead()) { return }
 
     this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
     this.pickSprite && this.pickSprite(core)
+    this.updateDamageFlicker && this.updateDamageFlicker(core)
+  }
+, isInvincibleFromLastHit: function(core) {
+    return (
+      core
+      && this.invincibleTimeAfterDamage
+      && this.lastDamaged
+      && core.lastUpdate - this.invincibleTimeAfterDamage < this.lastDamaged
+    )
+  }
+, shouldFlickerFromLastHit: function(core) {
+    return (
+      core
+      && this.flickerTimeAfterDamage
+      && this.lastDamaged
+      && core.lastUpdate - this.flickerTimeAfterDamage < this.lastDamaged
+    )
+  }
+, updateDamageFlicker: function(core) {
+    this.__damageFlickerDelayer = this.__damageFlickerDelayer || 0
+    if(this.isInvincibleFromLastHit(core) || this.shouldFlickerFromLastHit(core)) {
+      if(this.damageFlickerOn === undefined) { this.damageFlickerOn = true }
+      this.__damageFlickerDelayer++
+      if(this.__damageFlickerDelayer == 3) {
+        this.damageFlickerOn = !this.damageFlickerOn
+        this.__damageFlickerDelayer = 0
+      }
+    }
+    else {
+      this.damageFlickerOn = false
+    }
+  }
+, draw: function(ctx) {
+    if(this.damageFlickerOn) { ctx.globalCompositeOperation = 'xor' }
+    Sprite.draw.call(this, ctx)
+    ctx.globalCompositeOperation = 'source-over'
   }
 , isDead: function() { return (this.health || 0) <= 0 }
-, applyDamage: function(damage) {
+, startFlickerStrongIfFlicker: function() {
+    this.damageFlickerOn = !!this.flickerTimeAfterDamage
+  }
+, applyDamage: function(damage, core) {
+    this.startFlickerStrongIfFlicker()
+    if(this.isInvincibleFromLastHit(core)) { return }
     this.health -= damage
+    this.lastDamaged = core.lastUpdate
   }
 , removeIfDead: function(core) {
     if(this.isDead()) { this.remove(core) ; return true }
