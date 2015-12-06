@@ -7,6 +7,7 @@ var _ = require('lodash')
   , zIndex = require('./layer-z-defaults').player
   , dynamicWeapon = require('./dynamic-weapon')
   , drawHUD = require('./player-hud')
+  , onDeath = require('./player-on-death')
 
 module.exports = Player
 
@@ -143,5 +144,6 @@ Player.prototype = _.merge(
   }
 , {
     drawHUD: drawHUD
+  , onDeath: onDeath
   }
 )
