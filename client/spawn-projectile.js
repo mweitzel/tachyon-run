@@ -75,6 +75,7 @@ Projectile.prototype.emitParticle = function(core, spriteName) {
   timedRemove(core, p, p.sprite.loopDuration())
 }
 Projectile.prototype.dealtDamage = function(damage) {
+  this.health = 0
   this.damageDealt += damage
 }
 Projectile.prototype.removeIfDead = function(core) {
