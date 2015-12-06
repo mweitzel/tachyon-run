@@ -5,6 +5,8 @@ var _ = require('lodash')
   , StaticCollider = require('./static-collider')
   , receiveDamageFrom = require('./receive-damage')
   , Sprite = require('./sprite-preconfigured')
+  , addTemporaryParticle = require('./add-temporary-particle')
+  , boundsHelper = require('./bounds-helper')
 
 module.exports = Playable
 
@@ -27,6 +29,8 @@ function applySpeedCaps() {
 Playable.prototype = {
   collidable: true
 , health: 1
+, deathParticles: 0
+, deathParticleSpriteName: 'entity_poof_a'
 , invincibleTimeAfterDamage: 0
 , flickerTimeAfterDamage: 1
 , x: 0
@@ -137,7 +141,11 @@ Playable.prototype = {
     this.lastDamaged = core.lastUpdate
   }
 , removeIfDead: function(core) {
-    if(this.isDead()) { this.remove(core) ; return true }
+    if(this.isDead()) {
+      this.remove(core)
+      this.onDeath && this.onDeath(core)
+      return true
+    }
   }
 , remove: function(core) {
     core.removeEntity(this)
@@ -149,4 +157,15 @@ Playable.prototype = {
     )
   }
 , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) { }
+, onDeath: function(core) {
+    addTemporaryParticle(
+      this.deathParticleSpriteName
+    , core
+    , xyArrToObj(boundsHelper.center(this.bounds()))
+    )
+  }
+}
+
+function xyArrToObj(arr) {
+  return { x: arr[0], y: arr[1] }
 }
