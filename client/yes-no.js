@@ -15,17 +15,6 @@ function YesNo(core, questionText, successCallback, yesText, noText) {
     this.exit()
   }
 
-  var menu = new BaseMenu(core, menuAttrs, menuOptions)
-
-  _.merge(
-    menu
-  , floatWithin(
-      pad(
-        [ 0, 0, core.context.width, core.context.height ]
-      , config.tileSize
-      )
-    , ['middle', 'right']
-    , menu.rstring
-    )
-  )
+  ( new BaseMenu(core, menuAttrs, menuOptions)
+  ).float(['middle', 'right'])
 }
