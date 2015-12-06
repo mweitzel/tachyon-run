@@ -6,6 +6,7 @@ var keys = require('./keys')
   , delegate = require('../delegate-with-transform')
   , menuBorder = require('./menu-border')
   , _ = require('lodash')
+  , floatWithin = require('./float-within')
 
 module.exports = Menu
 
@@ -13,6 +14,8 @@ function Menu(core, attrs, menuOptions) {
   _.merge(this, attrs) // top, left, width, height, modal, border, cancel
 
   core.priorityStack.push(this)
+  this.coreContextWidth = core.context.width
+  this.coreContextHeight = core.context.height
   this.exit = removeFromCore.bind(this, core)
   this.rstring = new Rstring('')
   this.rstring.backgroundColor = colors.transparent
@@ -91,5 +94,16 @@ Menu.prototype = {
     if(this.border) {
       menuBorder('circuit', menuBounds).draw(ctx)
     }
+  }
+, float: function(directions) {
+    _.merge(
+      this
+    , floatWithin(
+        [ 0, 0, this.coreContextWidth, this.coreContextHeight ]
+      , directions
+      , this
+      )
+    )
+    return this
   }
 }
