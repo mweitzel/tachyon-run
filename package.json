@@ -1,0 +1,27 @@
+{
+  "name": "bastille"
+, "author": "Matthew Weitzel"
+, "dependencies": {
+    "brfs": "1.4.x"
+  , "browserify": "11.2.x"
+  , "co": "4.6.x"
+  , "concat-stream": "1.5.x"
+  , "domready": "1.0.x"
+  , "gamefroot-texture-packer": "1.1.x"
+  , "img-cat": "0.0.x"
+  , "koa-compose": "2.3.x"
+  , "koa-route": "2.4.x"
+  , "koa": "1.0.x"
+  , "lodash": "3.10.1"
+  , "minifyify": "7.1.x"
+  , "node-jsx": "0.13.x"
+  , "node-sass": "3.3.x"
+  , "pngjs": "2.0.x"
+  , "react": "0.13.x"
+  }
+, "devDependencies": {
+    "tape": "4.2.x"
+  , "testdouble": "0.2.0"
+  }
+, "engine": "node >= 0.12.5"
+}

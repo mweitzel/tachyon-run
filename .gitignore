@@ -5,3 +5,4 @@ media/atlas-1.*
 *.piko
 *.piko-png
 notes/*
+node_modules/*
