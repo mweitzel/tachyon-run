@@ -69,7 +69,7 @@ Projectile.prototype.emitContrail = function(core) {
   this.emitParticle(core, this.contrailSprite)
 }
 Projectile.prototype.emitTimeoutParticle = function(core) {
-  this.emitParticle(core, 'poof_a')
+  this.emitParticle(core, 'projectile_poof_a')
 }
 Projectile.prototype.emitParticle = function(core, spriteName) {
   addTemporaryParticle(spriteName, core, { x: this.x, y: this.y })
