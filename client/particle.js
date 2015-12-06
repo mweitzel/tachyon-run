@@ -1,4 +1,6 @@
 var Sprite = require('./sprite')
+  , sprites = require('./all-sprites')
+
 module.exports = Particle
 
 function Particle(spriteName, options) {
