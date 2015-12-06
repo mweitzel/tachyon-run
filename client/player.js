@@ -28,14 +28,11 @@ Player.prototype = _.merge(
   beget(PE.prototype)
 , {
     z: zIndex
+  , invincibleTimeAfterDamage: 500
   , bounds: function() {
       return [this.x-7, this.y-12, 14, 24]
     }
-  , draw: function(ctx) {
-      Sprite.draw.call(this, ctx)
-    }
   , pickSprite: function(core) {
-
       var mirroredLastTime = this.sprite.mirror
       this.sprite = sprites.get('char_indoor_stand')
       this.sprite.mirror = mirroredLastTime
