@@ -23,8 +23,8 @@ Dummy.prototype = _.merge(
   beget(
     PE.prototype
   )
-, { draw: Sprite.draw
-  , bounds: function() {
+, {
+    bounds: function() {
       return [this.x - this.width/2, this.y - this.height, this.width, this.height]
     }
   , use: function(user, core) {
