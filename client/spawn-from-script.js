@@ -3,6 +3,7 @@ var applyNewFunc = require('../new-f-apply')
 
 var spawnable = spawn.spawnable = {
   dummy: require('./spawnable/dummy')
+, spike: require('./spawnable/spike')
 }
 
 module.exports = spawn
