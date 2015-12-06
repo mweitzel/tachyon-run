@@ -8,10 +8,10 @@ var _ = require('lodash')
 
 module.exports = receiveDamageFrom
 
-function receiveDamageFrom(other) {
+function receiveDamageFrom(other, core) {
   var damage = calculate(other.encounterStats || {}, this.encounterStats || {})
-  this.applyDamage && this.applyDamage(damage)
-  other.dealtDamage && other.dealtDamage(damage)
+  damage && this.applyDamage  && this.applyDamage(damage, core)
+  damage && other.dealtDamage && other.dealtDamage(damage, core)
 }
 
 receiveDamageFrom.calculate = calculate
@@ -25,5 +25,5 @@ function calculate(from, to) {
     var resist = 1 -   (to[type+'Resist'] || 0)
     return carry * buff * resist
   }, 1)
-  return multiplier * (from.baseDamage || 1)
+  return multiplier * (from.baseDamage || 0)
 }
