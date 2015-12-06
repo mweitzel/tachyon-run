@@ -23,9 +23,10 @@ function Menu(core, attrs, menuOptions) {
   this.menuOptions = _.clone(menuOptions)
   this.menuKeys = Object.keys(this.menuOptions)
 
-  if(this.cancelText)
+  if(this.cancelText) {
     this.menuKeys.push(this.cancelText)
     this.menuOptions[this.cancelText] = (this.exit.bind(this))
+  }
 
   this.index = 0
   this.updateRstring()
@@ -54,12 +55,14 @@ Menu.prototype = {
   }
 , performCurrentIndex: function() {
     var selection = this.menuOptions[this.menuKeys[this.index]]
+    if(this.exitOnSelection) { this.exit() }
     selection.call(this)
   }
 , update: function(core) {
-    if(
-      (core.input.getKey(keys.CTRL) && core.input.getKeyDown(keys.C))
-    || core.input.getKeyDown(keys.ESCAPE)
+    if(this.cancelText
+    &&((core.input.getKey(keys.CTRL) && core.input.getKeyDown(keys.C))
+        || core.input.getKeyDown(keys.ESCAPE)
+      )
     ) {
       return this.exit()
     }
