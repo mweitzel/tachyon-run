@@ -8,7 +8,7 @@ var Sprite = require('../sprite-preconfigured')
 module.exports = Dummy
 
 function Dummy(x, y) {
-  this.team = 'hostile'
+  this.team = 'neutral'
   this.x = x
   this.y = y
   this.sprite = sprites.get('dummy')
