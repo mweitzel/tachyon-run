@@ -9,6 +9,7 @@ var removeAfter = require('./remove-obj-after-time')
   , timedRemove = require('./remove-obj-after-time')
   , config = require('./config')
   , Particle = require('./particle')
+  , addTemporaryParticle = require('./add-temporary-particle')
 
 module.exports = spawnProjectile
 
@@ -71,10 +72,9 @@ Projectile.prototype.emitTimeoutParticle = function(core) {
   this.emitParticle(core, 'poof_a')
 }
 Projectile.prototype.emitParticle = function(core, spriteName) {
-  var p = new Particle(spriteName, { x: this.x, y: this.y })
-  core.entities.push(p)
-  timedRemove(core, p, p.sprite.loopDuration())
+  addTemporaryParticle(spriteName, core, { x: this.x, y: this.y })
 }
+
 Projectile.prototype.dealtDamage = function(damage) {
   this.health = 0
   this.damageDealt += damage
@@ -87,9 +87,11 @@ Projectile.prototype.removeIfDead = function(core) {
     core.removeEntity(this)
     var spread = config.tileSize/2 * Math.sqrt(this.damageTypes.length)
     for(var i = 0; i < this.damageTypes.length; i++) {
-      var p = new Particle(this.damageTypes[i]+'_hit', this.randomPoint(spread))
-      core.entities.push(p)
-      timedRemove(core, p, p.sprite.loopDuration())
+      addTemporaryParticle(
+        this.damageTypes[i]+'_hit'
+      , core
+      , this.randomPoint(spread)
+      )
     }
     return true
   }
