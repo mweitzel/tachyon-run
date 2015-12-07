@@ -28,7 +28,12 @@ module.exports = function loadPlayableLevel(core, editorEntities, cursor) {
     core.entities.push({
       update: function(core) {
         if(core.input.getKey(keys.CTRL) && core.input.getKeyDown(keys.C)) {
-          core.sceneLoader.load('level-editor')
+          var followedObj = core.cameraCenter.__targetForSmoothFollow
+          var xy = { x: followedObj.x, y: followedObj.y }
+          core.sceneLoader.load('level-editor', function(core) {
+            this.cursor.x = Math.round((xy.x-8)/16) * 16
+            this.cursor.y = Math.round((xy.y-8)/16) * 16
+          })
         }
         if(core.input.getKey(keys.SHIFT) && core.input.getKeyDown(keys[1])) {
           core.debug = !core.debug

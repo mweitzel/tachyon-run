@@ -21,6 +21,7 @@ module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
 
   var cursor = new Cursor()
+  this.cursor = cursor
   follow.call(core.cameraCenter, cursor)
   add(cursor)
 

@@ -21,8 +21,8 @@ Loader.prototype = {
     setTimeout( // don't mutate array while core is iterating over it
       function(){
         this.__prepCoreForNewScene()
-        new scenes[sceneName](this.core)
-        callback && callback(this.core)
+        var scene = new scenes[sceneName](this.core)
+        callback && callback.call(scene, this.core)
         this.core.play()
       }.bind(this)
       , 0
