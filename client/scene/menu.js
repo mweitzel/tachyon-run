@@ -1,6 +1,8 @@
 var Menu = require('../base-menu')
   , follow = require('../follow')
   , boundHelper = require('../bounds-helper')
+  , layers = require('../layer-z-defaults')
+  , loadLevelPieces = require('../serialized-level-data-to-game-objects')
 
 module.exports = function(core) {
   var menu = new Menu(
@@ -12,6 +14,10 @@ module.exports = function(core) {
     , settings: noop
     }
   ).float(['middle'])
+
+  loadLevelPieces('menu').forEach(function(levelPiece) {
+    core.entities.push(levelPiece)
+  })
 }
 
 function noop() {}
