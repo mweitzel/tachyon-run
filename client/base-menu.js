@@ -12,11 +12,21 @@ module.exports = Menu
 
 function Menu(core, attrs, menuOptions) {
   _.merge(this, attrs) // top, left, width, height, modal, border, cancel
+  if(this.isBackgroundObject) {
+    core.entities.push(this)
+    this.drawHUD = drawMenu
+    this.exit = function() {}
+  }
+  else {
+    core.priorityStack.push(this)
+    this.draw = drawMenu
+    this.exit = removeFromCore.bind(this, core)
+  }
 
-  core.priorityStack.push(this)
+  this.x = 0
+  this.y = 0
   this.coreContextWidth = core.context.width
   this.coreContextHeight = core.context.height
-  this.exit = removeFromCore.bind(this, core)
   this.rstring = new Rstring('')
   this.rstring.backgroundColor = colors.transparent
   this.width || delegate(this, this.rstring, 'width', function(w) { return w + 16 })
@@ -79,10 +89,23 @@ Menu.prototype = {
       this.performCurrentIndex()
     }
   }
-, draw: function(ctx) {
+, float: function(directions) {
+    _.merge(
+      this
+    , floatWithin(
+        [ this.x, this.y, this.coreContextWidth, this.coreContextHeight ]
+      , directions
+      , this
+      )
+    )
+    return this
+  }
+}
+
+function drawMenu(ctx) {
     if(this.modal) {
       ctx.fillStyle = colors.menuModelBackgroundFade
-      ctx.fillRect(0, 0, ctx.width, ctx.height)
+      ctx.fillRect(this.x, this.y, ctx.width, ctx.height)
     }
     var mbs = config.menuBorderSize
     var menuBounds =  [this.x, this.y, this.width, this.height]
@@ -95,15 +118,3 @@ Menu.prototype = {
       menuBorder('circuit', menuBounds).draw(ctx)
     }
   }
-, float: function(directions) {
-    _.merge(
-      this
-    , floatWithin(
-        [ 0, 0, this.coreContextWidth, this.coreContextHeight ]
-      , directions
-      , this
-      )
-    )
-    return this
-  }
-}
