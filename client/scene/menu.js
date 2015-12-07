@@ -12,6 +12,9 @@ module.exports = function(core) {
       'new game': noop
     , continue: noop
     , settings: noop
+    , "editor": function() {
+        core.sceneLoader.load('level-editor')
+      }
     }
   ).float(['middle'])
 
