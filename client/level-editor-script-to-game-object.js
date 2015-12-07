@@ -1,7 +1,7 @@
 var commandResponders = scriptToObj.commandResponders = {
       'spawn': require('./spawn-from-script')
     , 'usable': require('./usable-from-script')
-    , 'door': function() {}
+    , 'door': require('./door-from-script')
     }
   , legitCommands = Object.keys(commandResponders)
 
