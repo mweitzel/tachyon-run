@@ -10,6 +10,8 @@ module.exports = function follow(target, offsetX, offsetY, bounds, cameraSize) {
       , bottom = bounds[1] + bounds[3] - (cameraSize.y/2) + (1.5*tileSize)
   }
 
+  this.__targetForSmoothFollow = target
+
   delegate(this, target, 'x', function(x) {
     if(typeof this.__xInterpolate === 'undefined')
       this.__xInterpolate = target.x
