@@ -15,6 +15,6 @@ function YesNo(core, questionText, successCallback, yesText, noText) {
     this.exit()
   }
 
-  ( new BaseMenu(core, menuAttrs, menuOptions)
+  ;( new BaseMenu(core, menuAttrs, menuOptions)
   ).float(['middle', 'right'])
 }
