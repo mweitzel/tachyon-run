@@ -10,7 +10,12 @@ module.exports = function(core) {
   , { name: 'You just died.', border: true, exitOnSelection: true }
   , {
       "try again": function() {}
-    , "main menu": function() {}
+    , "editor": function() {
+        core.sceneLoader.load('level-editor')
+      }
+    , "main menu": function() {
+        core.sceneLoader.load('menu')
+      }
     }
   ).float(['middle'])
 }
