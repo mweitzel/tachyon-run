@@ -1,5 +1,5 @@
 var test = require('tape')
-  , Editor = require('../../client/scene-level-editor')
+  , Editor = require('../../client/scene/level-editor')
   , Cursor = require('../../client/level-editor-cursor')
   , Previewer = require('../../client/level-editor-piece-previewer')
   , td = require('testdouble')

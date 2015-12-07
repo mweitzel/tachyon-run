@@ -1,6 +1,6 @@
-var keys = require('./keys')
-  , atlas = require('./atlas')
-  , Sprite = require('./sprite-preconfigured')
+var keys = require('../keys')
+  , atlas = require('../atlas')
+  , Sprite = require('../sprite-preconfigured')
 
 module.exports = function(core) {
   core.entities.push(new MenuObject())

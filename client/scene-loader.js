@@ -1,9 +1,9 @@
 var maxTileSize = 32
   , TileMap = require('./tile-map')
 var scenes = {
-  'menu': require('./scene-menu')
-, 'level-editor': require('./scene-level-editor')
-, 'blank': require('./scene-blank')
+  'menu': require('./scene/menu')
+, 'level-editor': require('./scene/level-editor')
+, 'blank': require('./scene/blank')
 }
 
 module.exports = Loader
