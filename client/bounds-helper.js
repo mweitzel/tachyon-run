@@ -5,4 +5,7 @@ module.exports = {
     , b[1] + b[3]/2
     ]
   }
+, xyArrToObj: function(arr) {
+    return { x: arr[0], y: arr[1] }
+  }
 }

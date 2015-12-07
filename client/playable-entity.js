@@ -161,11 +161,7 @@ Playable.prototype = {
     addTemporaryParticle(
       this.deathParticleSpriteName
     , core
-    , xyArrToObj(boundsHelper.center(this.bounds()))
+    , boundsHelper.xyArrToObj(boundsHelper.center(this.bounds()))
     )
   }
-}
-
-function xyArrToObj(arr) {
-  return { x: arr[0], y: arr[1] }
 }
