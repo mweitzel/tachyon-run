@@ -2,7 +2,6 @@ var keys = require('../keys')
   , Sprite = require('../sprite-preconfigured')
   , getSpriteNames = require('../sprite-name-prefixes')
   , atlasIndex = require('../sprite-atlas-index.js')
-  , spriteNames = getSpriteNames(Object.keys(atlasIndex.frames))
   , Cursor = require('../level-editor-cursor')
   , Preview = require('../level-editor-piece-previewer')
   , delegate = require('../../delegate-with-transform')
@@ -16,6 +15,7 @@ var keys = require('../keys')
   , MetaWatcher = require('../meta-data-watcher')
   , Inspector = require('../overlay-inspector')
   , loadPlayableFromEditorEntities = require('../load-playable-level-from-editor-entities')
+  , allSprites = require('../all-sprites')
 
 module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
@@ -33,13 +33,12 @@ module.exports = function(core) {
   ]
   var layerSelector = new LayerSelector(layers)
   add(layerSelector)
-  var spriteArray = makeSprites(spriteNames)
-  var saver = new Saver(spriteArray)
+  var saver = new Saver(allSprites)
   try{ saver.load(core.entities, getLevelDataFromLocalStorage()) }
   catch(e) { saver.clear(core.entities) }
 
-  var preview = new Preview(spriteArray)
-  var placer = new Placer(spriteArray)
+  var preview = new Preview(allSprites)
+  var placer = new Placer(allSprites)
   var cameraSize = core.cameraSize
   follow.call(layerSelector, core.cameraCenter, -cameraSize.x/2, -cameraSize.y/2)
   follow.call(preview, layerSelector, 0, layerSelector.height)
@@ -139,10 +138,4 @@ function setToLocalStorageAndLog(data) {
 
 function getLevelDataFromLocalStorage() {
   return localStorage.levelQuickSave
-}
-
-function makeSprites() {
-  return spriteNames.map(function(name) {
-    return new Sprite(name)
-  })
 }
