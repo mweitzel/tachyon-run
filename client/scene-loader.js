@@ -28,7 +28,7 @@ Loader.prototype = {
       , 0
     )
   }
-, __prepCoreForNewScene: function(scenename) {
+, __prepCoreForNewScene: function() {
     emptyArray(this.core.entities)
     this.core.cameraCenter = { x: 0, y: 0 } // god knows what happens to this object
     this.core.tileMap = new TileMap(maxTileSize)
