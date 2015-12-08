@@ -1,11 +1,13 @@
 var _ = require('lodash')
   , drawSprite = require('./sprite').draw
   , zLayers = require('./layer-z-defaults')
+  , beget = require('../beget')
 
 module.exports = PiecePlacer
 
 function PiecePlacer(sprites) {
   this.__sprites = sprites
+  this.__hold = null
 }
 
 PiecePlacer.prototype = {
@@ -15,15 +17,21 @@ PiecePlacer.prototype = {
     coreEntities.push(piece)
     return piece
   }
+, pasteAtCoords: function(coreEntities, x, y, layer) {
+    if(!this.__hold) { return }
+    if(this.__hold.layer !== layer) { return }
+    this.removeFromCoords(coreEntities, x, y, layer)
+    var piece = beget(this.__hold)
+    piece.x = x
+    piece.y = y
+    coreEntities.push(piece)
+    return piece
+  }
+, yankAtCoords: function(coreEntities, x, y, layer) {
+    return this.__hold = _.find(coreEntities, isPieceAtCoords.bind(null, layer, x, y))
+  }
 , removeFromCoords: function(coreEntities, x, y, layer) {
-    _.remove(coreEntities, function(gameObject) {
-      return (
-        gameObject.__isLevelPiece &&
-        gameObject.layer === layer &&
-        gameObject.x === x &&
-        gameObject.y === y
-      )
-    })
+    _.remove(coreEntities, isPieceAtCoords.bind(null, layer, x, y))
   }
 , __createGameObject: function(layer, name, x, y) {
     var sprite = _.find(this.__sprites, { name: name })
@@ -34,6 +42,15 @@ PiecePlacer.prototype = {
     , name: name
     })
   }
+}
+
+function isPieceAtCoords(layer, x, y, gameObject) {
+  return (
+    gameObject.__isLevelPiece &&
+    gameObject.layer === layer &&
+    gameObject.x === x &&
+    gameObject.y === y
+  )
 }
 
 function LevelEditorGameObject(attrs) {

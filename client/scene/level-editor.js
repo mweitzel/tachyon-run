@@ -111,6 +111,22 @@ KeyController.prototype = {
         )
       }
     }
+    if(core.input.getKeyDown(keys.Y)) {
+      this.placer.yankAtCoords(
+        core.entities
+      , this.cursor.x
+      , this.cursor.y
+      , this.layerSelector.layer
+      )
+    }
+    if(core.input.getKeyDown(keys.P)) {
+      this.placer.pasteAtCoords(
+        core.entities
+      , this.cursor.x
+      , this.cursor.y
+      , this.layerSelector.layer
+      )
+    }
     if(core.input.getKey(keys.D)) {
       this.placer.removeFromCoords(
         core.entities
