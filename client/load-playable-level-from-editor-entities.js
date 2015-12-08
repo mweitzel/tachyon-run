@@ -1,4 +1,6 @@
-var convertParsedToPlayable = require('./convert-parsed-level-data-to-playable')
+var converter = require('./convert-parsed-level-data-to-playable')
+  , convertSerializedToGameObject = require('./serialized-level-data-to-game-objects')
+  , convertParsedToPlayable = converter.bind(converter, convertSerializedToGameObject)
   , Player = require('./player')
   , keys = require('./keys')
   , setupSmoothCamera = require('./set-up-smooth-camera-for-loaded-level-and-player')

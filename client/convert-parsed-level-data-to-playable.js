@@ -9,14 +9,14 @@ var _ = require('lodash')
 
 module.exports = convertParsedLevelDataToPlayable
 
-function convertParsedLevelDataToPlayable(levelEditorEntities) {
+function convertParsedLevelDataToPlayable(recursiveSerializedToGOFn, levelEditorEntities) {
   makeGroundPiecesStaticCollidable(levelEditorEntities)
   addBackGroundAndMetaDataWatcher(levelEditorEntities)
-  replaceScriptsWithObjects(levelEditorEntities)
+  replaceScriptsWithObjects(recursiveSerializedToGOFn, levelEditorEntities)
   return levelEditorEntities
 }
 
-function replaceScriptsWithObjects(entities) {
+function replaceScriptsWithObjects(recursiveSerializedToGOFn, entities) {
   var scripts = _.filter(entities, { __isLevelPiece: true, layer: 'script' })
   _.forEach(
     scripts
@@ -24,7 +24,7 @@ function replaceScriptsWithObjects(entities) {
   )
   _.forEach(
     _.compact(scripts.map(function(scriptObj) {
-      return scriptToObj(scriptObj)
+      return scriptToObj(recursiveSerializedToGOFn, scriptObj)
     }))
   , function(obj) { entities.push(obj) }
   )

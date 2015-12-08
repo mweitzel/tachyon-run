@@ -7,10 +7,15 @@ var commandResponders = scriptToObj.commandResponders = {
 
 module.exports = scriptToObj
 
-function scriptToObj(levelEditorScript) {
+function scriptToObj(recursiveSerializedToGOFn, levelEditorScript) {
   var responder = commandResponders[getCommand(levelEditorScript.script)]
   if(!responder) { return }
-  return responder.apply(levelEditorScript, getArgs(levelEditorScript.script))
+  if(getCommand(levelEditorScript.script) === 'door') {
+    return responder.apply(levelEditorScript, [recursiveSerializedToGOFn].concat(getArgs(levelEditorScript.script)))
+  }
+  else {
+    return responder.apply(levelEditorScript, getArgs(levelEditorScript.script))
+  }
 }
 
 function getCommand(scriptText) {
