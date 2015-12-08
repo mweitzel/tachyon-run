@@ -26,11 +26,20 @@ module.exports = function loadPlayableLevel(core, editorEntities, cursor) {
             this.cursor.x = Math.round((xy.x-8)/16) * 16
             this.cursor.y = Math.round((xy.y-8)/16) * 16
           }
-          core.sceneLoader.load('level-editor', followedObj ? centerCameraOnFollowedObj : null)
+          if(this.__changedLevel || !followedObj) {
+            core.sceneLoader.load('level-editor')
+          }
+          else {
+            core.sceneLoader.load('level-editor', followedObj ? centerCameraOnFollowedObj : null)
+          }
         }
         if(core.input.getKey(keys.SHIFT) && core.input.getKeyDown(keys[1])) {
           core.debug = !core.debug
         }
+      }
+    , persistLevelLoad: true
+    , onLevelChange: function(core) {
+        this.__changedLevel = true
       }
     })
   })
