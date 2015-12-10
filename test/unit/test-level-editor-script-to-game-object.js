@@ -1,31 +1,36 @@
 var test = require('tape')
+  , td = require('testdouble')
   , scriptToObj = require('../../client/level-editor-script-to-game-object')
 
-test('do nothing if command is illegal', function(t) {
+test('recursive generator is passed to door', function(t) {
   t.plan(1)
-  t.equal(
-    scriptToObj({script: 'illegalCommand scripts are rejected and retun undefined'})
-  , undefined
-  )
+
+  var saveDoor = scriptToObj.commandResponders.door
+  scriptToObj.commandResponders.door = td.create()
+
+  var existingObjGenerator = td.create()
+
+  scriptToObj(existingObjGenerator, { script: 'door arg1 arg2' })
+
+  t.doesNotThrow(function() {
+    td.verify(scriptToObj.commandResponders.door(existingObjGenerator, 'arg1', 'arg2'))
+  })
+
+  scriptToObj.commandResponders.door = saveDoor
 })
 
-test(
-  [ 'if command responder exists,'
-  , 'invokes command responder of script\'s first arg\'s name'
-  , 'with script object as this and remaining args applied'
-  ].join(' ')
-, function(t) {
+test.only('recursive generator is not passed to things other than door', function(t) {
   t.plan(1)
-  // exemplify both "this" and arguments
-  scriptToObj.commandResponders.test_1 = function() {
-    return [
-      this.a
-    , Array.prototype.slice.call(arguments)
-    ]
-  }
-  t.deepEqual(
-    scriptToObj({a: 'hello', script: 'test_1 first second third'})
-  , ['hello', ['first', 'second', 'third']]
-  )
-  delete scriptToObj.commandResponders.test_1
+
+  scriptToObj.commandResponders.POTATO = td.create()
+
+  var existingObjGenerator = td.create()
+
+  scriptToObj(existingObjGenerator, { script: 'POTATO arg1 arg2' })
+
+  t.doesNotThrow(function() {
+    td.verify(scriptToObj.commandResponders.POTATO('arg1', 'arg2'))
+  })
+
+  delete scriptToObj.commandResponders.POTATO
 })
