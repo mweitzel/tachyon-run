@@ -39,3 +39,12 @@ test('only done if all characters showing', function(t) {
   , true
   )
 })
+
+test.only('test against bug where lines dissapear', function(t) {
+  t.plan(1)
+  var text = '1\n3\n5\n7\n9\n1\n3\n5'
+  t.equal(
+    tl(text, 15, 15).text
+  , text
+  )
+})
