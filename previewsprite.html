@@ -1,0 +1,56 @@
+<head>
+  <style>
+    html { background-color: darkgrey; }
+    body {
+      image-rendering: pixelated;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    div {
+      display: none;
+    }
+  </style>
+</head>
+<div></div>
+<script>
+
+  var hash = location.hash.slice(1,location.hash.length)
+
+  function getAllImages() {
+    var beginI = hash.indexOf('[')
+    var endI = hash.indexOf(']')
+    var imageBeginning = hash.slice(0,beginI)
+    var imageEnd = hash.slice(endI+1, hash.length)
+    var range = JSON.parse(hash.slice(beginI, endI+1))
+    var images = []
+    for(var i =  range[0] ; i <= range[1] ; i++ ) {
+      images.push(
+        imageBeginning + i + imageEnd
+      )
+    }
+    return images
+  }
+
+  var images = getAllImages()
+  var currentIndex = 0
+  console.log(images, currentIndex )
+
+  if(hash == '') {
+    document.body.innerHTML = 'put relative path to tiled image after a # in the url bar'
+  }
+  else {
+    var refresh = 200
+    setInterval(
+      function() {
+        var wat = "url('"+images[currentIndex]+"?"+Date.now()+"')";
+        document.body.children[0].style.backgroundImage = wat
+        setTimeout(function() {
+          document.body.style.backgroundImage = wat
+          currentIndex++
+          currentIndex = currentIndex % images.length
+        }
+        , refresh-4)
+      }
+    , refresh)
+  }
+</script>
