@@ -100,6 +100,7 @@ Menu.prototype = {
     )
     return this
   }
+, drawMenu: drawMenu
 }
 
 function drawMenu(ctx) {
