@@ -20,6 +20,10 @@ var commands = {
     , levelData[level]
     )
   }
+, '?': function() {
+    console.log('valid commands:')
+    console.log(Object.keys(commands).join('\n'))
+  }
 , fail: function(core) {
     console.log('invalid command:', arguments)
   }
