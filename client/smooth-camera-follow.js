@@ -9,8 +9,8 @@ module.exports = function follow(target, offsetX, offsetY, bounds, cameraSize) {
       , right  = bounds[0] + bounds[2] - (cameraSize.x/2) + (1.5*tileSize)
       , top    = bounds[1]             + (cameraSize.y/2) - (1.5*tileSize)
       , bottom = bounds[1] + bounds[3] - (cameraSize.y/2) + (1.5*tileSize)
-    if( left > right ) { left = right = (left+right)/2 }
-    if( top > bottom ) { top = bottom = (top+bottom)/2 }
+    if( bounds[2] <= cameraSize.x ) { left = right = (left+right)/2 }
+    if( bounds[3] <= cameraSize.y ) { top = bottom = (top+bottom)/2 }
   }
 
   this.__targetForSmoothFollow = target
