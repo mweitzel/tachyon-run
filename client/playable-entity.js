@@ -74,6 +74,13 @@ Playable.prototype = {
     , spyReturns(spy, this.findEntitiesToRespondTo.bind(this, core))
     )
 
+    if(this.__lastGroundCollisionSides.indexOf('bottom') > -1) {
+      this.__lastGrounded = core.lastUpdate
+    }
+    else {
+      this.__lastAirborn = core.lastUpdate
+    }
+
     core.tileMap.cache(this)
 
     var stillCollidesWithMe = _.filter(
