@@ -124,8 +124,12 @@ Core.prototype = {
 
 function Input(core) {
   this.core = core
-  this.keyCodesDown = _.fill(new Array(256), 0)
-  this.keyCodesUp = _.fill(new Array(256), 0)
+
+  function resetKeyCodes() {
+    this.keyCodesDown = _.fill(new Array(256), 0)
+    this.keyCodesUp = _.fill(new Array(256), 0)
+  }
+  resetKeyCodes.call(this)
 
   function keyDown(event){
     if(event.keyCode == 8   // backspace
@@ -148,6 +152,7 @@ function Input(core) {
   this.keyUp = keyUp.bind(this)
   core.document.addEventListener('keydown', this.keyDown)
   core.document.addEventListener('keyup', this.keyUp)
+  core.window.addEventListener('focus', resetKeyCodes.bind(this))
 }
 
 Input.prototype = {
