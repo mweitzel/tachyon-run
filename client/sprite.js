@@ -7,12 +7,33 @@ function Sprite(atlas, meta, name, startTime) {
   this.atlas = atlas
   meta[name] && _.extend(this, meta[name])
   this.name = name
-  this.frameNames = Object
-    .keys(atlas.frames)
-    .filter(function(a) { return startsWith(a, name) })
-    .sort(byLastChunkAsInt)
+
+  this.frameNames = getBestMatchingFramesFor(atlas, name)
 
   initializeWidthHeight.call(this)
+}
+
+// match "bob"
+//   to ["bob"] or ["bob_0", "bob_1", "bob_2"..]
+//   but not to ["bob", "bobsled"]
+function getBestMatchingFramesFor(atlas, name) {
+  var atlasFrames = Object.keys(atlas.frames)
+
+  // get numbered frames for name based on naming convention
+  var frameNames = atlasFrames
+    .filter(function(a) { return startsWith(a, name+'_') })
+    .sort(byLastChunkAsInt)
+
+  // if no numbered names are found, return an array containing only the shortest one
+  if(frameNames.length == 0) {
+    var matchingFrameWithShortestName = atlasFrames
+      .filter(function(a) { return startsWith(a, name) })
+      .sort(byLength)
+      [0]
+    frameNames = [ matchingFrameWithShortestName ]
+  }
+
+  return frameNames
 }
 
 function startsWith(str1, str2) {
@@ -31,6 +52,10 @@ function initializeWidthHeight() {
 
 function byLastChunkAsInt(str1, str2) {
   return lastChunkAsInt(str1) > lastChunkAsInt(str2)
+}
+
+function byLength(str1, str2) {
+  return str1.length > str2.length
 }
 
 function lastChunkAsInt(string) {
