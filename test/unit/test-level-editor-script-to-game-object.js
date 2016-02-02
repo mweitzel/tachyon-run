@@ -19,7 +19,7 @@ test('recursive generator is passed to door', function(t) {
   scriptToObj.commandResponders.door = saveDoor
 })
 
-test.only('recursive generator is not passed to things other than door', function(t) {
+test('recursive generator is not passed to things other than door', function(t) {
   t.plan(1)
 
   scriptToObj.commandResponders.POTATO = td.create()
