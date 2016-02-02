@@ -2,4 +2,13 @@
   "dancer": { "fps": 0.05, "loop": true }
 , "highlight": { "fps": 3 }
 , "projectile_poof_a": { "fps": 20, "loop": false }
+, "terminal": { "fps": 2 }
+, "char_indoor_stand": { "fps": 1 }
+, "char_indoor_breath_heavy": { "fps": 8 }
+, "char_indoor_breath_light": { "fps": 3 }
+, "char_indoor_airdodge": { "fps": 10, "loop": false }
+, "char_indoor_jump": { "fps": 7, "loop": false }
+, "char_indoor_land": { "fps": 15, "loop": false }
+, "char_indoor_fall": { "fps": 7 }
+, "char_indoor_windy": { "fps":55 }
 }
