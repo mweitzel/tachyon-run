@@ -1,8 +1,5 @@
 var keys = require('./keys')
-  , atlas = require('./atlas')
-  , spriteMeta = require('./sprite-meta-data')
-  , Sprite = require('./sprite').bind(null, atlas, spriteMeta)
-  , drawSprite = require('./sprite').draw
+  , Sprite = require('./sprite-preconfigured')
   , zLayers = require('./layer-z-defaults')
 
 module.exports = Cursor
@@ -29,5 +26,5 @@ Cursor.prototype = {
     }
   }
 , sprite: new Sprite('highlight')
-, draw: drawSprite
+, draw: Sprite.draw
 }
