@@ -23,6 +23,7 @@
     "tape": "4.2.x"
   , "testdouble": "0.2.0"
   , "teelog": "1.x.x"
+  , "audiosprite": "0.5.x"
   }
 , "engine": "node >= 0.12.5"
 }
