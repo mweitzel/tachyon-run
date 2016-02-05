@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+node node_modules/audiosprite/cli.js --log debug -g 0.1 --output media/audiosprite -e mp3,ogg media/sounds/*.mp3
