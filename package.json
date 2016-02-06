@@ -7,6 +7,7 @@
   , "co": "4.6.x"
   , "concat-stream": "1.5.x"
   , "domready": "1.0.x"
+  , "gamefroot-texture-packer": "1.1.x"
   , "koa-compose": "2.3.x"
   , "koa-route": "2.4.x"
   , "koa": "1.0.x"
@@ -18,10 +19,9 @@
   , "react": "0.13.x"
   }
 , "devDependencies": {
-  , "audiosprite": "0.5.x"
-  , "gamefroot-texture-packer": "1.1.x"
+    "audiosprite": "0.5.x"
   , "img-cat": "0.0.x"
-    "tape": "4.2.x"
+  , "tape": "4.2.x"
   , "testdouble": "0.2.0"
   , "teelog": "1.x.x"
   }
