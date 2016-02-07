@@ -15,7 +15,9 @@ module.exports = Player
 function Player(attrs) {
   _.merge(this, saveFile.load().player)
   _.merge(this, attrs)
+  this.name = 'player'
   this.team = 'player'
+  this.currentAction = 'stand'
   this.sprite = sprites.get('null')
   this.sprite = sprites.get('char_indoor_stand')
   this.__defineGetter__('spriteX', function() { return this.x - 16 })
@@ -25,22 +27,6 @@ function Player(attrs) {
 
 var PE = require('./playable-entity')
   , beget = require('../beget')
-
-function standingBounds() {
-   return [this.x-6, this.y-24, 12, 24]
-}
-
-function airBounds() {
-   return [this.x-6, this.y-24, 12, 24]
-}
-
-function slidingBounds() {
-  return [this.x-9, this.y-14, 18, 14]
-}
-
-function airdodgeBounds() {
-  return [this.x-6, this.y-20, 12, 14]
-}
 
 function _setSprite(obj, name) {
   if(obj.sprite && obj.sprite.name !== name) {
@@ -61,15 +47,34 @@ Player.prototype = _.merge(
 , {
     z: zIndex
   , jumpVelocity: 0.15
+  , currentAction: 'stand'
+  , currentIdentifier: function() {
+      return ['char_indoor', this.currentAction].join('_')
+    }
   , invincibleTimeAfterDamage: 500
-  , bounds: standingBounds
+  , bounds: function() {
+      var boundsKey = this.aliasedBounds[this.currentAction] || this.currentAction
+      return (
+        this.allbounds[boundsKey]
+        || this.allbounds.stand
+      ).call(this)
+    }
+  , allbounds: {
+      stand: function() {    return [this.x-6, this.y-24, 12, 24] }
+    , land: function() {     return [this.x-6, this.y-21, 12, 21] }
+    , airdodge: function() { return [this.x-6, this.y-20, 12, 14] }
+    , slide: function() {    return [this.x-9, this.y-14, 18, 14] }
+    }
+  , aliasedBounds: {
+      jump: 'stand'
+    , fall: 'stand'
+    }
   , pickSprite: function(core) {
       var mirroredLastTime = this.sprite.mirror
 
-      var prefix = 'char_indoor'
-      var spriteName = [prefix, this.spriteState].join('_')
+      var spriteName = this.currentIdentifier()
 
-      if(this.spriteState === 'jump') {
+      if(this.currentAction === 'jump') {
         if(!core.input.getKey(keys.X)) {
           this.sprite.fps = 14
         }
@@ -118,8 +123,7 @@ Player.prototype = _.merge(
       //if not moving, show ? or ... to show inspectabll
     }
   , respondToControllerIntent: function(core) {
-      this.spriteState = 'stand'
-      this.bounds = standingBounds
+      this.currentAction = 'stand'
       var onGroundLastFrame = this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)
       this.canBeginSlide = this.canBeginSlide || onGroundLastFrame
       var maxSlideDuration = 500
@@ -138,12 +142,10 @@ Player.prototype = _.merge(
       }
       if(this.__shouldSlide(core)) {
         if(!onGroundLastFrame && core.input.getKey(keys.UP)) {
-          this.spriteState = 'airdodge'
-          this.bounds = airdodgeBounds
+          this.currentAction = 'airdodge'
         }
         else {
-          this.spriteState = 'slide'
-          this.bounds = slidingBounds
+          this.currentAction = 'slide'
         }
         if( onGroundLastFrame) {
           if( !this.__mustStillSlide(core) ) {
@@ -188,10 +190,7 @@ Player.prototype = _.merge(
         }
 
         if(this.__lastGroundCollisionSides && this.__lastGroundCollisionSides.indexOf('bottom') === -1) {
-          this.bounds = airBounds
-          this.spriteState = this.dy < 0
-          ? 'jump'
-          : 'fall'
+          this.currentAction = this.dy < 0 ? 'jump' : 'fall'
         }
         else {
           var lastAirborn = this.__lastAirborn||0
@@ -201,7 +200,7 @@ Player.prototype = _.merge(
           // should show landing sprite
           if(lastAirborn + landSpriteDuration
           > core.lastUpdate) {
-            this.spriteState = 'land'
+            this.currentAction = 'land'
           }
           // should show heavy breathing sprite
           else if(lastAirborn
@@ -210,7 +209,7 @@ Player.prototype = _.merge(
           > core.lastUpdate
           && core.input.getKey(keys.X)
           ) {
-            this.spriteState = 'breath_heavy'
+            this.currentAction = 'breath_heavy'
           }
           // should show light breathing sprite
           else if((this.__lastAirborn||0)
@@ -218,10 +217,10 @@ Player.prototype = _.merge(
           + (breathHeavySpriteDuration * 2)
           + (breathLightSpriteDuration * 3)
           > core.lastUpdate) {
-            this.spriteState = 'breath_light'
+            this.currentAction = 'breath_light'
           }
           else {
-            this.spriteState = 'stand'
+            this.currentAction = 'stand'
           }
         }
       }
