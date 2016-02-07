@@ -123,7 +123,6 @@ Player.prototype = _.merge(
       //if not moving, show ? or ... to show inspectabll
     }
   , respondToControllerIntent: function(core) {
-      this.currentAction = 'stand'
       var onGroundLastFrame = this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)
       this.canBeginSlide = this.canBeginSlide || onGroundLastFrame
       var maxSlideDuration = 500
