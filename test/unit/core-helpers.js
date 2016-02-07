@@ -14,6 +14,7 @@ module.exports = {
     var w = td.create()
     w.document = td.create()
     w.document.addEventListener = td.create()
+    w.addEventListener = td.create()
     w.requestAnimationFrame = function(cb) { setTimeout(cb, 0) }//td.create()
     return w
   }

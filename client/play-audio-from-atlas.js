@@ -2,6 +2,8 @@ var media = require('./media-loader')
   , base64SoundAtlas = media.sounds.atlas[1]
   , audioCtx = require('./audio-context')
 
+stubGlobalsIfNonExistent()
+
 module.exports = {
   soundAtlasArrayBuffer: (function() { return base64ToArrayBuffer(base64SoundAtlas) })()
 , soundAtlasAudioBuffer: function(cb) {
@@ -38,11 +40,21 @@ module.exports = {
 }
 
 function base64ToArrayBuffer (buffer) {
-  var binary = window.atob(buffer)
+  var binary = atob(buffer)
   var buffer = new ArrayBuffer(binary.length)
   var bytes = new Uint8Array(buffer)
   for (var i = 0; i < buffer.byteLength; i++) {
     bytes[i] = binary.charCodeAt(i) & 0xFF
   }
   return buffer
+}
+
+function stubGlobalsIfNonExistent() {
+  if(typeof atob === "undefined") {
+    atob = function() { return { length: 0, isTestHelper: true } }
+  }
+  if(typeof ArrayBuffer === "undefined") {
+    ArrayBuffer = function() { }
+    ArrayBuffer.prototype = { isTestHelper: true }
+  }
 }

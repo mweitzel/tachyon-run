@@ -5,7 +5,7 @@ var test = require('tape')
 
 test('if non empty, only priority stack will recieve update calls', function(t) {
   t.plan(2)
-  var core = new Core({document:{addEventListener:function(){}}})
+  var core = new Core(helper.mockWindow())
   var gameObj = { update: td.create() }
   var priorityObj = { update: td.create() }
   core.priorityStack.push(priorityObj)
@@ -23,7 +23,7 @@ test('if non empty, only priority stack will recieve update calls', function(t) 
 
 test('if multiple, only top of is called', function(t) {
   t.plan(2)
-  var core = new Core({document:{addEventListener:function(){}}})
+  var core = new Core(helper.mockWindow())
   var priorityObj1 = { update: td.create() }
   var priorityObj2 = { update: td.create() }
 
@@ -43,7 +43,7 @@ test('if multiple, only top of is called', function(t) {
 test('priority entities recieve draw calls', function(t) {
   t.plan(1)
   var core = new Core(
-    { document: {addEventListener:function(){}} }
+    helper.mockWindow()
   , helper.mockCanvasContext()
   )
   var priorityObj1 = { draw: td.create() }

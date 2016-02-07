@@ -95,7 +95,7 @@ Reader.prototype = {
       return endsWith.call(this.renderer.proceed().text, sq)
     }.bind(this))
   }
-, deliberatelyDisplayNextChar(core) {
+, deliberatelyDisplayNextChar: function(core) {
     return core.input.getKeyDown(keys.SPACE)
   }
 , shouldDefaultProgress: function(core) {

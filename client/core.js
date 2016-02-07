@@ -150,8 +150,8 @@ function Input(core) {
 
   this.keyDown = keyDown.bind(this)
   this.keyUp = keyUp.bind(this)
-  core.document.addEventListener('keydown', this.keyDown)
-  core.document.addEventListener('keyup', this.keyUp)
+  core.window.addEventListener('keydown', this.keyDown)
+  core.window.addEventListener('keyup', this.keyUp)
   core.window.addEventListener('focus', resetKeyCodes.bind(this))
 }
 
