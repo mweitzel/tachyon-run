@@ -76,6 +76,7 @@ Player.prototype = _.merge(
   , aliasedBounds: {
       jump: 'stand'
     , fall: 'stand'
+    , airslide: 'slide'
     }
   , pickSprite: function(core) {
       var mirroredLastTime = this.sprite.mirror
@@ -148,8 +149,11 @@ Player.prototype = _.merge(
         }
       }
       if(this.__shouldSlide(core)) {
-        if(!onGroundLastFrame && core.input.getKey(keys.UP)) {
-          this.currentAction = 'airdodge'
+        if(!onGroundLastFrame) {
+          if(core.input.getKey(keys.UP))
+            this.currentAction = 'airdodge'
+          else
+            this.currentAction = 'airslide'
         }
         else {
           this.currentAction = 'slide'
