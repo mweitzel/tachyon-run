@@ -9,6 +9,7 @@ var _ = require('lodash')
   , drawHUD = require('./player-hud')
   , onDeath = require('./player-on-death')
   , wordDirections = require('./word-directions')
+  , audioSpritePlayer = require('./audio-sprite-player')
 
 module.exports = Player
 
@@ -93,6 +94,16 @@ Player.prototype = _.merge(
 
       this.sprite.mirror = mirroredLastTime
       this.sprite.mirror = this.isFacingRight(core)
+    }
+  , emitSound: function(core) {
+      var audioSpriteId = this.currentIdentifier()
+      if(this.currentAction !== this.__previousAction){
+        if(!!audioSpritePlayer.trackData(audioSpriteId)) {
+          audioSpritePlayer.play(audioSpriteId)
+          return true
+        }
+      }
+      return false
     }
   , isFacingRight: function(core) {
       var getKey = core.input.getKey.bind(core.input)
