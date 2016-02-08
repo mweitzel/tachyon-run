@@ -101,6 +101,7 @@ Playable.prototype = {
     this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
     this.pickSprite && this.pickSprite(core)
     this.updateDamageFlicker && this.updateDamageFlicker(core)
+    this.emitSound && this.emitSound(core)
   }
 , isInvincibleFromLastHit: function(core) {
     return (
