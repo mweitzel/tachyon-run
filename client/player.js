@@ -17,6 +17,14 @@ function Player(attrs) {
   _.merge(this, attrs)
   this.name = 'player'
   this.team = 'player'
+
+  this.__defineSetter__('currentAction', function(ca) {
+    this.__previousAction = this.__currentAction
+    this.__currentAction = ca
+
+  })
+  this.__defineGetter__('currentAction', function() { return this.__currentAction })
+
   this.currentAction = 'stand'
   this.sprite = sprites.get('null')
   this.sprite = sprites.get('char_indoor_stand')
