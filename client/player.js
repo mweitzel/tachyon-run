@@ -212,7 +212,8 @@ Player.prototype = _.merge(
         }
 
         if(this.__lastGroundCollisionSides && this.__lastGroundCollisionSides.indexOf('bottom') === -1) {
-          this.currentAction = this.dy < 0 ? 'jump' : 'fall'
+          this.currentAction = this.dy < 0 && this.canBeginSlide
+          ? 'jump' : 'fall'
         }
         else {
           var lastAirborn = this.__lastAirborn||0
