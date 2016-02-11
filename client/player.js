@@ -160,7 +160,7 @@ Player.prototype = _.merge(
         }
       }
       if(this.__shouldSlide(core)) {
-        if(!onGroundLastFrame) {
+        if(!onGroundLastFrame || this.dy < 0) {
           if(core.input.getKey(keys.UP))
             this.currentAction = 'airdodge'
           else
