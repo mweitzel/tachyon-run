@@ -28,4 +28,7 @@ var builders = {
 , '.css': function(page) {
     return fs.createReadStream(page)
   }
+, '.png': function(page) {
+    return fs.createReadStream(page)
+  }
 }

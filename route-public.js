@@ -14,17 +14,18 @@ function *serveFile(page, next) {
 
 function getAssetSource(pageName) {
   var nameParts = path.parse(pageName)
-  nameParts.base = nameParts.name + sourceExtensions[nameParts.ext]
+  console.log(pageName)
+  nameParts.base = nameParts.name + (sourceExtensions[nameParts.ext] || nameParts.ext)
   return path.resolve(assetSourceDir, path.format(nameParts))
 }
 
 var sourceExtensions = {
-  '.js': '.js'
-, '.css': '.scss'
+  '.css': '.scss'
 , '': ''
 }
 
 var contentTypes = {
   '.js': 'application/javascript'
 , '.css': 'text/css'
+, '.png': 'image/png'
 }
