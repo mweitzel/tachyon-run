@@ -1,0 +1,37 @@
+.header-holder {
+  position: relative;
+  width: 100%;
+  height: 128px;
+}
+
+.header-holder * {
+  image-rendering: pixelated;
+  height: 128;
+  position: absolute;
+  width: inherit;
+}
+
+.header-holder .tile {
+  background-image: url('header-tile.png');
+  background-repeat: repeat-x;
+  background-size: 10px 128px;
+}
+
+.header-holder .left {
+  background-image: url('header-left.png');
+  background-repeat: no-repeat;
+  background-size: 512px 128px;
+}
+
+.header-holder .words {
+  background-image: url("header-text.png");
+  background-repeat: no-repeat;
+  background-size: 400px 128px;
+  position: relative;
+  width: 400px;
+  margin: auto;
+}
+
+.header-holder .words * {
+  opacity: 0.001;
+}
