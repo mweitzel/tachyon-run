@@ -23,6 +23,9 @@ module.exports = React.createClass({
           <div className='column'>
             <h2>Beta Test</h2>
             <p>
+              Instead of lorem ipsum, there will be a form.
+            </p>
+            <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
@@ -41,7 +44,7 @@ module.exports = React.createClass({
           <div className='column'>
             <h2>Go Play!</h2>
             <p> Enough already, let me play! </p>
-            <p> Enough already, let me play! </p>
+            <p> link to play game </p>
           </div>
         </div>
       </div>
