@@ -1,10 +1,12 @@
 .header-holder {
-  position: relative;
+  z-index: 50;
+  position: fixed;
   width: 100%;
   height: 128px;
 }
 
 .header-holder * {
+  image-rendering: -moz-crisp-edges;
   image-rendering: pixelated;
   height: 128;
   position: absolute;

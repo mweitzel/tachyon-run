@@ -1,16 +1,22 @@
 html { padding: 0px; }
 body { margin: 0px; }
 
-.canvas-container {
-  background: grey;
-  padding: 0.25em
+body {
+  font-family: sans-serif;
 }
+
+.canvas-container {
+  background: #10232D;
+  padding: 0.25em;
+  height: 79%;
+}
+
 canvas {
   background: white;
   display: table;
   margin: auto;
-  width: 384 * 3;
-  height: 216 * 3;
+  width: 384 * 2;
+  height: 216 * 2;
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
@@ -19,4 +25,5 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;
 }
 
-@import './header.scss'
+@import './header.scss';
+@import './text-content.scss';
