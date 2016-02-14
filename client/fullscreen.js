@@ -1,8 +1,8 @@
 module.exports = {
   doubleClickToggle: function(element) {
-    ELEM = element
     element.addEventListener('dblclick', function(e) {
-      element.webkitRequestFullScreen()
+      element.webkitRequestFullScreen && element.webkitRequestFullScreen()
+      element.mozRequestFullScreen && element.mozRequestFullScreen()
     })
   }
 }
