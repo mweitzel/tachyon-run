@@ -29,8 +29,11 @@ test('invokes game with canvas context', function(t) {
 
 function context() {
   return {
-    document: {
+    getComputedStyle: td.create()
+  , addEventListener: td.create()
+  , document: {
       getElementById: td.create()
+    , getElementsByClassName: function() { return [ td.create() ] }
     }
   }
 }
@@ -38,5 +41,6 @@ function context() {
 function requires() {
   return {
     game: td.create()
+  , fullscreen: { doubleClickToggle: function() {} }
   }
 }
