@@ -7,17 +7,18 @@ $header-sun-dark-orange: #F1903E;
 }
 
 .colored-content-block {
-  min-height: 100vh;
+  display: inline-block;
   width: 100%;
-  min-width: 800px;
+  min-height: calc(100vh - 128px);
+  min-width: 875;
 }
 
 .colored-content-block > .nav {
+  position: relative;
   float: left;
   width: 175px;
   height: 100%;
   margin: 0px;
-  position: relative;
   z-index: 1;
 }
 
@@ -26,6 +27,15 @@ $header-sun-dark-orange: #F1903E;
 }
 
 .colored-content-block > .column {
+  min-width: 700px;
+  width: auto;
+}
+
+.colored-content-block > .column > *:first-child {
+  padding-top: 1.5em;
+}
+
+.colored-content-block > .column > * {
   font-size: 1.5em;
   letter-spacing: 0.05em;
   line-height: 1.5em;
@@ -33,8 +43,6 @@ $header-sun-dark-orange: #F1903E;
   min-width: 560px;
   padding: 20px;
   margin: auto;
-  position: relative;
-  height: 100%;
 }
 
 .under-header {
