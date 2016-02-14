@@ -1,5 +1,7 @@
 var React = require('react')
   , Canvas = require('./canvas')
+  , Header = require('./header')
+  , TextContent = require('./text-content')
   , canvasProps = require('../canvas-properties')
 
 module.exports = React.createClass({
@@ -24,7 +26,10 @@ module.exports = React.createClass({
           </link>
         </head>
         <body>
+          <Header/>
+          <TextContent/>
           <div className='canvas-container'>
+            <Canvas {...canvasProps} />
             <Canvas {...canvasProps} />
           </div>
         </body>
