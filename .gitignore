@@ -6,3 +6,6 @@ media/atlas-1.*
 *.piko-png
 notes/*
 node_modules/*
+media/sound-atlas.json
+media/sound-atlas.mp3
+media/sound-atlas.ogg
