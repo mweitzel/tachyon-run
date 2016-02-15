@@ -5,6 +5,7 @@
     "brfs": "1.4.x"
   , "browserify": "11.2.x"
   , "co": "4.6.x"
+  , "co-body": "4.0.x"
   , "concat-stream": "1.5.x"
   , "domready": "1.0.x"
   , "gamefroot-texture-packer": "1.1.x"
@@ -16,7 +17,12 @@
   , "node-jsx": "0.13.x"
   , "node-sass": "3.3.x"
   , "pngjs": "2.0.x"
+  , "pg": "4.4.x"
   , "react": "0.13.x"
+  , "sql": "0.67.x"
+  , "thunkify": "2.1.x"
+  , "uuid": "2.0.x"
+  , "validator": "4.8.x"
   }
 , "devDependencies": {
     "audiosprite": "0.5.x"

@@ -6,7 +6,7 @@ var http = require('http')
 var request = module.exports = function(opts, cb) {
       var options = merge({ host: HOST , port: PORT }, opts)
       var newArgs = [options].concat(Array.prototype.slice.call(arguments, 1))
-      return http.request.apply(http, newArgs).end()
+      return http.request.apply(http, newArgs)
     }
 
 function merge(obj1, obj2) {

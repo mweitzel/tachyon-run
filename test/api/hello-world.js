@@ -22,7 +22,7 @@ test('simple "/" request returns 200 OK', function (t) {
         t.ok(body.indexOf('body') > -1)
       }))
     }
-  )
+  ).end()
 })
 
 test('simple "/aljsnakjncoawejco" request returns 404 not found', function (t) {
@@ -36,7 +36,7 @@ test('simple "/aljsnakjncoawejco" request returns 404 not found', function (t) {
         t.ok(body.indexOf('not found') > -1)
       }))
     }
-  )
+  ).end()
 })
 
 test('get "/index.js" returns js file', function (t) {
@@ -51,7 +51,7 @@ test('get "/index.js" returns js file', function (t) {
         t.ok(body.indexOf('function') > -1)
       }))
     }
-  )
+  ).end()
 })
 
 test('get "/application.css" returns css file', function (t) {
@@ -65,7 +65,7 @@ test('get "/application.css" returns css file', function (t) {
         t.equal(response.headers['content-type'], 'text/css; charset=utf-8')
       }))
     }
-  )
+  ).end()
 })
 
 test('close server', function(t) {
