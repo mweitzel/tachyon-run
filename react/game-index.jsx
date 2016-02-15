@@ -1,7 +1,5 @@
 var React = require('react')
   , Canvas = require('./canvas')
-  , Header = require('./header')
-  , TextContent = require('./text-content')
   , canvasProps = require('../canvas-properties')
 
 module.exports = React.createClass({
@@ -20,16 +18,15 @@ module.exports = React.createClass({
     return (
       <html id='html'>
         <head>
-          <script src='index.js'>
+          <script src='game.js'>
           </script>
           <link rel="stylesheet" type="text/css" href="application.css">
           </link>
         </head>
         <body>
-          <Header/>
-          <TextContent/>
-          <script async src="/game.js"></script>
-
+          <div className='canvas-container'>
+            <Canvas {...canvasProps} />
+          </div>
         </body>
       </html>
     )

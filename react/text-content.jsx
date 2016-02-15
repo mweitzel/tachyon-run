@@ -23,10 +23,17 @@ module.exports = React.createClass({
           <div className='column'>
             <h2>Beta Test</h2>
             <p>
-              Instead of lorem ipsum, there will be a form.
+              If you would like to participate in the beta or be informed when the game is released, please submit your email below.
             </p>
+            <form className='beta-submit' method="post">
+              <input type='text-area' required placeholder="Tell me a fun fact so I know you're a human"/>
+              <br/>
+              <input type='email' required placeholder='youremail@example.com'/>
+              <br/>
+              <input type='submit' value='submit'/>
+            </form>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              Don't worry, I won't spam or sell your email to anyone, I can't stand that crap either.
             </p>
           </div>
         </div>
@@ -44,7 +51,7 @@ module.exports = React.createClass({
           <div className='column'>
             <h2>Go Play!</h2>
             <p> Enough already, let me play! </p>
-            <p> link to play game </p>
+            <p> Ok, here's <a href="/demo">a link to teaser level</a></p>
           </div>
         </div>
       </div>
