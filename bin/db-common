@@ -1,0 +1,51 @@
+#!/bin/bash
+
+psql -c 'CREATE DATABASE "tachyon-run-dev"'   > /dev/null 2>&1
+psql -c 'CREATE DATABASE "tachyon-run-test"'  > /dev/null 2>&1
+
+set -e
+
+function arg_check() {
+  local command=$1
+  test -n "$1" || {
+    commands
+    exit 1
+  }
+}
+
+function die_happy() {
+  exit 0
+}
+
+function commands() {
+  echo "Supply any combination of commands:"
+  echo '  [test|dev] create drop show'
+}
+
+function last_piece() {
+  rev | cut -d"/" -f1 | rev
+}
+
+function create() {
+  node ./database/create
+}
+
+function drop() {
+  psql $(echo $POSTGRES_URL | last_piece) \
+    -c "drop schema public cascade; create schema public;"
+}
+
+function show() {
+  psql $(echo $POSTGRES_URL | last_piece) -c "\dt"
+}
+
+
+arg_check $@
+
+test "$1" = "dev" && source dev-env-vars.sh
+test "$1" = "test" && source test-env-vars.sh
+
+shift
+for fn in $@ ; do
+  $fn
+done
