@@ -1,4 +1,4 @@
-var main = require('../../client/main')
+var main = require('../../client/game-main')
   , test = require('tape')
   , td = require('testdouble')
 
@@ -15,16 +15,30 @@ test('grabs canvas element on load', function(t) {
   t.doesNotThrow(function() { td.verify(ctx.document.getElementById(td.matchers.isA(String))) })
 })
 
-test('invokes game with canvas context', function(t) {
+test('invokes game with canvas context on page "/demo"', function(t) {
   t.plan(1)
   var ctx = context()
     , req = requires()
     , canvas = td.create()
   td.when(ctx.document.getElementById()).thenReturn(canvas)
 
+  ctx.location.pathname = '/demo'
   main.call(ctx, req)
 
   t.doesNotThrow(function() { td.verify(req.game(canvas)) })
+})
+
+test('invokes game with canvas context on page "/"', function(t) {
+  t.plan(1)
+  var ctx = context()
+    , req = requires()
+    , canvas = td.create()
+  td.when(ctx.document.getElementById()).thenReturn(canvas)
+
+  ctx.location.pathname = '/'
+  main.call(ctx, req)
+
+  t.throws(function() { td.verify(req.game(canvas)) })
 })
 
 function context() {
@@ -35,6 +49,7 @@ function context() {
       getElementById: td.create()
     , getElementsByClassName: function() { return [ td.create() ] }
     }
+  , location: { }
   }
 }
 
