@@ -6,7 +6,4 @@ test -f test-env-vars.sh && source test-env-vars.sh
 
 ./bin/db-common test drop create > /dev/null 2>&1
 
-exec node --harmony test/tap.js \
-  test/unit/*.js \
-  test/integration/*.js \
-  test/api/*.js
+exec node --harmony test/tap.js test/api/*.js
