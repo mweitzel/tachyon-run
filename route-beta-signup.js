@@ -28,17 +28,22 @@ function *tryToAddIt(context, email) {
   try{ yield query(insertSql) }
   catch(e) {
     done()
-    if(validatesUniqueEmail(e)) { return failNonUniqueEmail(context, this) }
+    if(validatesUniqueEmail(e)) { return succeed(context, email) }
     throw e
   }
   done()
+  succeed(context, email)
+}
+
+function succeed(context, email) {
   context.body = JSON.stringify(
     { success: true, value: {email: email }}
   )
 }
 
 function failNonEmail(context, badEmail) {
-  context.body = buildFailResponse('"'+badEmail+'"'+' is not a valid email')
+  context.status = 400
+  context.body = buildFailResponse('request did not contain a valid email')
 }
 
 function buildFailResponse(message) {
