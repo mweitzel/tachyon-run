@@ -11,6 +11,8 @@ test('grabs canvas element on load', function(t) {
   t.plan(1)
   var ctx = context()
   var req = requires()
+
+  ctx.location.pathname = '/demo'
   main.call(ctx, req)
   t.doesNotThrow(function() { td.verify(ctx.document.getElementById(td.matchers.isA(String))) })
 })

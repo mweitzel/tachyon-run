@@ -7,13 +7,12 @@ var requires = {
 module.exports = main
 
 function main(injected) {
-  var injected = injected || {}
-    , r = requires._.merge(requires, injected)
-    , canvas = this.document.getElementById(r.canvasProps.id)
-
-  requires.fullscreen.doubleClickToggle(canvas)
-
-  if(this.location.pathname === '/demo')
+  if(this.location.pathname === '/demo') {
+    var injected = injected || {}
+      , r = requires._.merge(requires, injected)
+      , canvas = this.document.getElementById(r.canvasProps.id)
+    requires.fullscreen.doubleClickToggle(canvas)
     r.game.call(this, canvas)
-  console.log('loaded')
+    console.log('game loaded')
+  }
 }
