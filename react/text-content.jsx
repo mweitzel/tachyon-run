@@ -26,8 +26,8 @@ module.exports = React.createClass({
               If you would like to participate in the beta or be informed when the game is released, please submit your email below.
             </p>
             <form className='beta-submit' method="post">
-              <input type='text-area' required placeholder="Tell me a fun fact so I know you're a human"/>
-              <br/>
+              <div className='error'/>
+              <div className='success'/>
               <input type='email' required placeholder='youremail@example.com'/>
               <br/>
               <input type='submit' value='submit'/>
