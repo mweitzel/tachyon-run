@@ -25,5 +25,30 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;
 }
 
+@media (min-width: 768px) and (max-width: 1151px) {
+  canvas:-webkit-full-screen {
+    width: 384 * 2;
+    height: 216 * 2;
+  }
+}
+@media (min-width: 1152px) and (max-width: 1535px) {
+  canvas:-webkit-full-screen {
+    width: 384 * 3;
+    height: 216 * 3;
+  }
+}
+@media (min-width: 1536px) and (max-width: 1919px) {
+  canvas:-webkit-full-screen {
+    width: 384 * 4;
+    height: 216 * 4;
+  }
+}
+@media (min-width: 1920px) {
+  canvas:-webkit-full-screen {
+    width: 384 * 5;
+    height: 216 * 5;
+  }
+}
+
 @import './header.scss';
 @import './text-content.scss';
