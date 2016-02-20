@@ -24,7 +24,11 @@ function *tryToAddIt(context, email) {
     , client = client_done[0]
     , done = client_done[1]
   var query = thunkify(client.query.bind(client))
-  var insertSql = models.betaSignup.insert({email: email, id: uuid()}).toQuery()
+  var insertSql = models.betaSignup.insert({
+    email: email
+  , timestamp: new Date()
+  , id: uuid()
+  }).toQuery()
   try{ yield query(insertSql) }
   catch(e) {
     done()
