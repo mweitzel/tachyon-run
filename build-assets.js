@@ -28,7 +28,13 @@ var builders = {
 , '.css': function(page) {
     return fs.createReadStream(page)
   }
+, '.gif': function(page) {
+    return fs.createReadStream(page)
+  }
 , '.png': function(page) {
+    return fs.createReadStream(page)
+  }
+, '.ico': function(page) {
     return fs.createReadStream(page)
   }
 }

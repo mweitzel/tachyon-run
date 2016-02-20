@@ -28,4 +28,6 @@ var contentTypes = {
   '.js': 'application/javascript'
 , '.css': 'text/css'
 , '.png': 'image/png'
+, '.ico': 'image/x-icon'
+, '.gif': 'image/gif'
 }
