@@ -2,6 +2,7 @@ $header-sun-outer-blue: #615EC7;
 $header-sun-outer-red: #CF5359;
 $header-sun-light-orange: #FFBF6D;
 $header-sun-dark-orange: #F1903E;
+$header-start-light-blue: #9ADBFF;
 
 .text-content {
 }
@@ -61,18 +62,25 @@ $header-sun-dark-orange: #F1903E;
 .secondthing { background-color: $header-sun-outer-red; }
 .thirdthing { background-color: $header-sun-light-orange; }
 .fourththing { background-color: $header-sun-dark-orange; }
+.fourththing { background-color: $header-sun-dark-orange; }
+.fifththing { background-color: $header-start-light-blue; }
 
 .nav {
 
 }
-.nav li, .nav a {
+
+a {
   color: white;
   text-decoration: none;
-  letter-spacing: 0.25em;
-  line-height: 1.75em;
-  list-style-type: none;
   font-weight: 100;
+}
+
+.nav li, .nav a {
+  letter-spacing: 0.25em;
   font-size: 1.1em;
+  color: white;
+  list-style-type: none;
+  line-height: 1.75em;
   padding-left: 5px;
   overflow: visible;
   white-space: nowrap;
@@ -91,4 +99,5 @@ form {
 input {
   padding: 0.5em;
   margin: 0.5em;
+  font-size: 0.5em;
 }

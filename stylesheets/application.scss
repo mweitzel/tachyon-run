@@ -5,6 +5,21 @@ body {
   font-family: sans-serif;
 }
 
+.pixel-art {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+}
+
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.content-inline-image {
+  padding: 0.75em
+}
+
 .canvas-container {
   background: #10232D;
   padding: 0.25em;
