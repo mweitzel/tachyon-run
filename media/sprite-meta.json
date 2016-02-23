@@ -11,4 +11,6 @@
 , "char_indoor_land": { "fps": 15, "loop": false }
 , "char_indoor_fall": { "fps": 7 }
 , "char_indoor_windy": { "fps":55 }
+, "char_indoor_run": { "fps": 16 }
+, "char_indoor_cut": { "fps": 20, "loop": false }
 }
