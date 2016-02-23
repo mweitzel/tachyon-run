@@ -77,6 +77,8 @@ Player.prototype = _.merge(
   , aliasedBounds: {
       jump: 'stand'
     , fall: 'stand'
+    , run: 'stand'
+    , cut: 'land'
     , airslide: 'slide'
     }
   , pickSprite: function(core) {
@@ -135,6 +137,24 @@ Player.prototype = _.merge(
       }
       return dirs
     }
+  , controllerLeftRightIntent: function(core) {
+      if(
+        (core.input.getKey(keys.RIGHT) && !core.input.getKey(keys.LEFT))
+      ||(  (core.input.getKey(keys.RIGHT) && core.input.getKey(keys.LEFT))
+         &&(core.input.downAt(keys.RIGHT) >  core.input.downAt(keys.LEFT))
+        )
+      ) {
+        return 'right'
+      }
+      if(
+        (core.input.getKey(keys.LEFT) && !core.input.getKey(keys.RIGHT))
+      ||(  (core.input.getKey(keys.LEFT) && core.input.getKey(keys.RIGHT))
+         &&(core.input.downAt(keys.LEFT) >  core.input.downAt(keys.RIGHT))
+        )
+      ) {
+        return 'left'
+      }
+    }
   , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) {
       var usable = _.filter(stillCollidesWithMe, function(obj) { return !!obj.use })
       if(!_.isEmpty(usable) && core.input.getKeyDown(keys.E)){
@@ -182,11 +202,12 @@ Player.prototype = _.merge(
       }
       else {
         if(this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)) {
-          if(core.input.getKey(keys.RIGHT)) {
+          var leftOrRight = this.controllerLeftRightIntent(core)
+          if(leftOrRight === 'right') {
             this.sprite.mirror = true
             this.dx += 0.02
           }
-          else if(core.input.getKey(keys.LEFT)) {
+          else if(leftOrRight === 'left') {
             this.sprite.mirror = false
             this.dx -= 0.02
           }
@@ -225,6 +246,25 @@ Player.prototype = _.merge(
           > core.lastUpdate) {
             this.currentAction = 'land'
           }
+          else if(
+            Math.abs(this.dx) > 0.00001
+          || (this.currentAction === 'cut' && this.controllerLeftRightIntent(core))
+          ) {
+            if((Math.abs(this.dx) >= this.maxDx*0.25
+                && ((this.dx < 0 && this.controllerLeftRightIntent(core) === 'right')
+                  || (this.dx > 0 && this.controllerLeftRightIntent(core) === 'left')
+                 )
+               )
+            || (this.currentAction === 'cut'
+                && this.sprite.startTime + this.sprite.loopDuration() > core.lastUpdate
+               )
+            ) {
+              this.currentAction = 'cut'
+            }
+            else {
+              this.currentAction = 'run'
+            }
+          }
           // should show heavy breathing sprite
           else if(lastAirborn
           + landSpriteDuration
@@ -235,7 +275,7 @@ Player.prototype = _.merge(
             this.currentAction = 'breath_heavy'
           }
           // should show light breathing sprite
-          else if((this.__lastAirborn||0)
+          else if(lastAirborn
           + landSpriteDuration
           + (breathHeavySpriteDuration * 2)
           + (breathLightSpriteDuration * 3)
