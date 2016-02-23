@@ -14,7 +14,7 @@ var ATag = React.createClass({
 
 module.exports = React.createClass({
   render: function() {
-    var navList = ['about', 'beta-test', 'share-it', 'go-play']
+    var navList = ['about', 'beta-test', 'play', 'contact', 'source']
     var activeProp = this.props.activeProp
     return (
       <div className='nav'>
