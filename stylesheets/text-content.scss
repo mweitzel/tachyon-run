@@ -3,6 +3,7 @@ $header-sun-outer-red: #CF5359;
 $header-sun-light-orange: #FFBF6D;
 $header-sun-dark-orange: #F1903E;
 $header-start-light-blue: #9ADBFF;
+$header-start-dark-teal: #10232D;
 
 .text-content {
 }
@@ -47,7 +48,6 @@ $header-start-light-blue: #9ADBFF;
 }
 
 .under-header {
-  background-color: $header-sun-outer-blue;
   height: 128px;
 }
 
@@ -58,12 +58,12 @@ $header-start-light-blue: #9ADBFF;
   top: -128px;
 }
 
-.firstthing { background-color: $header-sun-outer-blue; }
-.secondthing { background-color: $header-sun-outer-red; }
-.thirdthing { background-color: $header-sun-light-orange; }
-.fourththing { background-color: $header-sun-dark-orange; }
-.fourththing { background-color: $header-sun-dark-orange; }
-.fifththing { background-color: $header-start-light-blue; }
+.bg-sun-blue { background-color: $header-sun-outer-blue; }
+.bg-sun-red { background-color: $header-sun-outer-red; }
+.bg-sun-l-orange { background-color: $header-sun-light-orange; }
+.bg-sun-d-orange { background-color: $header-sun-dark-orange; }
+.bg-sun-l-teal { background-color: $header-start-light-blue; }
+.bg-sun-d-teal { background-color: $header-start-dark-teal; }
 
 .nav {
 

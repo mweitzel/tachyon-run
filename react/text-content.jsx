@@ -5,8 +5,8 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div className='text-content'>
-        <div className='under-header'/>
-        <div className='colored-content-block firstthing'>
+        <div className='under-header bg-sun-blue'/>
+        <div className='colored-content-block bg-sun-blue'>
           <Nav activeProp={'about'}/>
           <div className='column'>
             <div>
@@ -20,7 +20,7 @@ module.exports = React.createClass({
             </div>
           </div>
         </div>
-        <div className='colored-content-block secondthing'>
+        <div className='colored-content-block bg-sun-red'>
           <Nav activeProp={'beta-test'}/>
             <div className='column'>
               <div>
@@ -41,7 +41,7 @@ module.exports = React.createClass({
             </div>
           </div>
         </div>
-        <div className='colored-content-block thirdthing'>
+        <div className='colored-content-block bg-sun-l-orange'>
           <Nav activeProp={'play'}/>
           <div className='column'>
             <div>
@@ -50,20 +50,20 @@ module.exports = React.createClass({
           </div>
           </div>
         </div>
-        <div className='colored-content-block fourththing'>
+        <div className='colored-content-block bg-sun-d-orange'>
           <Nav activeProp={'contact'}/>
           <div className='column'>
             <div>
               <h3>Contact</h3>
               <p>
-                Hi — Matthew Weitzel
+                I'm Matthew Weitzel
                 <br/>I tweet thoughts <a href="https://twitter.com/weitzelb">@weitzelb</a>
                 <br/>you can reach me there
               </p>
             </div>
           </div>
         </div>
-        <div className='colored-content-block fifththing'>
+        <div className='colored-content-block bg-sun-l-teal'>
           <Nav activeProp={'source'}/>
           <div className='column'>
             <div>
