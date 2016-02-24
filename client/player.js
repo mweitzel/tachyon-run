@@ -2,7 +2,8 @@ var _ = require('lodash')
   , Sprite = require('./sprite-preconfigured')
   , keys = require('./keys')
   , sprites = require('./all-sprites')
-  , closestTo = require('./collider').objClosestTo
+  , collider = require('./collider')
+  , closestTo = collider.objClosestTo
   , saveFile = require('./save-file')
   , zIndex = require('./layer-z-defaults').player
   , dynamicWeapon = require('./dynamic-weapon')
@@ -189,8 +190,13 @@ Player.prototype = _.merge(
         else {
           this.currentAction = 'slide'
         }
-        if( onGroundLastFrame) {
-          if( !this.__mustStillSlide(core) ) {
+        if(onGroundLastFrame) {
+          if( this.__mustStillSlide(core) ) {
+            if(Math.abs(this.dx) < 0.5 * this.maxDx) {
+              this.dx *= 1.1
+            }
+          }
+          else {
             this.dx *= 0.95
             this.dy *= 0.95
           }
@@ -201,7 +207,7 @@ Player.prototype = _.merge(
         }
       }
       else {
-        if(this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)) {
+        if(onGroundLastFrame) {
           var leftOrRight = this.controllerLeftRightIntent(core)
           if(leftOrRight === 'right') {
             this.sprite.mirror = true
@@ -220,7 +226,7 @@ Player.prototype = _.merge(
         }
 
         if(core.input.getKeyDown(keys.X)) {
-          if(this.__lastGroundCollisionSides.indexOf('bottom') > -1) {
+          if(onGroundLastFrame) {
             this.dy = -this.jumpVelocity
           }
         }
@@ -232,7 +238,7 @@ Player.prototype = _.merge(
           this.maxDy = 0.2
         }
 
-        if(this.__lastGroundCollisionSides && this.__lastGroundCollisionSides.indexOf('bottom') === -1) {
+        if(!onGroundLastFrame) {
           this.currentAction = this.dy < 0 && this.canBeginSlide
           ? 'jump' : 'fall'
         }
@@ -301,7 +307,22 @@ Player.prototype = _.merge(
       )
     }
   , __mustStillSlide: function(core) {
-      return this.__dodgeBeginTime + minSlideDuration(core) > core.lastUpdate
+      return (
+        this.__dodgeBeginTime + minSlideDuration(core) > core.lastUpdate
+      ||this.__headWouldCollideWithGroundBlock(core)
+      )
+    }
+  , __headWouldCollideWithGroundBlock: function(core) {
+      var phoCollider = {
+        x: this.x
+      , y: this.y
+      , bounds: function() { return [this.x-1, this.y-18, 2, 4] }
+      }
+      return core.tileMap
+        .getOthersNear(phoCollider)
+        .filter(collider.collidesWith.bind(phoCollider))
+        .filter(function(obj) { return obj.layer === 'ground' })
+        .length >= 1
     }
   , __canStillSlide: function(core) {
       return this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
