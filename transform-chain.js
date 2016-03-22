@@ -5,9 +5,9 @@ function chain(data, transform) {
 }
 
 function link(data) {
-  var _link = chain.bind(chain, (data))
-  _link.value = data
-  return _link
+  var chainLink = chain.bind(chain, (data))
+  chainLink.value = data
+  return chainLink
 }
 
 function pass(data) { return data }
