@@ -1,4 +1,5 @@
 var _ = require('lodash')
+  , perf = require('../performance')
 
 module.exports = Sprite
 
@@ -161,5 +162,5 @@ function spriteTopLeft(obj) {
 }
 
 function now() {
-  return Date.now()
+  return perf.now()
 }

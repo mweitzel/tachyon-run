@@ -1,4 +1,5 @@
 var _ = require('lodash')
+  , perf = require('../performance')
   , Sprite = require('./sprite-preconfigured')
   , atlasIndex = require('./sprite-atlas-index.js')
   , getSpriteNames = require('./sprite-name-prefixes')
@@ -17,6 +18,6 @@ sprites.get = function(name) {
   if(!foundSprite && name == 'not_found' ) { return }
   if(!foundSprite) { return this.get('not_found') }
   var s = beget(foundSprite)
-  s.startTime = Date.now()
+  s.startTime = perf.now()
   return s
 }

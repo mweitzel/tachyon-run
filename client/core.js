@@ -1,11 +1,12 @@
 var _ = require('lodash')
+  , perf = require('../performance')
 
 module.exports = Core
 
 function Core(window, context) {
   this.window = window
   this.document = this.window.document
-  this.lastUpdate = new Date().getTime()
+  this.lastUpdate = perf.now()
   this.input = new Input(this)
   this.context = context
   this.cameraCenter = { x: 0, y: 0 }
@@ -86,8 +87,8 @@ Core.prototype = {
     }
     return a + 1
   }
-, update: function() {
-    var currentTime = new Date().getTime()
+, update: function(renderTime) {
+    var currentTime = perf.now()
 
     // if frames back up 0.5 seconds, eat the lag and move on
     if( currentTime - this.lastUpdate > 500){
@@ -105,7 +106,7 @@ Core.prototype = {
 
     this.draw()
   }
-, updateAndRegisterNextUpdate: function() {
+, updateAndRegisterNextUpdate: function(highResTimeStamp) {
     if(this.paused) { return }
     this.update()
     this.window.requestAnimationFrame(this.updateAndRegisterNextUpdate.bind(this))
@@ -115,7 +116,7 @@ Core.prototype = {
 , play: function(){
     this.paused = false
     this.updateAndRegisterNextUpdate()
-    this.lastUpdate = new Date().getTime()
+    this.lastUpdate = perf.now()
   }
 , start: function(){ return this.play() }
 , stop: function(){ return this.pause() }
