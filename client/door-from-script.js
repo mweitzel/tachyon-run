@@ -34,7 +34,7 @@ Door.prototype = {
 function enterDoor(recursiveSerializedToGOFn, player, core) {
   levelLoader(core, recursiveSerializedToGOFn, this.levelName, function(core) {
     player.x = this.targetX + config.tileSize/2
-    player.y = this.targetY + config.tileSize/2
+    player.y = this.targetY + config.tileSize
     core.entities.push(player)
     setupSmoothCamera(core, player)
   }.bind(this)
