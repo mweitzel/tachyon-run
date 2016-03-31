@@ -1,7 +1,7 @@
 var _ = require('lodash')
-  , drawSprite = require('./sprite').draw
   , zLayers = require('./layer-z-defaults')
   , beget = require('../beget')
+  , drawSprite = require('./sprite').draw
 
 module.exports = PiecePlacer
 

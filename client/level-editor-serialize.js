@@ -1,6 +1,7 @@
 var _ = require('lodash')
   , beget = require('../beget')
   , drawSprite = require('./sprite').draw
+  , drawEditorRegion = require('./level-editor-draw-region')
   , zLayers = require('./layer-z-defaults')
   , groundPieceSavedAttrs = [
       'x'
@@ -111,11 +112,12 @@ Saver.prototype = {
     return entities
   }
 , generateObject: function(name, attrs) {
+    var isRegion = !!attrs.script && attrs.script.split(' ')[0] === 'region'
     var a = _.merge(
       { name: name
       , sprite: beget(_.find(this.sprites, { name: name }))
       , __isLevelPiece: true
-      , draw: drawSprite
+      , draw: isRegion ? drawEditorRegion : drawSprite
       }
     , attrs
     )

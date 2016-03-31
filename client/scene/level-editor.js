@@ -12,7 +12,9 @@ var keys = require('../keys')
   , MetaWatcher = require('../meta-data-watcher')
   , Inspector = require('../overlay-inspector')
   , loadPlayableFromEditorEntities = require('../load-playable-level-from-editor-entities')
+  , drawEditorRegion = require('../level-editor-draw-region')
   , allSprites = require('../all-sprites')
+  , config = require('../config')
 
 module.exports = function(core) {
   function add(obj) { core.entities.push(obj) }
@@ -21,6 +23,8 @@ module.exports = function(core) {
   this.cursor = cursor
   follow.call(core.cameraCenter, cursor)
   add(cursor)
+
+  this.__cacheXY = null
 
   var layers = [
     'ground'
@@ -67,6 +71,21 @@ function KeyController(preview, cursor, placer, saver, layerSelector, handler) {
 
 KeyController.prototype = {
   update: function(core) {
+    var thiz = this
+    function switchToLayer(layerName) {
+      while(thiz.layerSelector.layer !== layerName) {
+        thiz.layerSelector.nextLayer()
+      }
+    }
+    function placePiece() {
+      return this.placer.addPiece(
+        core.entities
+      , this.cursor
+      , this.preview.active.name
+      , this.layerSelector.layer
+      )
+    }
+
     var down = core.input.getKeyDown.bind(core.input)
     if(down(keys['/'])) {
       core.input.getKey(keys.SHIFT)
@@ -78,16 +97,50 @@ KeyController.prototype = {
       var editorEntities = this.saver.parse(getLevelDataFromLocalStorage())
       return loadPlayableFromEditorEntities(core, editorEntities, this.cursor)
     }
+
+    if(down(keys.R) && !this.__activeRegionPiece) {
+      this.preview.filter = 'token'
+      switchToLayer('script')
+      var piece = this.__activeRegionPiece = placePiece.call(this)
+      piece.name = 'region'
+      piece.script = ['region', '_temp', config.tileSize, config.tileSize].join(' ')
+      piece.draw = drawEditorRegion
+    }
+    else if(!down(keys.R) && this.__activeRegionPiece) {
+      var piece = this.__activeRegionPiece
+      var width = this.cursor.x + config.tileSize - piece.x
+        , height = this.cursor.y + config.tileSize - piece.y
+      piece.script = ['region', '_temp', width, height].join(' ')
+    }
+    else if(down(keys.R) && this.__activeRegionPiece) {
+      new Prompt(core, 'name region'
+      , function(scriptText) {
+          var piece = this.__activeRegionPiece
+          var width = this.cursor.x + config.tileSize - piece.x
+            , height = this.cursor.y + config.tileSize - piece.y
+          piece.script = ['region', scriptText, width, height].join(' ')
+          this.__activeRegionPiece = null
+        }.bind(this)
+      , function() {
+          core.removeEntity(this.__activeRegionPiece)
+          this.__activeRegionPiece = null
+        }.bind(this)
+      )
+    }
+    if(this.__activeRegionPiece) { return }
+
     var clrFilter = function() { if(this.layerSelector.layer == 'script'){this.preview.filter = ''} }.bind(this)
-    if(down(keys.F)) { clrFilter(); while(this.layerSelector.layer != 'foreground') { this.layerSelector.nextLayer() } }
-    if(down(keys.G)) { clrFilter(); while(this.layerSelector.layer != 'ground') { this.layerSelector.nextLayer() } }
-    if(down(keys.B)) { clrFilter(); while(this.layerSelector.layer != 'background') { this.layerSelector.nextLayer() } }
+    if(down(keys.F)) { clrFilter(); switchToLayer('foreground') }
+    if(down(keys.G)) { clrFilter(); switchToLayer('ground') }
+    if(down(keys.B)) { clrFilter(); switchToLayer('background') }
     if(down(keys.S)) {
       this.preview.filter = 'token'
-      while(this.layerSelector.layer != 'script') { this.layerSelector.nextLayer() }
+      switchToLayer('script')
     }
+
     if(down(keys['['])) { this.preview.previous() }
     if(down(keys[']'])) { this.preview.next() }
+
     if(core.input.getKey(keys.V)) {
       if(this.layerSelector.layer == 'script') {
         var piece = placePiece.call(this)
@@ -98,14 +151,6 @@ KeyController.prototype = {
       }
       else {
         placePiece.call(this)
-      }
-      function placePiece() {
-        return this.placer.addPiece(
-          core.entities
-        , this.cursor
-        , this.preview.active.name
-        , this.layerSelector.layer
-        )
       }
     }
     if(core.input.getKeyDown(keys.Y)) {
