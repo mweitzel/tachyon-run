@@ -16,6 +16,7 @@
   , "minifyify": "7.1.x"
   , "node-jsx": "0.13.x"
   , "node-sass": "3.3.x"
+  , "improbable": "0.0.1"
   , "pngjs": "2.0.x"
   , "pg": "4.4.x"
   , "react": "0.13.x"
