@@ -4,4 +4,5 @@ set -e
 
 test -f test-env-vars.sh && source test-env-vars.sh
 
-exec node --harmony test/tap.js test/unit/*.js
+set -o pipefail
+exec node --harmony test/tap.js test/unit/*.js | node node_modules/tap-colorize/bin/cmd.js
