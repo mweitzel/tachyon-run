@@ -24,3 +24,29 @@ test('normalizing a zero vector returns zero vector', function(t) {
   , [0,0]
   )
 })
+
+test('can convert degrees to radians and reverse', function(t) {
+  t.plan(2)
+  t.deepEqual(
+    vector.radianToDegree(Math.PI/2)
+  , 90
+  )
+  t.deepEqual(
+    vector.degreeToRadian(vector.radianToDegree(Math.PI/2))
+  , Math.PI/2
+  )
+})
+
+test('given angle, creates normalized vector', function(t) {
+  t.plan(1)
+  t.deepEqual(
+    vector.fromRadian(0.5 * Math.PI).map(coughAhem)
+  , [0, 1]
+  )
+})
+
+function coughAhem(num) {
+  if(Math.abs(num - Math.round(num)) < 0.000000000001)
+    return Math.round(num)
+  return num
+}

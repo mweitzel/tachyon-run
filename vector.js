@@ -10,4 +10,10 @@ module.exports = {
       }, 0)
     )
   }
+, degreeToRadian: function(degrees) { return degrees * Math.PI / 180 }
+, radianToDegree: function(radian) { return radian * 180 / Math.PI }
+, fromRadian: function(radian) {
+    return [Math.cos(radian), Math.sin(radian)]
+  }
+, fromDegree: function(degrees) { return this.fromRadian(this.degreeToRadian(degrees)) }
 }
