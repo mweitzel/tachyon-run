@@ -4,27 +4,29 @@ var keys = require('./keys')
   , Menu = require('./base-menu')
   , Rstring = require('./renderable-string')
   , colors = require('./colors')
-  , readers = require('./dialogues').readers
   , floatWithin = require('./float-within')
   , pad = require('./inner-pad')
   , config = require('./config')
   , delegate = require('../delegate-with-transform')
   , fullStopSequences = [' \n', '  ']
+  , halfStopSequences = ['.', ',']
 
 module.exports = Reader
 
-function Reader(core, readerTextName, fillRegion) {
+function Reader(core, readerText, fillRegion, onExit) {
+  this.onExit = onExit
   if(!fillRegion) {
-    fillRegion = [0,0,core.context.width,core.context.height/2]
+    fillRegion = paddedFullRegion(core.context)
   }
+  fillRegion[2] = Math.max(fillRegion[2], config.tileSize*3)
   this.core = core
   this.border = true
 
   var maxCharsPerLine = Math.floor(
-    (fillRegion[2] - config.tileSize*2)/config.textCharWidth
+    (fillRegion[2] - config.menuBorderSize*2)/config.textCharWidth
   )
   var maxLines = Math.floor(
-    (fillRegion[3] - config.tileSize*2)/config.textCharHeight
+    (fillRegion[3] - config.menuBorderSize*2)/config.textCharHeight
   )
 
   var contentWindow = {
@@ -41,7 +43,7 @@ function Reader(core, readerTextName, fillRegion) {
   contentWindow.x = contentTopLeft.x
   contentWindow.y = contentTopLeft.y
 
-  this.text = readers[readerTextName]
+  this.text = readerText
   this.formattedText = wordWrap(this.text, maxCharsPerLine)
 
   this.rstring = new Rstring('')
@@ -55,7 +57,6 @@ function Reader(core, readerTextName, fillRegion) {
   delegate(this, contentWindow, 'height', function(h) { return h + 2*config.menuBorderSize })
   this.renderer = partialCharProgresser(this.formattedText, maxLines)
   core.priorityStack.push(this)
-RRR = this
 }
 
 function paddedFullRegion(ctx) {
@@ -77,18 +78,32 @@ Reader.prototype = {
       this.__lastCharacterExposedAt = core.lastUpdate
     }
     if(this.renderer.done
-    && core.input.getKeyDown(keys.SPACE)
+    && core.input.getKeyDown(keys.X)
     ) { this.exit(core) }
   }
 , automaticallyDisplayNextChar: function(core) {
+    var delay = config.textFrameDelay * (this.halfStop(core) ? 10 : 1)
     return !this.fullStop()
     && (
-       config.textFrameDelay*core.physicsTimeStep <= core.lastUpdate - this.__lastCharacterExposedAt
+       delay*core.physicsTimeStep <= core.lastUpdate - this.__lastCharacterExposedAt
     || (
-       config.textFrameDelay*core.physicsTimeStep/3 <= core.lastUpdate - this.__lastCharacterExposedAt
-      && core.input.getKey(keys.SPACE)
+       delay*core.physicsTimeStep/3 <= core.lastUpdate - this.__lastCharacterExposedAt
+      && core.input.getKey(keys.X)
       )
     )
+  }
+, halfStop: function(core) {
+    return !!(
+      halfStopSequences.find(function(sq) {
+        return endsWith.call(this.renderer.text, sq)
+      }.bind(this))
+    ) && !core.input.getKeyDown(keys.X)
+    && !this.preceedsFullStop()
+  }
+, preceedsFullStop: function() {
+    return !!fullStopSequences.find(function(sq) {
+      return endsWith.call(this.renderer.proceed().proceed().text, sq)
+    }.bind(this))
   }
 , fullStop: function() {
     return !!fullStopSequences.find(function(sq) {
@@ -96,13 +111,14 @@ Reader.prototype = {
     }.bind(this))
   }
 , deliberatelyDisplayNextChar: function(core) {
-    return core.input.getKeyDown(keys.SPACE)
+    return core.input.getKeyDown(keys.X)
   }
 , shouldDefaultProgress: function(core) {
 
   }
 , exit: function(core) {
     core.removePriorityObj(this)
+    this.onExit && this.onExit(core)
   }
 , draw: Menu.prototype.drawMenu
 }
