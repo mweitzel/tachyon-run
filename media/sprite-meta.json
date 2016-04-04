@@ -13,4 +13,7 @@
 , "char_indoor_windy": { "fps":55 }
 , "char_indoor_run": { "fps": 16 }
 , "char_indoor_cut": { "fps": 20, "loop": false }
+, "landing_dust_a": { "fps": 20, "loop": false }
+, "teleporter_base_a": { "fps": 10 }
+, "": { "fps": 20, "loop": false }
 }
