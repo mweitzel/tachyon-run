@@ -61,6 +61,8 @@ Core.prototype = {
     for (var i=0; i < this.priorityStack.length; i++) {
       this.priorityStack[i].draw && this.priorityStack[i].draw(this.context)
     }
+
+    this.context.origin = [-translateDrawingsX, -translateDrawingsY]
   }
 , get nextUpdate() {
     return this.lastUpdate + this.physicsTimeStep
