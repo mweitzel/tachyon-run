@@ -14,13 +14,23 @@ function OverlayInspector(cursor, layerSelector) {
 OverlayInspector.prototype = {
   z: z
 , update: function(core) {
+    this.underCursor = _.filter(
+      _.filter(
+        core.entities
+      , { x: this.cursor.x, y: this.cursor.y }
+      )
+    , function(obj) { return !!obj.layer }
+    )
     this.selected = _.find(
-      core.entities
-    , { x: this.cursor.x, y: this.cursor.y, layer: this.layerSelector.layer }
+      this.underCursor
+    , { layer: this.layerSelector.layer }
     )
     this.renderString.string = this.selected
     ? this.generateString(this.selected)
     : this.xyString()
+    if(this.layerPreviewString()) {
+      this.renderString.string = '('+this.layerPreviewString()+')' + this.renderString.string
+    }
     follow.call(this.renderString, this, -this.renderString.width, 0)
   }
 , generateString: function(selected) {
@@ -32,6 +42,13 @@ OverlayInspector.prototype = {
   }
 , xyString: function() {
     return [this.cursor.x, this.cursor.y].join(',')
+  }
+, layerPreviewString: function() {
+    return this.underCursor
+      .map(function(editorObject) { return editorObject.layer })
+      .map(function(string) { return string[0] })
+      .sort()
+      .join(',')
   }
 , draw: function(ctx) {
     this.renderString.draw(ctx)
