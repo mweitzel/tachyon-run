@@ -218,3 +218,16 @@ test('removeObj does not break when removing untiled ojbject', function(t) {
   , obj
   )
 })
+
+test('tileKeysFor obj returns unique list of tiles obj hits when object is greater than maxTileSize', function(t) {
+  t.plan(1)
+
+  var obj = { bounds: function() { return [0,0,32,64] } }
+  var tm = new TileMap(32)
+
+
+  t.deepEqual(
+    tm.tileKeysFor(obj)
+  , [ '0,0', '0,1', '0,2', '1,0', '1,1', '1,2' ]
+  )
+})
