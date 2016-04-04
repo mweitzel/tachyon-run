@@ -1,9 +1,8 @@
 var _ = require('lodash')
   , collider = require('./collider')
-var substeps = 10
 
 module.exports = function(stepSize, object, getEntitiesToRespondToCB) {
-  incrementCoords(object, stepSize)
+  if(!!stepSize) { incrementCoords(object, stepSize) }
   var allEntitiesToRespondTo = getEntitiesToRespondToCB()
   var ground = _.filter( allEntitiesToRespondTo , { layer: 'ground' })
 
@@ -12,7 +11,6 @@ module.exports = function(stepSize, object, getEntitiesToRespondToCB) {
 
   var collidingGround = closestCollidingObject(object, ground)
   object.__lastGroundCollisionSides = []
-
   while(collidingGround && count < max) {
     count++
     escapeProximity(object, collidingGround)
@@ -20,6 +18,7 @@ module.exports = function(stepSize, object, getEntitiesToRespondToCB) {
   }
 
   _.each(['x', 'y'], roundIfUnderThreshold.bind(object, 0.0001))
+  return object
 }
 
 function escapeProximity(movable, stationary) {
