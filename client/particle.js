@@ -5,8 +5,11 @@ module.exports = Particle
 
 function Particle(spriteName, options) {
   this.sprite = sprites.get(spriteName)
+  if(this.sprite && options.mirrorSprite) { this.sprite.mirror = true }
   this.x = options.x
   this.y = options.y
+  this.dx = options.dx || 0
+  this.dy = options.dy || 0
 }
 
 Particle.prototype = {
