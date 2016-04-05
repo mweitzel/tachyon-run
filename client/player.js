@@ -1,5 +1,4 @@
 var _ = require('lodash')
-  , Sprite = require('./sprite-preconfigured')
   , keys = require('./keys')
   , sprites = require('./all-sprites')
   , collider = require('./collider')
@@ -11,6 +10,9 @@ var _ = require('lodash')
   , onDeath = require('./player-on-death')
   , wordDirections = require('./word-directions')
   , audioSpritePlayer = require('./audio-sprite-player')
+  , addTemporaryParticle = require('./add-temporary-particle')
+  , probMixin = require('improbable')
+  , probably = probMixin.probably.bind(probMixin)
 
 module.exports = Player
 
@@ -38,14 +40,14 @@ function Player(attrs) {
 var PE = require('./playable-entity')
   , beget = require('../beget')
 
-function _setSprite(obj, name) {
+function _setSpriteIfDiffersAnd(obj, name) {
   if(obj.sprite && obj.sprite.name !== name) {
     obj.sprite = sprites.get(name)
   }
 }
 
 function minSlideDuration(core) {
-  return core.physicsTimeStep * 10
+  return core.physicsTimeStep * 17
 }
 
 function maxSlideDuration(core) {
@@ -94,20 +96,58 @@ Player.prototype = _.merge(
         }
       }
 
-      _setSprite(this, spriteName)
+      _setSpriteIfDiffersAnd(this, spriteName)
 
       this.sprite.mirror = mirroredLastTime
       this.sprite.mirror = this.isFacingRight(core)
     }
-  , emitSound: function(core) {
-      var audioSpriteId = this.currentIdentifier()
+  , onNewCurrentAction: function(core) {
+      var currentId = this.currentIdentifier()
       if(this.currentAction !== this.__previousAction){
+
+
+        this.emitSound(currentId)
+        if(currentId === this.currentIdentifier.call({currentAction: 'land'})) {
+          probably(0.5, emitRightDust)(core, this)
+          probably(0.5, emitLeftDust)(core, this)
+        }
+        if(currentId === this.currentIdentifier.call({currentAction: 'cut'})) {
+          var intent = this.controllerLeftRightIntent(core)
+
+          if(probably(0.5) && intent === 'right') { emitLeftDust(core, this) }
+          if(probably(0.5) && intent === 'left') { emitRightDust(core, this) }
+        }
+      }
+
+      function emitRightDust(core, locationObj) {
+        addTemporaryParticle(
+          'landing_dust_a'
+        , core
+        , {  x: locationObj.x + 2
+          ,  y: locationObj.y - 2
+          , dx: locationObj.dx + 0.2 + 0.1*(Math.random())
+          , dy: -0.1*Math.random()
+          , removeAfter: 200 + 200*Math.random()
+          , mirrorSprite: true }
+        )
+      }
+      function emitLeftDust(core, locationObj) {
+        addTemporaryParticle(
+          'landing_dust_a'
+        , core
+        , {  x: locationObj.x - 2
+          ,  y: locationObj.y - 2
+          , dx: (locationObj.dx - 0.2) - 0.1*(Math.random())
+          , dy: -0.1*Math.random()
+          , removeAfter: 200 + 200*Math.random() }
+        )
+      }
+    }
+  , emitSound: function(audioSpriteId) {
         if(!!audioSpritePlayer.trackData(audioSpriteId)) {
           audioSpritePlayer.play(audioSpriteId)
           return true
         }
-      }
-      return false
     }
   , isFacingRight: function(core) {
       var getKey = core.input.getKey.bind(core.input)
@@ -159,15 +199,50 @@ Player.prototype = _.merge(
     }
   , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) {
       var usable = _.filter(stillCollidesWithMe, function(obj) { return !!obj.use })
-      if(!_.isEmpty(usable) && core.input.getKeyDown(keys.E)){
-        closestTo.call(this, usable).use(this, core)
+      var lookingAt = _.filter(usable, function(obj) {
+        if(this.isFacingLeft(core))
+          return obj.x < this.x
+        else
+          return obj.x > this.x
+      }.bind(this))
+      if(  this.__onGroundLastFrame(core)
+        && !_.isEmpty(usable)
+        && !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
+        && core.input.getKeyDown(keys.DOWN)
+      ){
+        this.dx = 0
+        this.dy = 0
+        this.currentAction = 'stand'
+        ;(closestTo.call(this, lookingAt)
+        ||closestTo.call(this, usable)
+        ).use(this, core)
       }
       //if not moving, show ? or ... to show inspectabll
+
+      if(this.__bumpedHeadLastFrame(core)) {
+        this.emitSound('hit_head')
+        ;['a','b','c'].map(function(suffix) { return 'mini_star_'+suffix })
+        .map(function(spriteName) { return [ spriteName, core, generateXYObj(this) ]}.bind(this))
+        .forEach(function(args) { addTemporaryParticle.apply(null, args) })
+      }
+
+      function generateXYObj(player) {
+        return {   x: player.x
+                ,  y: player.bounds()[1]
+                , dx: (Math.random() - 0.5)
+                , dy: (Math.random() - 0.5)
+                , removeAfter: 350 }
+      }
+    }
+  , __onGroundLastFrame: function(core) {
+      return this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)
+    }
+  , __bumpedHeadLastFrame: function(core) {
+      return this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('top') > -1)
     }
   , respondToControllerIntent: function(core) {
-      var onGroundLastFrame = this.__lastGroundCollisionSides && (this.__lastGroundCollisionSides.indexOf('bottom') > -1)
+      var onGroundLastFrame = this.__onGroundLastFrame(core)
       this.canBeginSlide = this.canBeginSlide || onGroundLastFrame
-      var maxSlideDuration = 500
       if(core.input.getKeyDown(keys.Z) && this.canBeginSlide) {
         this.canBeginSlide = false
         this.__dodgeBeginTime = core.lastUpdate
@@ -181,20 +256,34 @@ Player.prototype = _.merge(
           this.dy += this.jumpVelocity * dirs[1]
         }
       }
-      if(this.__shouldSlide(core)) {
+      if( this.__shouldSlide(core) ) {
         if(!onGroundLastFrame || this.dy < 0) {
-          if(core.input.getKey(keys.UP))
+          if(core.input.getKey(keys.UP)
+            && this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
+            )
             this.currentAction = 'airdodge'
-          else
-            this.currentAction = 'airslide'
+          else {
+            this.currentAction = ( Math.abs(this.dx) < this.maxDx * 0.55
+              &&  !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
+              )
+              ? 'duck'
+              : 'airslide'
+          }
         }
         else {
-          this.currentAction = 'slide'
+          this.currentAction = Math.abs(this.dx) < this.maxDx * 0.55
+          ? 'duck'
+          : 'slide'
         }
         if(onGroundLastFrame) {
-          if( this.__mustStillSlide(core) ) {
-            if(Math.abs(this.dx) < 0.5 * this.maxDx) {
-              this.dx *= 1.1
+          if(this.__mustStillSlide(core)) {
+            if(Math.abs(this.dx) < 0.5 * this.maxDx
+            && this.__headWouldCollideWithGroundBlock(core)
+            ) {
+              var ddx = 0
+              core.input.getKey(keys.RIGHT) && (ddx += 0.51*this.maxDx)
+              core.input.getKey(keys.LEFT)  && (ddx -= 0.51*this.maxDx)
+              this.dx += ddx
             }
           }
           else {
@@ -229,6 +318,17 @@ Player.prototype = _.merge(
         if(core.input.getKeyDown(keys.X)) {
           if(onGroundLastFrame) {
             this.dy = -this.jumpVelocity
+            var x = 0
+
+            if(this.__jumpOutOfPipeClearsSlide(core)) {
+              this.__dodgeBeginTime = 0
+              while(!(
+                x >= 8 || !this.__headWouldCollideWithGroundBlock(core)
+              )) {
+                this.x += Math.sign(this.dx)
+                x++
+              }
+            }
           }
         }
         if(core.input.getKey(keys.X)) {
@@ -269,7 +369,9 @@ Player.prototype = _.merge(
               this.currentAction = 'cut'
             }
             else {
-              this.currentAction = 'run'
+              this.currentAction = Math.abs(this.dx) > 0.2*this.maxDx
+              ? 'run'
+              : 'stand'
             }
           }
           // should show heavy breathing sprite
@@ -299,18 +401,28 @@ Player.prototype = _.merge(
         this.currentWeapon && this.currentWeapon.fire(core)
       }
     }
+  , triggerTriggers: function(core, collidingObjects) {
+      collidingObjects.forEach(function(obj) {
+        obj.trigger && obj.trigger(core, this)
+      }.bind(this))
+    }
   }
 , {
     __shouldSlide: function (core) {
       return (
         ( this.__mustStillSlide(core) )
       ||( this.__canStillSlide(core) && core.input.getKey(keys.Z))
+      ) && !(
+          this.__jumpOutOfPipeClearsSlide(core)
       )
+    }
+  , __jumpOutOfPipeClearsSlide: function(core) {
+      return core.input.getKeyDown(keys.X) && this.__hangingOffAnEdge(core) //&& this.dx != 0
     }
   , __mustStillSlide: function(core) {
       return (
         this.__dodgeBeginTime + minSlideDuration(core) > core.lastUpdate
-      ||this.__headWouldCollideWithGroundBlock(core)
+        || this.__headWouldCollideWithGroundBlock(core)
       )
     }
   , __headWouldCollideWithGroundBlock: function(core) {
@@ -319,6 +431,42 @@ Player.prototype = _.merge(
       , y: this.y
       , bounds: function() { return [this.x-1, this.y-18, 2, 4] }
       }
+      return this.__givenColliderCollidesWithGroundBlock(phoCollider, core)
+    }
+  , __hangingOffAnEdge: function(core) {
+      return this.__healsAreHangingOffEdge(core) || this.__toesAreHangingOffEdge(core)
+    }
+  , __healsAreHangingOffEdge: function(core) {
+      if(!this.__onGroundLastFrame(core)) { return false }
+      var facingRight = this.isFacingRight(core)
+      var xOffset = facingRight ? -10 : 5
+      var phoCollider = {
+        x: this.x
+      , y: this.y
+      , bounds: function() { return [this.x+xOffset, this.y-18, 5, 20] }
+      }
+      return !this.__givenColliderCollidesWithGroundBlock(phoCollider, core)
+    }
+  , __toesAreHangingOffEdge: function(core) {
+      if(!this.__onGroundLastFrame(core)) { return false }
+      var facingRight = this.isFacingRight(core)
+      var xOffset, width
+      if(this.currentAction === 'slide') {
+        xOffset = facingRight ? 8 : -10
+        width = 2
+      }
+      else {
+        xOffset = facingRight ? 5 : -10
+        width = 5
+      }
+      var phoCollider = {
+        x: this.x
+      , y: this.y
+      , bounds: function() { return [this.x+xOffset, this.y-18, width, 20] }
+      }
+      return !this.__givenColliderCollidesWithGroundBlock(phoCollider, core)
+    }
+  , __givenColliderCollidesWithGroundBlock: function(phoCollider, core) {
       return core.tileMap
         .getOthersNear(phoCollider)
         .filter(collider.collidesWith.bind(phoCollider))
@@ -326,7 +474,13 @@ Player.prototype = _.merge(
         .length >= 1
     }
   , __canStillSlide: function(core) {
-      return this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
+      return (
+        this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
+      ||( Math.abs(this.dx) < this.maxDx * 0.55
+        && core.input.getKey(keys.Z)
+        )
+      ||this.__onGroundLastFrame(core)
+      )
     }
   }
 , {
@@ -369,11 +523,14 @@ function leftRightAirControl(core) {
     this.sprite.mirror = true
     this.dx += 0.005
   }
-  else if(core.input.getKey(keys.LEFT)) {
+  if(core.input.getKey(keys.LEFT)) {
     this.sprite.mirror = false
     this.dx -= 0.005
   }
-  else {
+  if(
+    !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
+//  || core.input.getKey(keys.Z)
+  ) {
     this.dx *= 0.99
     if(Math.abs(this.dx) < 0.01) { this.dx = 0 }
   }

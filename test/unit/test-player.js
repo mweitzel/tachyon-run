@@ -13,33 +13,17 @@ test('player caches __previousAction when currentAction is set', function(t) {
 })
 
 
-test('emitSound emits a sound when currentAction differs from __previousAction', function(t) {
-  t.plan(2)
-  p = new Player()
-
-  // ensure currentAction and __previousAction differ
-  p.currentAction = 'banana'
-  p.currentAction = 'potato'
-
-  // stub currentIdentifier to return an existing track name
-  var revert = hotSwap(p, 'currentIdentifier', function() { return 'test-blank' })
+test('emitSound emits a sound when sound file exists', function(t) {
+  t.plan(1)
+  var p = new Player()
 
   // emitSound returns true because it played a sound
-  t.true(p.emitSound())
+  t.true(p.emitSound('test-blank'))
 
-  // potato has been set twice in a row, not currentAction and __previousAction match
-  p.currentAction = 'potato'
-  // emitSound returns false because no sound was played
-  t.false(p.emitSound())
-
-  // replace currentIdentifier
-  revert()
 })
 
 test('emitSound does not break when trying to play a sound that does not exist', function(t) {
   t.plan(1)
-  p = new Player()
-  p.currentAction = 'definitely_not_a_sound_effect_name'
-
-  t.false(p.emitSound())
+  var p = new Player()
+  t.false(p.emitSound('definitely_not_a_sound_effect_name'))
 })
