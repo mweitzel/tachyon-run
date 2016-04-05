@@ -99,9 +99,10 @@ Playable.prototype = {
     if(this.isDead()) { return }
 
     this.postPhysicsAndDamageHandler(core, stillCollidesWithMe)
+    this.triggerTriggers && this.triggerTriggers(core, stillCollidesWithMe)
     this.pickSprite && this.pickSprite(core)
     this.updateDamageFlicker && this.updateDamageFlicker(core)
-    this.emitSound && this.emitSound(core)
+    this.onNewCurrentAction && this.onNewCurrentAction(core)
   }
 , isInvincibleFromLastHit: function(core) {
     return (
