@@ -9,4 +9,5 @@ module.exports = {
 , gui:        500
 , menu:       600
 , prompt:     700
+, transition: 800
 }

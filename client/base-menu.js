@@ -11,7 +11,7 @@ var keys = require('./keys')
 module.exports = Menu
 
 function Menu(core, attrs, menuOptions) {
-  _.merge(this, attrs) // top, left, width, height, modal, border, cancel
+  _.merge(this, attrs) // x, y, width, height, modal, border, cancel
   if(this.isBackgroundObject) {
     core.entities.push(this)
     this.drawHUD = drawMenu
@@ -23,8 +23,8 @@ function Menu(core, attrs, menuOptions) {
     this.exit = removeFromCore.bind(this, core)
   }
 
-  this.x = 0
-  this.y = 0
+  this.x = this.x || 0
+  this.y = this.y || 0
   this.coreContextWidth = core.context.width
   this.coreContextHeight = core.context.height
   this.rstring = new Rstring('')
@@ -66,6 +66,13 @@ Menu.prototype = {
     }.bind(this)).join('\n')
     if(this.name) { this.rstring.string = [this.name, this.rstring.string].join('\n') }
   }
+, stringFromOptions: function(options, selected) {
+    return options.map(function(opt, i) {
+      return selected === i
+      ? '> ' + opt + '  '
+      : '  ' + opt + '  '
+    }).join('\n')
+  }
 , performCurrentIndex: function() {
     var selection = this.menuOptions[this.menuKeys[this.index]]
     if(this.exitOnSelection) { this.exit() }
@@ -85,7 +92,7 @@ Menu.prototype = {
     if(core.input.getKeyDown(keys.UP)) {
       this.index--
     }
-    if(core.input.getKeyDown(keys.ENTER)) {
+    if(core.input.getKeyDown(keys.X)) {
       this.performCurrentIndex()
     }
   }
