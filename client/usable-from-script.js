@@ -15,7 +15,7 @@ function addUsableComponentsToLevelEditorPiece() {
   var usableIdentifier = arguments[0]
   this.use = usable[usableIdentifier].bind(this)
   var remainingArgs = Array.prototype.slice.call(arguments, 1)
-  while(remainingArgs[0]) {
+  while(typeof remainingArgs[0] !== 'undefined') {
     var currentArg = remainingArgs[0]
     this.use = this.use.bind(this, currentArg)
     remainingArgs = remainingArgs.slice(1)
