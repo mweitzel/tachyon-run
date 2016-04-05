@@ -144,11 +144,11 @@ function Input(core) {
     }
     // doesn't catch bs refires of the keypres..sssssssss!
     if(this.downAt(event.keyCode) <= this.upAt(event.keyCode))
-      this.keyCodesDown[event.keyCode] = event.timeStamp
+      this.keyCodesDown[event.keyCode] = perf.now()
   }
 
   function keyUp(event){
-    this.keyCodesUp[event.keyCode] = event.timeStamp
+    this.keyCodesUp[event.keyCode] = perf.now()
   }
 
   this.keyDown = keyDown.bind(this)
