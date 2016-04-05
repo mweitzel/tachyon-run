@@ -2,6 +2,17 @@ var test = require('tape')
   , tf = require('../../text-formatter')
 
 test('you can specify a max character, and it creates newline before preceeding words', function(t) {
+  var text = 'apples taste so good'
+  t.plan(1)
+  t.equal(
+    tf(text, 20)
+   //12345678901234567890 chars
+  , 'apples taste so good'
+  )
+})
+
+
+test('you can specify a max character, and it creates newline before preceeding words', function(t) {
   var text = 'apples taste so good i would eat them with peanut butter all day'
   t.plan(1)
   t.equal(
