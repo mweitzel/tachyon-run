@@ -6,6 +6,7 @@ var _ = require('lodash')
 var usable = addUsableComponentsToLevelEditorPiece.usable = {
   bench: require('./usable/bench')
 , reader: require('./usable/reader')
+, portal: require('./usable/portal')
 }
 
 // assumes 'this' will be the level editor script object
