@@ -70,10 +70,11 @@ Player.prototype = _.merge(
       ).call(this)
     }
   , allbounds: {
-      stand: function() {    return [this.x-6, this.y-24, 12, 24] }
-    , land: function() {     return [this.x-6, this.y-21, 12, 21] }
-    , airdodge: function() { return [this.x-6, this.y-20, 12, 14] }
-    , slide: function() {    return [this.x-9, this.y-14, 18, 14] }
+      stand: function() {    return [this.x-4, this.y-24,  8, 24] }
+    , land: function() {     return [this.x-4, this.y-21,  8, 21] }
+    , airdodge: function() { return [this.x-4, this.y-18,  8, 12] }
+    , slide: function() {    return [this.x-8, this.y-14, 16, 14] }
+    , duck: function() {     return [this.x-4, this.y-15,  8, 15] }
     }
   , aliasedBounds: {
       jump: 'stand'
