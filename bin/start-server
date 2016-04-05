@@ -2,4 +2,22 @@
 
 set -e
 
+test -n "$BUILD_SPRITES" && {
+  ./bin/build-sprites
+  echo 'built'
+} || {
+  echo 'WARNING: sprites not built'
+  echo '  to build on server start, make sure to export BUILD_SPRITES=true'
+  echo
+}
+
+test -n "$BUILD_AUDIO_SPRITES" && {
+  ./bin/build-aduio-sprites
+  echo 'built'
+} || {
+  echo 'WARNING: audio sprites not built'
+  echo '  to build on server start, make sure to export BUILD_AUDIO_SPRITES=true'
+  echo
+}
+
 exec node --harmony start-server.js
