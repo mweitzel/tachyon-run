@@ -1,4 +1,5 @@
-var config = require('./config')
+var _ = require('lodash')
+  , config = require('./config')
   , StaticCollider = require('./static-collider')
   , levelLoader = require('./level-loader')
   , setupSmoothCamera = require('./set-up-smooth-camera-for-loaded-level-and-player')
@@ -32,11 +33,21 @@ Door.prototype = {
 }
 
 function enterDoor(recursiveSerializedToGOFn, player, core) {
-  levelLoader(core, recursiveSerializedToGOFn, this.levelName, function(core) {
-    player.x = this.targetX + config.tileSize/2
-    player.y = this.targetY + config.tileSize
-    core.entities.push(player)
-    setupSmoothCamera(core, player)
-  }.bind(this)
-  )
+
+  var outTransition = _.find(core.entities, { transitionOut: true })
+  var load = loadLevel.bind(this)
+  if(outTransition)
+    outTransition.begin(core, load)
+  else
+    load()
+
+  function loadLevel() {
+    levelLoader(core, recursiveSerializedToGOFn, this.levelName, function(core) {
+      player.x = this.targetX + config.tileSize/2
+      player.y = this.targetY + config.tileSize
+      core.entities.push(player)
+      setupSmoothCamera(core, player)
+    }.bind(this)
+    )
+  }
 }
