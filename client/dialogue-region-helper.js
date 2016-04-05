@@ -12,7 +12,7 @@ generateRegion: function(text, dontCoverBounds, viewport, options) {
     (generateBoundsToEngulf.bind(options))
     (centerAt.bind(null, centerDefault(dontCoverBounds)))
     (escapeCollisions.bind(null, dontCoverBounds.concat(antiViewport(viewport))))
-//    (escapeCollisions.bind(null, antiViewport(viewport)))
+    (escapeCollisions.bind(null, antiViewport(viewport)))
     (roundEmAll)
     .value
 }

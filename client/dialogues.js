@@ -9,4 +9,33 @@ module.exports = {
     , 'end'
     ].join(' \n')
   }
+, dialogues: {
+    azalea: {
+      intro: [
+        "I found one."
+      , "The message contains an l-key, but I don't recognize any of the star systems."
+      , "Yea, weird."
+      , "No, just the one so far, it was practically plaintext."
+      , "There's definitely more. This data is crazy, with interlaced payloads, and- \nwhere'd you say you found this?"
+      , "Yea yea, you never do say."
+      ]
+    , intro_pester: [
+      , "I don't know if I can pull anything else out, but I'll keep running it."
+      ]
+    , intro_pre_teleport: [
+        "You want to USE the l-key!?"
+      , "We don't have any idea where it goes!"
+      , "..."
+      , "Alright, I'll configure the port. But if this goes hayshit its on you."
+      ]
+    , intro_on_teleport: [
+        "\\QAR" //question answer response
+      , "You sure you want to do this?"
+      , "Absolutely:Then again.."
+      , [ "Good luck, and try not to die."
+        , "Yea, I'm not a fan of blindly pitching myself into god-knows-which corner of the galaxy either."
+        ].join(':')
+      ]
+    }
+  }
 }
