@@ -2,7 +2,7 @@ var initTime = new Date().getTime()
   , createServer = require('./server')
   , fetch = require('./fetch-env')
   , PORT = fetch('PORT')
-  , host = porcess.env.HOST || 'production'
+  , host = process.env.HOST || 'production'
 
 createServer.listen(fetch('PORT'))
 
