@@ -12,10 +12,13 @@ module.exports = React.createClass({
             <div>
               <h3>What is Tachyon Run?</h3>
               <p>
-                Tachyon Run is a platformer game with tight controls. It takes place throughout the galaxy during a new age of discovery.
+                Tachyon Run is a platformer game with tight controls.
               </p>
               <p>
-                The game is currently under development. In the mean time you can <a href="#beta-test">register</a> for the beta or <a href="#play">play</a> the small demo.
+                People have dissapeared and of the governing powers won't talk. Chase thin leads across the galaxy to uncover the truth.
+              </p>
+              <p>
+                The game is still under development. So in the mean time, <a href="#beta-test">register</a> for the beta or <a href="#play">play</a> the small demo.
               </p>
             </div>
           </div>
@@ -26,7 +29,7 @@ module.exports = React.createClass({
               <div>
               <h3>Beta Test</h3>
               <p>
-                If you would like to participate in the beta when it is available or be informed when the game is released, please submit your email.
+                If you would like to be notified when the game is released or when a beta version is available, please submit your email.
               </p>
               <form className='beta-submit' method="post">
                 <div className='error'/>
@@ -46,7 +49,7 @@ module.exports = React.createClass({
           <div className='column'>
             <div>
             <h3>Play</h3>
-            <p> Ok, here's a link to the <a href="/demo">demo</a>. I would love any notes or feedback if you have any.</p>
+            <p>Ok, here's a <a href="/demo">sandbox level</a>. I would love feedback if you have any.</p>
           </div>
           </div>
         </div>
@@ -56,9 +59,7 @@ module.exports = React.createClass({
             <div>
               <h3>Contact</h3>
               <p>
-                I'm Matthew Weitzel
-                <br/>I tweet thoughts <a href="https://twitter.com/weitzelb">@weitzelb</a>
-                <br/>you can reach me there
+                Hi, I'm Matthew Weitzel. I tweet over at <a href="https://twitter.com/weitzelb">@weitzelb</a>. You can reach me there.
               </p>
             </div>
           </div>
@@ -69,15 +70,15 @@ module.exports = React.createClass({
             <div>
               <h3>Source Code</h3>
               <p>
-                I've always been inspired by early consoles and their developers, so I decided to self-impose a modest size constraint of 1MB, assets included.
+                The game is handwritten in JS, including a very tiny engine. Everything is easy to test and builds are fast and light.
               </p>
               <img className='pixel-art float-right content-inline-image' src="terminal-dude.gif" width='140'/>
               <p>
-                The game is handwritten in JS, including a very tiny engine. Everything is easy to test and builds are fast and light.
+                All <a href="https://github.com/mweitzel/tachyon-run">game code</a> and <a href="https://github.com/mweitzel/tachyon-run/blob/master/package.json">supporting libraries</a> are open source.
+                I hope some of you may benefit from the code as well as the end product.
               </p>
               <p>
-                All <a href="https://github.com/mweitzel/tachyon-run">game code</a> and <a href="https://github.com/mweitzel">supporting libraries</a> are open source.
-                I hope some of you may benefit from the code as well as the end product.
+                However, art and assets are not. So please don't duplicate or distribute any sounds or images without written permission.
               </p>
             </div>
           </div>
