@@ -5,5 +5,6 @@ module.exports = function(name) {
 function envContains(name) {
   if(Object.getOwnPropertyNames(process.env) && process.env[name] !== undefined)
     return true
-  throw "process.env does not contain variable '"+name+"'"
+  else
+    throw new Error("process.env does not contain variable '"+name+"'")
 }
