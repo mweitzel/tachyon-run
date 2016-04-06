@@ -1,5 +1,5 @@
 {
-  "name": "bastille"
+  "name": "tachyon-run"
 , "author": "Matthew Weitzel"
 , "dependencies": {
     "brfs": "1.4.x"
