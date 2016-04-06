@@ -1,7 +1,7 @@
 var db = require('./client')
   , models = require('./models')
-  , dbUrl = process.env.POSTGRES_URL
-
+  , fetch = require('../fetch-env')
+  , dbUrl = fetch('POSTGRES_URL')
 
 db(dbUrl, function(err, client, done) {
   if(err) { throw err }
