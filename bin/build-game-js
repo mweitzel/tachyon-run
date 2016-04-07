@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+mkdir -p build/public/assets && node -e '
+  require("./build-assets")(
+    "public/assets/game.js"
+    ).pipe(process.stdout)
+' > build/public/assets/game.js

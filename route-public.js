@@ -2,10 +2,21 @@ var fs = require('fs')
   , path = require('path')
   , build = require('./build-assets')
   , assetSourceDir = 'public/assets'
+  , assetBuildDir = 'build/public/assets'
 
-module.exports = serveFile
+module.exports = {
+  buildAndServe: buildAndServe
+, servePrebuilt: servePrebuilt
+}
 
-function *serveFile(page, next) {
+function *servePrebuilt(page, next) {
+  var prebuiltPath = path.resolve(assetBuildDir, page)
+  if(!fs.existsSync(prebuiltPath)) { return yield next }
+  this.type = contentTypes[path.extname(page)]
+  this.body = fs.createReadStream(prebuiltPath)
+}
+
+function *buildAndServe(page, next) {
   var assetSource = getAssetSource(page)
   if(!fs.existsSync(assetSource)) { return yield next }
   this.type = contentTypes[path.extname(page)]
@@ -14,7 +25,6 @@ function *serveFile(page, next) {
 
 function getAssetSource(pageName) {
   var nameParts = path.parse(pageName)
-  console.log(pageName)
   nameParts.base = nameParts.name + (sourceExtensions[nameParts.ext] || nameParts.ext)
   return path.resolve(assetSourceDir, path.format(nameParts))
 }
