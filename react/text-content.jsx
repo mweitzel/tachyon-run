@@ -15,7 +15,7 @@ module.exports = React.createClass({
                 Tachyon Run is a platformer game with tight controls.
               </p>
               <p>
-                People have dissapeared and of the governing powers won't talk. Chase thin leads across the galaxy to uncover the truth.
+                People have dissapeared and the governing powers won't talk. Chase thin leads across the galaxy to unfold it all.
               </p>
               <p>
                 The game is still under development. So in the mean time, <a href="#beta-test">register</a> for the beta or <a href="#play">play</a> the small demo.
