@@ -13,14 +13,7 @@ module.exports = function(page) {
 
 var builders = {
   '.js': function (page) {
-    var browserified = browserify({
-      entries: page
-    , debug: true
-    , transform: brfs
-    })
-    return process.env.MINIFY_JS
-      ? browserified.plugin('minifyify', {map: 'bundle.map.json', output: 'bundle.map.json'}).bundle()
-      : browserified.bundle()
+    return buildJsPage(page)
   }
 , '.scss': function(page) {
     return sass.renderSync({ file: page }).css
@@ -37,4 +30,15 @@ var builders = {
 , '.ico': function(page) {
     return fs.createReadStream(page)
   }
+}
+
+function buildJsPage(page) {
+    var browserified = browserify({
+      entries: page
+    , debug: true
+    , transform: brfs
+    })
+    return process.env.MINIFY_JS
+      ? browserified.plugin('minifyify', {map: 'bundle.map.json', output: 'bundle.map.json'}).bundle()
+      : browserified.bundle()
 }
