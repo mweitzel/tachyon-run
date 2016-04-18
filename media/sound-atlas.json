@@ -1,0 +1,53 @@
+{
+  "resources": [
+    "media/sound-atlas.mp3",
+    "media/sound-atlas.ogg"
+  ],
+  "spritemap": {
+    "test-blank": {
+      "start": 0,
+      "end": 0.14401360544217687,
+      "loop": false
+    },
+    "char_indoor_airdodge": {
+      "start": 1.0999999999999999,
+      "end": 1.2988208616780044,
+      "loop": false
+    },
+    "char_indoor_jump": {
+      "start": 2.1999999999999997,
+      "end": 2.436553287981859,
+      "loop": false
+    },
+    "char_indoor_land": {
+      "start": 3.3,
+      "end": 3.475600907029478,
+      "loop": false
+    },
+    "char_indoor_slide": {
+      "start": 4.3999999999999995,
+      "end": 4.993560090702947,
+      "loop": false
+    },
+    "hit_head": {
+      "start": 5.499999999999999,
+      "end": 5.707528344671201,
+      "loop": false
+    },
+    "menu_fail": {
+      "start": 6.599999999999999,
+      "end": 6.990385487528344,
+      "loop": false
+    },
+    "safe_song": {
+      "start": 7.699999999999999,
+      "end": 52.27941043083901,
+      "loop": false
+    },
+    "safe_song_intro": {
+      "start": 52.800000000000004,
+      "end": 63.111111111111114,
+      "loop": false
+    }
+  }
+}
