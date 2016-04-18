@@ -11,7 +11,6 @@ var keys = require('../keys')
   , handleCommand = require('../level-editor-handle-command')
   , MetaWatcher = require('../meta-data-watcher')
   , Inspector = require('../overlay-inspector')
-  , loadPlayableFromEditorEntities = require('../load-playable-level-from-editor-entities')
   , drawEditorRegion = require('../level-editor-draw-region')
   , allSprites = require('../all-sprites')
   , config = require('../config')
@@ -95,7 +94,7 @@ KeyController.prototype = {
     if(core.input.getKey(keys.SHIFT) && down(keys.P)) {
       this.saver.save(core.entities, setToLocalStorageAndLog)
       var editorEntities = this.saver.parse(getLevelDataFromLocalStorage())
-      return loadPlayableFromEditorEntities(core, editorEntities, this.cursor)
+      return core.loadPlayableFromEntities(core, editorEntities, this.cursor)
     }
 
     if(down(keys.R) && !this.__activeRegionPiece) {

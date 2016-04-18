@@ -7,4 +7,5 @@ module.exports = {
 , dialogueMaxCharWidth: 25
 , dialogueMaxLines: 4
 , maxTileSize: 32
+, CANCEL_TO_EDITOR_FROM_LEVELS: true
 }

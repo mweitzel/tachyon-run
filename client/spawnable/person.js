@@ -36,6 +36,9 @@ Person.prototype = _.merge(
       return [this.name, this.currentAction].join('_')
     }
   , interact: function(user, core) {
+//      engageInDialogue(core, ['hello fuckers'], this, user)
+//      engageInDialogue(core, ['hey fucker', 'what the hell is going on?!'], this, user)
+//      engageInDialogue(core, require('../dialogues').dialogues.azalea.intro_on_teleport, this, user)
       engageInDialogue(core, require('../dialogues').dialogues.azalea.intro_pester, this, user)
     }
   }

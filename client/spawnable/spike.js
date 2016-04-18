@@ -25,7 +25,7 @@ Spike.prototype = _.merge(
       return [this.x - this.width/2, this.y - this.height, this.width, this.height]
     }
   , applyDamage: function() {}
-  , encounterStats: { baseDamage: 1000 }
+  , encounterStats: { baseDamage: 1 }
   , update: function() {}
   , dealtDamage: function(damage) { console.log('gotcha!!!') }
   }
