@@ -1,14 +1,12 @@
 public/build/*
 local-env-vars.sh
 bundle.map.json
-media/atlas-1.*
-*.piko
-*.piko-png
+
 notes/*
 node_modules/*
-media/sound-atlas.json
-media/sound-atlas.mp3
-media/sound-atlas.ogg
+
+*.piko
+*.piko-png
 
 *.aup
 media/sounds/*_data/
