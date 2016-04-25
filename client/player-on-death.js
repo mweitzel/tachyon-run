@@ -1,5 +1,5 @@
 var After = require('./after')
-  , delay = seconds(3)
+  , delay = seconds(1)
   , youJustDied = require('./you-just-died')
 
 module.exports = function(core) {

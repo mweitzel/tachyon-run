@@ -9,13 +9,13 @@ module.exports = function(core) {
     core
   , { name: 'You just died.', border: true, exitOnSelection: true }
   , {
-      "try again": function() {}
-    , "editor": function() {
-        core.sceneLoader.load('level-editor')
-      }
-    , "main menu": function() {
-        core.sceneLoader.load('menu')
-      }
+      "try again": function() { core.loadLevelByName('test2') }
+//  , "editor": function() {
+//      core.sceneLoader.load('level-editor')
+//    }
+//  , "main menu": function() {
+//      core.sceneLoader.load('menu')
+//    }
     }
   ).float(['middle'])
 }

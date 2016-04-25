@@ -94,7 +94,7 @@ KeyController.prototype = {
     if(core.input.getKey(keys.SHIFT) && down(keys.P)) {
       this.saver.save(core.entities, setToLocalStorageAndLog)
       var editorEntities = this.saver.parse(getLevelDataFromLocalStorage())
-      return core.loadPlayableFromEntities(core, editorEntities, this.cursor)
+      return core.loadPlayableFromEditorEntities(core, editorEntities, this.cursor)
     }
 
     if(down(keys.R) && !this.__activeRegionPiece) {

@@ -27,6 +27,6 @@ Spike.prototype = _.merge(
   , applyDamage: function() {}
   , encounterStats: { baseDamage: 1 }
   , update: function() {}
-  , dealtDamage: function(damage) { console.log('gotcha!!!') }
+  , dealtDamage: function(damage) {  }
   }
 )

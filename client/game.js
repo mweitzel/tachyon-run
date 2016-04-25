@@ -19,7 +19,7 @@ module.exports = function(canvasElement) {
   }
 
   //core.sceneLoader.load('level-editor')
-  core.loadLevelByName('test')
+  core.loadLevelByName('demo')
 
   debug.exposeCore(core)
   debug.exposeLodash()
