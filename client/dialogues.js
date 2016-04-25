@@ -1,6 +1,24 @@
 module.exports = {
   readers: {
-    test_1: [
+    demo_intro: [
+      'Hello!'
+    , "The game is work in progress, but somehow you've stumbled upon this demo."
+    , ''
+    , 'Two important things:'
+    , '1 - double-click to enter fullscreen, esc to leave.'
+    , '2 - controls are: z, x, and arrow keys'
+    , ''
+    , "..that's it, now go run and jump!"
+    ].join('\n') // just '\n', not ' \n' as intro should have no full stop
+  , demo_outro: [
+      'Hello Again!'
+    , 'You have reached the end of the shortest demo ever.'
+    , ''
+    , 'This door leads to some levels I use to test controls and game mechanics.'
+    , ''
+    , 'So instead of calling this the end, you can play around there!'
+    ].join('\n') // just '\n', not ' \n' as intro should have no full stop
+  , test_1: [
       'sup yooooooo, how is it?'
     , 'not much, having a blast'
     , 'is it  ..wednesday?'
