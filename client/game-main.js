@@ -11,8 +11,22 @@ function main(injected) {
     var injected = injected || {}
       , r = requires._.merge(requires, injected)
       , canvas = this.document.getElementById(r.canvasProps.id)
-    requires.fullscreen.doubleClickToggle(canvas)
-    r.game.call(this, canvas)
-    console.log('game loaded')
+    if(browserCompatible()) {
+      requires.fullscreen.doubleClickToggle(canvas)
+      r.game.call(this, canvas)
+      console.log('game loaded')
+    }
+    else {
+      canvas.classList.add('hidden')
+      document.getElementById('browser-incompatibility').classList.remove('hidden')
+    }
   }
+}
+
+function browserCompatible() {
+  return isChrome()
+}
+
+function isChrome() {
+  return !!window.chrome && !!window.chrome.webstore
 }

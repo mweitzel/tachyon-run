@@ -24,6 +24,17 @@ body {
   height: 100%;
 }
 
+.browser-incompatibility {
+  color: white;
+  display: table;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
 canvas {
   background: white;
   display: table;

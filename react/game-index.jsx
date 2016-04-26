@@ -1,5 +1,6 @@
 var React = require('react')
   , Canvas = require('./canvas')
+  , IncompatibleBrowser = require('./incompatible-browser')
   , Header = require('./header')
   , canvasProps = require('../canvas-properties')
 
@@ -29,6 +30,7 @@ module.exports = React.createClass({
             <Header/>
             <div className='under-header bg-sun-d-teal'/>
             <Canvas {...canvasProps} />
+            <IncompatibleBrowser />
           </div>
         </body>
       </html>
