@@ -49,7 +49,9 @@ module.exports = React.createClass({
           <div className='column'>
             <div>
             <h3>Play</h3>
-            <p>Ok, here's a <a href="/demo">sandbox level</a>. I would love feedback if you have any.</p>
+            <p>Ok, here's a small <a href="/demo">demo</a>.</p>
+            <p>Controls are  ←, →, ↑, ↓, x and z. (double click to fullscreen)</p>
+            <p>I would love feedback if you have any.</p>
           </div>
           </div>
         </div>
