@@ -1,47 +1,6 @@
 /*
-collision chart
 
-Trigger - only responds to Player
-Player - includes projectiles that hit walls
-Enemy  - includes projectiles that hit walls
-p(player shots) - do not collide with walls
-e(enemny shots) - do not collide with walls
-Block
-
-
-     responds to this
-
-       T P E p e B |
-     T x ! x x x x |
-t    P x x ! x ! ! |
-i    E x ! x ! x ! |
-h    p x x x x x x |
-s    e x x x x x x |
-     B x x x x x x |
-     --------------
-
-players
-  return unless this.collides
-  core.entities
-    where
-       other.collidable
-    && ( (this.hasMoved && other.isBlock)
-       || other.isEnemy
-       || other.isEnemyShot
-       || other.isTrigger
-       )
-    && collides(this, other)
-
-enemies
-  return unless this.collides
-  core.entities
-    where
-       other.collidable
-    && ( (this.hasMoved && other.isBlock)
-       || other.isPlayer
-       || other.isPlayerShot
-       )
-    && collides(this, other)
+  Determine if objects collide and shortest vector to escape collision.
 
   ---            -----
  |   |          |     |
@@ -59,21 +18,11 @@ module.exports = {
   collidesWith: collidesWith
 , intersects: intersects
 , collidingSide: collidingSide
-, defaultShouldRespond: defaultShouldRespond
 , escapeVector: escapeVector
 , proximityTo: proximityTo
 , objClosestTo: objClosestTo
 , magnitude: magnitude
 , distance: distance
-}
-
-function defaultShouldRespond(other) {
-  return this.collidable
-  && other.collidable
-  && ( other.layer == 'ground'
-    || ( this.team !== other.team )
-    )
-  && collidesWith.call(this, other)
 }
 
 function collidesWith(other) {

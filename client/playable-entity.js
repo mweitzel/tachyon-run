@@ -1,5 +1,6 @@
 var _ = require('lodash')
   , collider = require('./collider')
+  , defaultShouldRespond = require('./default-should-respond')
   , applyPhysics = require('./apply-physics')
   , spyReturns = require('../tee-callback')
   , StaticCollider = require('./static-collider')
@@ -134,6 +135,7 @@ Playable.prototype = {
       this.damageFlickerOn = false
     }
   }
+, shouldRespondTo: defaultShouldRespond
 , draw: function(ctx) {
     if(this.damageFlickerOn) { ctx.globalCompositeOperation = 'xor' }
     Sprite.draw.call(this, ctx)
@@ -162,7 +164,7 @@ Playable.prototype = {
 , findEntitiesToRespondTo: function(core) {
     return _.filter(
       core.tileMap.getOthersNear(this)
-    , collider.defaultShouldRespond.bind(this)
+    , this.shouldRespondTo.bind(this)
     )
   }
 , postPhysicsAndDamageHandler: function(core, stillCollidesWithMe) { }
