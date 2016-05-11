@@ -24,16 +24,20 @@ test('#getKeyDown only registers the frame it was pressed', function(t) {
 
 test('#keyDown only applies if #keyUp since last #keyDown, to prevent repeattsssssssssssss', function(t) {
   t.plan(3)
-  var c = new Core(help.mockWindow(), help.mockCanvasContext())
+  var fakePerformance = { now: function() { return this.__now } }
+  var c = new Core(help.mockWindow(), help.mockCanvasContext(), fakePerformance)
     , input = c.input
     , kc = 1
 
   c.physicsTimeStep = 10
   c.lastUpdate = 0
 
-  input.keyDown({keyCode: kc, timeStamp: 1 })
-  input.keyUp(  {keyCode: kc, timeStamp: 2 })
-  input.keyDown({keyCode: kc, timeStamp: 3 })
+  fakePerformance.__now = 1
+  input.keyDown({keyCode: kc})
+  fakePerformance.__now = 2
+  input.keyUp(  {keyCode: kc })
+  fakePerformance.__now = 3
+  input.keyDown({keyCode: kc })
 
   t.equals(input.keyCodesUp[kc],   2, 'keyUp registers')
   t.equals(input.keyCodesDown[kc], 3, 'keyDown after keyUp registers')

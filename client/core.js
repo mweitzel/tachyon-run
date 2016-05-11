@@ -3,10 +3,11 @@ var _ = require('lodash')
 
 module.exports = Core
 
-function Core(window, context) {
+function Core(window, context, injectedPerformance) {
+  this.__perf = injectedPerformance || perf
   this.window = window
   this.document = this.window.document
-  this.lastUpdate = perf.now()
+  this.lastUpdate = this.__perf.now()
   this.input = new Input(this)
   this.context = context
   this.cameraCenter = { x: 0, y: 0 }
@@ -90,7 +91,7 @@ Core.prototype = {
     return a + 1
   }
 , update: function(renderTime) {
-    var currentTime = perf.now()
+    var currentTime = this.__perf.now()
 
     // if frames back up 0.5 seconds, eat the lag and move on
     if( currentTime - this.lastUpdate > 500){
@@ -118,7 +119,7 @@ Core.prototype = {
 , play: function(){
     this.paused = false
     this.updateAndRegisterNextUpdate()
-    this.lastUpdate = perf.now()
+    this.lastUpdate = this.__perf.now()
   }
 , start: function(){ return this.play() }
 , stop: function(){ return this.pause() }
@@ -142,13 +143,14 @@ function Input(core) {
       event.preventDefault()
       event.stopPropagation()
     }
+
     // doesn't catch bs refires of the keypres..sssssssss!
     if(this.downAt(event.keyCode) <= this.upAt(event.keyCode))
-      this.keyCodesDown[event.keyCode] = perf.now()
+      this.keyCodesDown[event.keyCode] = this.core.__perf.now()
   }
 
   function keyUp(event){
-    this.keyCodesUp[event.keyCode] = perf.now()
+    this.keyCodesUp[event.keyCode] = this.core.__perf.now()
   }
 
   this.keyDown = keyDown.bind(this)
