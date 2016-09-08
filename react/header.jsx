@@ -9,6 +9,7 @@ module.exports = React.createClass({
         <div className='words'>
           <h1> Tachyon Run </h1>
           <h2> Sign up for Alpha Testing </h2>
+          <a href="/"/>
         </div>
       </div>
     )
