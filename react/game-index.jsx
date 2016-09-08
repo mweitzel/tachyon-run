@@ -31,6 +31,8 @@ module.exports = React.createClass({
             <div className='under-header bg-sun-d-teal'/>
             <Canvas {...canvasProps} />
             <IncompatibleBrowser />
+            <p className='center white'>Control with  ←, →, ↑, ↓, x and z</p>
+            <p className='center white'>double click to fullscreen</p>
           </div>
         </body>
       </html>
