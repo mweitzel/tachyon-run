@@ -1,3 +1,4 @@
+var collidesWith = require('./collider').collidesWith
 module.exports = function(other) {
   return this.collidable
   && other.collidable
