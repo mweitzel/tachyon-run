@@ -1,5 +1,18 @@
 #!/bin/bash
-
 set -e
 
-node node_modules/gamefroot-texture-packer/index.js media/sprites/*.png -n media/atlas
+test -d media/sprites/generated || mkdir media/sprites/generated
+rm media/sprites/generated/*
+
+ls media/sprites/*.ase |
+awk '{print $1 " " $1}' |     # duplicate to media/sprites/*.ase media/sprites/*.ase
+sed 's/media\/sprites\///' |  # chomp first to name.ase
+sed 's/.ase//' |              # chomp first to name
+awk '{print "aseprite -b --sheet-type packed "$2" --save-as '"'"'media/sprites/generated/"$1"_{tag}_{frame}.png'"'"'"}' |
+while read line
+do
+  bash -c "$line"
+done
+
+rm media/sprites/generated/*
+node node_modules/gamefroot-texture-packer/index.js media/sprites/generated/*.png media/sprites/*.png -n media/atlas
