@@ -7,6 +7,7 @@ node_modules/*
 
 *.piko
 *.piko-png
+media/sprites/generated/*
 
 *.aup
 media/sounds/*_data/
