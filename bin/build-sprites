@@ -2,17 +2,30 @@
 set -e
 
 test -d media/sprites/generated || mkdir media/sprites/generated
-rm media/sprites/generated/*
+rm media/sprites/generated/* || echo 'empty directory'
 
-ls media/sprites/*.ase |
-awk '{print $1 " " $1}' |     # duplicate to media/sprites/*.ase media/sprites/*.ase
-sed 's/media\/sprites\///' |  # chomp first to name.ase
-sed 's/.ase//' |              # chomp first to name
+ls media/sprites/animated/*.ase |
+awk '{print $1 " " $1}' |               # dup   -> media/sprites/animated/*.ase media/sprites/animated/*.ase
+sed 's/media\/sprites\/animated\///' |  # chomp -> name.ase                     media/sprites/animated/*.ase
+sed 's/.ase//' |                        # chomp -> name                         media/sprites/animated/*.ase
 awk '{print "aseprite -b --sheet-type packed "$2" --save-as '"'"'media/sprites/generated/"$1"_{tag}_{frame}.png'"'"'"}' |
 while read line
 do
+  echo running command:  $line
   bash -c "$line"
 done
 
-rm media/sprites/generated/*
-node node_modules/gamefroot-texture-packer/index.js media/sprites/generated/*.png media/sprites/*.png -n media/atlas
+ls media/sprites/tilesheet/*.ase |
+awk '{print $1 " " $1}' |               # dup  -> media/sprites/tilesheet/*.ase media/sprites/tilesheet/*.ase
+sed 's/media\/sprites\/tilesheet\///' | # chomp -> name.ase                     media/sprites/tilesheet/*.ase
+sed 's/.ase//' |                        # chomp -> name                         media/sprites/tilesheet/*.ase
+awk '{print "aseprite -b "$2" --save-as '"'"'media/sprites/generated/"$1"_{slice}_{frame}.png'"'"'"}' |
+while read line
+do
+  echo running command:  $line
+  bash -c "$line"
+done
+
+node node_modules/gamefroot-texture-packer/index.js media/sprites/generated/*.png media/sprites/frame/*.png -n media/atlas
+
+rm media/sprites/generated/* || echo 'empty directory'
