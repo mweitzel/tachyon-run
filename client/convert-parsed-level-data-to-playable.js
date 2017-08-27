@@ -4,7 +4,7 @@ var _ = require('lodash')
   , StaticCollider = require('./static-collider')
   , delegate = require('../delegate-with-transform')
   , deferToSprite = ['width', 'height']
-  , scriptToObj = require('./level-editor-script-to-game-object')
+  , scriptToObjUncurried = require('./level-editor-script-to-game-object')
 
 
 module.exports = convertParsedLevelDataToPlayable
@@ -17,6 +17,7 @@ function convertParsedLevelDataToPlayable(recursiveSerializedToGOFn, levelEditor
 }
 
 function replaceScriptsWithObjects(recursiveSerializedToGOFn, entities) {
+  var scriptToObj = scriptToObjUncurried.bind(null, recursiveSerializedToGOFn)
   var scripts = _.filter(entities, { __isLevelPiece: true, layer: 'script' })
   _.forEach(
     scripts
@@ -24,7 +25,7 @@ function replaceScriptsWithObjects(recursiveSerializedToGOFn, entities) {
   )
   _.forEach(
     _.compact(scripts.map(function(scriptObj) {
-      return scriptToObj(recursiveSerializedToGOFn, scriptObj)
+      return scriptToObj(scriptObj)
     }))
   , function(obj) { entities.push(obj) }
   )
@@ -37,9 +38,17 @@ function addBackGroundAndMetaDataWatcher(entities) {
 }
 
 function makeGroundPiecesStaticCollidable(entities) {
+  var grounds = _.filter(entities, { __isLevelPiece: true, layer: 'ground' })
   _.forEach(
-    _.filter(entities, { __isLevelPiece: true, layer: 'ground' })
+    grounds
   , makeStaticCollidable
+  )
+
+  _.forEach(
+    _.filter(grounds, function(ground) {
+      return ground.name && ground.name.indexOf('platform') > -1
+    })
+  , function(ground) { ground.isOneWayPlatform = true }
   )
   return entities
 }

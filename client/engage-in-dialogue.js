@@ -33,7 +33,7 @@ function generateDialogueRegion(core, dialogueString, partyA, partyB, options) {
   , [partyA.bounds(), partyB.bounds()].map(function(bounds) {
       return toViewportCoords(core, bounds).concat([bounds[2], bounds[3]])
     })
-  , [0,0,core.cameraSize.x,core.cameraSize.y]
+  , [0,0,core.context.width,core.context.height]
   , options
   )
 }

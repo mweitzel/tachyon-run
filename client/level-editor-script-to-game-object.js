@@ -5,6 +5,7 @@ var commandResponders = scriptToObj.commandResponders = {
     , 'load-player': require('./load-player-from-script')
     , 'transition': require('./transition-from-script')
     , 'region': require('./region-from-script')
+    , 'delete-region': require('./delete-region-from-script')
     }
   , legitCommands = Object.keys(commandResponders)
 

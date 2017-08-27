@@ -10,6 +10,8 @@ function Core(window, context, injectedPerformance) {
   this.lastUpdate = this.__perf.now()
   this.input = new Input(this)
   this.context = context
+  this.context.imageSmoothingEnabled = false
+  this.renderScaler = 1
   this.cameraCenter = { x: 0, y: 0 }
   this.entities = []
   this.priorityStack = []
@@ -27,13 +29,13 @@ Core.prototype = {
     _.remove(this.priorityStack, eqeqeq.bind(obj))
   }
 , get cameraSize() {
-    return { x: this.context.width, y: this.context.height }
+    return { x: this.context.width/this.renderScaler, y: this.context.height/this.renderScaler }
   }
 , draw: function() {
     this.entities = _.sortBy(this.entities, function(e) { return (e.z||0) })
     var translateDrawingsX = Math.floor((this.cameraSize.x/2) - this.cameraCenter.x)
     var translateDrawingsY = Math.floor((this.cameraSize.y/2) - this.cameraCenter.y)
-    this.context.setTransform(1, 0, 0, 1, translateDrawingsX, translateDrawingsY)
+    this.context.setTransform(this.renderScaler, 0, 0, this.renderScaler, translateDrawingsX*this.renderScaler, translateDrawingsY*this.renderScaler)
 
     this.context.clearRect(
       -translateDrawingsX

@@ -74,7 +74,7 @@ function generateGroundObjectFromBounds(bounds) {
 }
 
 function antiViewport(bounds) {
-  var huge = Math.pow(10, 10)
+  var huge = Math.pow(8, 8)
   return [
     [ -huge              ,               -huge, huge + bounds[0],           2*huge ]
   , [ -huge              ,               -huge, 2*huge          , huge + bounds[1] ]

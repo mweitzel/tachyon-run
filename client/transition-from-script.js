@@ -5,7 +5,6 @@ var zIndex = require('./layer-z-defaults').transition
 module.exports = makeTransitionFromScript
 
 function makeTransitionFromScript() {
-  new FadeOut(500)
   return new FadeIn(500)
 }
 
@@ -75,8 +74,6 @@ FadeOut.prototype.update = false
 FadeOut.prototype.__priorityUpdate = FadeIn.prototype.update
 FadeOut.prototype.begin = function(core, done) {
   this.done = done
-  fuck = this
-
   this.draw = this.__priorityDraw
   this.update = this.__priorityUpdate
   core.removeEntity(this)

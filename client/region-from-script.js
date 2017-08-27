@@ -7,7 +7,7 @@ function regionFromScript(regionName, width, height) {
 }
 
 function Region(name, x, y, w, h) {
-  this.name
+  this.name = name
   this.x = x
   this.y = y
   this.width = w

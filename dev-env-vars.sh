@@ -6,3 +6,4 @@ export POSTGRES_URL="postgresql://$USER:@localhost/tachyon-run-dev"
 # game build
 # export MINIFY_JS=true
 export PREBUILD_JS=true
+export BUILD_SPRITES=true

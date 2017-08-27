@@ -58,6 +58,7 @@ Player.prototype = _.merge(
   beget(PE.prototype)
 , {
     z: zIndex
+  , DDX: 0.005
   , jumpVelocity: 0.15
   , currentAction: 'stand'
   , currentIdentifier: function() {
@@ -74,7 +75,7 @@ Player.prototype = _.merge(
   , allbounds: {
       stand: function() {    return [this.x-4, this.y-24,  8, 24] }
     , land: function() {     return [this.x-4, this.y-21,  8, 21] }
-    , airdodge: function() { return [this.x-4, this.y-18,  8, 12] }
+    , airdodge: function() { return [this.x-4, this.y-12,  8, 12] }
     , slide: function() {    return [this.x-8, this.y-14, 16, 14] }
     , duck: function() {     return [this.x-4, this.y-15,  8, 15] }
     }
@@ -242,29 +243,43 @@ Player.prototype = _.merge(
     }
   , respondToControllerIntent: function(core) {
       var onGroundLastFrame = this.__onGroundLastFrame(core)
+      if(onGroundLastFrame) { this.dy = 0 }
       this.canBeginSlide = this.canBeginSlide || onGroundLastFrame
-      if(core.input.getKeyDown(keys.Z) && this.canBeginSlide) {
+      if((
+        core.input.getKeyDown(keys.Z) && this.canBeginSlide
+      )||(
+        core.input.getKeyDown(keys.X) && !onGroundLastFrame && this.canBeginSlide
+      )) {
         this.canBeginSlide = false
         this.__dodgeBeginTime = core.lastUpdate
-        if(core.input.getKey(keys.UP)
+        if((core.input.getKey(keys.UP) || core.input.getKeyDown(keys.X))
         || core.input.getKey(keys.DOWN)
         || core.input.getKey(keys.RIGHT)
         || core.input.getKey(keys.LEFT)
         ) {
           var dirs = wordDirections.toVector(this.directionsOfIntent(core, true, true))
           this.dx += 1.75 * this.maxDx * dirs[0]
-          this.dy += this.jumpVelocity * dirs[1]
+          function absMax(a, b) {
+            return Math.abs(a) > Math.abs(b) ? a : b
+          }
+          ;(function(upness) {
+            this.dy += upness * (this.jumpVelocity + (onGroundLastFrame ? 0.03 : 0.02))
+          }).call(this, absMax(core.input.getKeyDown(keys.X) ? -1 : 0, dirs[1]))
         }
       }
       if( this.__shouldSlide(core) ) {
-        if(!onGroundLastFrame || this.dy < 0) {
-          if(core.input.getKey(keys.UP)
+        console.log(onGroundLastFrame, this.dx, Math.abs(this.dx) <= this.DDX*10)
+        if(!onGroundLastFrame ) {
+          if((core.input.getKey(keys.UP) || core.input.getKey(keys.X))
             && this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
             )
             this.currentAction = 'airdodge'
           else {
-            this.currentAction = ( Math.abs(this.dx) < this.maxDx * 0.55
-              &&  !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
+            var __lastAction = this.currentAction
+            //this.currentAction = ( Math.abs(this.dx) < this.maxDx * 0.55
+             // &&  !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
+            this.currentAction = (
+                Math.abs(this.dx) <= this.DDX *10
               )
               ? 'duck'
               : 'airslide'
@@ -331,7 +346,19 @@ Player.prototype = _.merge(
             }
           }
         }
-        if(core.input.getKey(keys.X)) {
+        if((
+          core.input.getKey(keys.X)
+        )||(
+          (
+            // down    -   up < up   -   current time
+            // press ..... release ..... stop float
+            (core.input.keyCodesDown[keys.X] - core.input.keyCodesUp[keys.X])
+          < Math.min((((core.input.keyCodesUp[  keys.X] - core.lastUpdate))/2), 250)
+            // decay the time to let go and press a key again, if you're kinda slow
+            // this gives a X,X double jump the same loft as a X+UP/Z double jump
+            // by marking the difference instead of a fixed time, tiny jumps are still possible
+          )&&(this.canBeginSlide) // shit just gets weird when this logic meddles with sliding
+        )) {
           this.dy -= 0.005
           this.maxDy = 0.1
         }
@@ -422,7 +449,7 @@ Player.prototype = _.merge(
   , __mustStillSlide: function(core) {
       return (
         this.__dodgeBeginTime + minSlideDuration(core) > core.lastUpdate
-        || this.__headWouldCollideWithGroundBlock(core)
+        || (this.__headWouldCollideWithGroundBlock(core) && this.__onGroundLastFrame(core))
       )
     }
   , __headWouldCollideWithGroundBlock: function(core) {
@@ -470,14 +497,18 @@ Player.prototype = _.merge(
       return core.tileMap
         .getOthersNear(phoCollider)
         .filter(collider.collidesWith.bind(phoCollider))
-        .filter(function(obj) { return obj.layer === 'ground' })
+        .filter(function(obj) { return obj.layer === 'ground' && !obj.isOneWayPlatform })
         .length >= 1
     }
   , __canStillSlide: function(core) {
       return (
         this.__dodgeBeginTime + maxSlideDuration(core) > core.lastUpdate
-      ||( Math.abs(this.dx) < this.maxDx * 0.55
-        && core.input.getKey(keys.Z)
+      ||(
+         Math.abs(this.dx) < this.maxDx * 0.55
+        &&
+          ( core.input.getKey(keys.Z)
+          ||(!this.canBeginSlide && core.input.getKey(keys.X))
+          )
         )
       ||this.__onGroundLastFrame(core)
       )
@@ -529,7 +560,6 @@ function leftRightAirControl(core) {
   }
   if(
     !(core.input.getKey(keys.LEFT) || core.input.getKey(keys.RIGHT))
-//  || core.input.getKey(keys.Z)
   ) {
     this.dx *= 0.99
     if(Math.abs(this.dx) < 0.01) { this.dx = 0 }

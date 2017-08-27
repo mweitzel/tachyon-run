@@ -26,7 +26,13 @@ module.exports = {
 }
 
 function collidesWith(other) {
-  return intersects(this.bounds(), other.bounds())
+  return intersects(this.bounds(), other.bounds()) && (
+    !other.isOneWayPlatform || (
+       this.dy >= 0
+    && closestSide(this.bounds(), other.bounds()) === 'bottom'
+    && bottomAbsDist(this.bounds(), other.bounds()) <= 8
+    )
+  )
 }
 
 function collidingSide(subject, collider) {

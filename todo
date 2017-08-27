@@ -1,0 +1,33 @@
+ 18 editor¬
+ 17   copy region¬
+ 16   conditional script¬
+ 15   conditional dialogue paths¬
+ 14   zoom regions¬
+ 13   zoom dialogue¬
+ 12   save data¬
+ 11     must exist¬
+ 10     editor to modify¬
+  9   transitions¬
+  8     scene intro transitions¬
+  7     door exit transitions¬
+  6     multiple transition options¬
+  5 engine¬
+  4   multiple jsxm players¬
+  3   implement jsxm effects¬
+  2   rolling sound effect player¬
+  1 assets¬
+19    sound effects¬                                                                                                                                                                             
+  1   music¬
+  2 enemies¬ 
+  3   patrol regions¬
+  4   fighting ai¬
+  5 weapons?¬
+  6   dear god¬
+  7 bugs¬
+  8   1 frame of slide happens on jump¬
+  9 ¬ 
+ 10 ¬
+ 11 copy region $bridge:? bridge:target¬
+ 12 ¬
+ 13 $bridge:out¬
+ 14 $bridge:fixed¬
